@@ -1,0 +1,112 @@
+---
+title: "Templates"
+description: "Criação, ciclo de vida e revisão/aprovação de templates."
+---
+
+Na seção **Templates**, há quatro possibilidades distintas de criação de templates de mensagem: WhatsApp, E-mail, SMS e RCS. Nesta seção é possível:
+
+- Criar novos templates
+- Consultar o status de todos os templates criados
+- Acompanhar o fluxo de aprovação (quando aplicável)
+- Duplicar templates ativos ou expirados
+
+Os templates são categorizados de acordo com o canal de disparo.
+
+## Status de um template
+
+| Status | Significado |
+|---|---|
+| **Em criação** | O template está em desenvolvimento e ainda não foi submetido para revisão. Existe apenas no canal E-mail. |
+| **Em revisão** | Submetido para revisão da Gerente do Ambiente ou da empresa Revisora, aguardando análise. Templates em reaprovação também aparecem com este status. |
+| **Aprovado** | Aprovado por um revisor, mas ainda não publicado no broker. |
+| **Publicado** | Aprovado por um revisor e já disponível para uso no broker. |
+| **Rejeitado** | Reprovado por um revisor — o motivo fica disponível para consulta. |
+| **Expirado** | Expirou devido à configuração de expiração de templates. |
+| **Rejeitado por Meta** | Aprovado pelo revisor, mas rejeitado pela Meta. Existe apenas no canal WhatsApp. |
+
+## Ciclo de vida dos templates
+
+Templates expirados permanecem visíveis na listagem por 30 dias após a expiração, mas não ficam disponíveis para novos disparos. Após 90 dias, são movidos para cold storage, com histórico mantido para relatórios e auditoria. Um filtro rápido está disponível na listagem para facilitar a navegação.
+
+## Alertas de vencimento
+
+Na coluna "Inclusão" da listagem é exibida a data de vencimento do template. As sinalizações visuais seguem esta ordem de prioridade:
+
+1. Vence amanhã
+2. Expirado há X dias — exclusão ocorrerá em 30 dias
+3. Em reaprovação
+
+Todos os usuários cadastrados pela Assessoria recebem notificação por e-mail conforme a janela de alerta configurada.
+
+## Configurações de templates
+
+Em **Configurações > Ambiente > Configurações de templates** é possível definir:
+
+- **Quantidade de dias para expiração** — após quantos dias o template é considerado expirado. Templates expirados ficam visíveis mas indisponíveis para novos disparos até serem atualizados ou revalidados.
+- **Quantidade de dias para alertar** — com quantos dias de antecedência os alertas visuais e as notificações por e-mail são disparados.
+
+<Note>
+O sincronismo de expiração de todos os templates ocorre uma vez ao dia, durante o período noturno.
+</Note>
+
+## Duplicar template
+
+Qualquer template ativo ou expirado pode ser duplicado. A duplicação gera um novo template com o conteúdo original e um novo código, submetendo-o automaticamente para aprovação. Após aprovação, o novo template fica disponível independentemente do status do original.
+
+- No relatório "Status de templates" e na exportação da página de Templates (todos os canais) há uma coluna **CÓDIGO ORIGINAL**, indicando o código do template usado como base na duplicação.
+- Novos templates podem ser criados diretamente no Construtor de Templates do Maestro, ou importados por arquivo CSV — se o arquivo não corresponder ao padrão esperado, a plataforma retorna o motivo do erro. O modelo atualizado está disponível em **Importar CSV > Baixar modelo**.
+
+## Construtor de Templates
+
+### WhatsApp
+
+1. Escolha a categoria, o nome do template e o idioma.
+
+   <Warning>O nome do template não pode conter acentos ou espaços.</Warning>
+
+2. Você pode selecionar um Workspace do WhatsApp para criar o template diretamente no cadastro da Meta, após a aprovação interna.
+3. Selecione o segmento vinculado ao template.
+
+**Estrutura do template:**
+
+- **Header (opcional)** — texto (até 60 caracteres) ou mídia (imagem, vídeo, documento). O cabeçalho pode conter apenas uma única variável.
+- **Corpo (obrigatório)** — até 1.024 caracteres, aceita emojis e variáveis (`{{Var1}}`, `{{Var2}}`...). Não misture múltiplos formatos em uma única palavra (ex.: negrito + itálico).
+- **Rodapé (opcional)** — texto pequeno e discreto, até 60 caracteres.
+- **Botões (opcional)** — um único tipo por template:
+  - *Resposta rápida*: até 3 botões, até 20 caracteres cada, sem emojis/variáveis/formatação.
+  - *Botão de ação*: Visitar website, Ligar através do WhatsApp, Ligar para número de telefone, Copiar código. Para URL dinâmica, é necessário fornecer um exemplo de preenchimento.
+
+Visualize a prévia no canto superior direito da tela e clique em **Criar template** para enviar ao fluxo de aprovação.
+
+### E-mail
+
+Ao clicar em **Criar Template** e selecionar o segmento, há duas opções de criação:
+
+- **HTML** — inserir seu próprio código, com total liberdade de design (indicado para quem tem domínio técnico).
+- **Padrão** — construir e-mails visualmente, sem necessidade de conhecimento em HTML.
+
+**Configurações Gerais**: nome do template, assunto do e-mail e um e-mail de teste (usado para envio do preview).
+
+**Editor visual (modo Padrão)**:
+- **Layout** — divisão em 1 a 4 colunas, combináveis em diferentes seções.
+- **Componentes**:
+  - *Texto* — negrito, itálico, sublinhado, links, alinhamento, cores, bordas, padding, tamanho da fonte.
+  - *Imagem* — upload, descrição, link, cor de fundo, largura, padding, alinhamento, bordas.
+- **Estilos Globais** — cor de fundo, fonte, tamanho, cores de texto/links, padding do corpo do e-mail.
+- Variáveis predefinidas ficam disponíveis na aba "Variáveis".
+
+**Criação via HTML**: dois painéis — um para colar/escrever o HTML, outro com preview da renderização. Configurações Gerais e Tags continuam disponíveis nesse modo.
+
+## Revisão de Templates
+
+Na seção **Revisão de Templates** é possível:
+
+- Visualizar todos os templates criados
+- Filtrar por canal e por status
+- Exportar a lista em CSV
+
+<Note>
+Apenas a Gerente do Ambiente e as empresas com perfil Revisora têm acesso a esta seção. Templates com status "Em criação" não são exibidos aqui.
+</Note>
+
+Template rejeitado ou travado em revisão? Veja [Troubleshooting](/central-de-suporte/troubleshooting).

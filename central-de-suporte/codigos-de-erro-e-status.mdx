@@ -1,0 +1,93 @@
+---
+title: "Códigos de Erro e Status"
+description: "Referência de códigos de erro e status de mensagens, campanhas, templates e integrações."
+---
+
+<Note>
+Esta referência consolida os códigos e status documentados nas páginas de produto e integração. Itens marcados como "não documentado" precisam ser confirmados com engenharia antes de serem tratados como garantidos.
+</Note>
+
+## Status de mensagem (Webhook)
+
+Enviado no evento `message_status` do [Webhook de Eventos](/integracoes/webhook-de-eventos), em `details.status.id`:
+
+| ID | Status |
+|---|---|
+| 1 | Queued |
+| 2 | Sent |
+| 3 | Delivered |
+| 4 | Failed |
+| 5 | Read |
+
+Canal da mensagem, em `details.channel.id`:
+
+| ID | Canal |
+|---|---|
+| 1 | Email |
+| 2 | SMS |
+| 3 | Whatsapp |
+
+<Warning>
+O canal RCS não aparece na referência de `details.channel.id` documentada para o Webhook de Eventos — a confirmar com engenharia antes de assumir um valor.
+</Warning>
+
+<Note>
+`details.provider.details.status` / `statusDescription` trazem o status **bruto** retornado pelo broker (específico de cada provedor) — não confundir com `details.status.id`, que é o status normalizado do Maestro.
+</Note>
+
+## Status de template
+
+Veja a lista completa e o ciclo de vida em [Templates](/guia-do-usuario/templates):
+
+| Status | Canais | Significado |
+|---|---|---|
+| Em criação | E-mail | Template em desenvolvimento, ainda não submetido para revisão. |
+| Em revisão | Todos | Submetido para revisão, aguardando análise. |
+| Aprovado | Todos | Aprovado pelo revisor, ainda não publicado no broker. |
+| Publicado | Todos | Aprovado e disponível para uso no broker. |
+| Rejeitado | Todos | Reprovado pelo revisor (motivo disponível para consulta). |
+| Expirado | Todos | Expirou pela configuração de expiração de templates. |
+| Rejeitado por Meta | WhatsApp | Aprovado internamente, mas rejeitado pela Meta. |
+
+## Direct Message API — códigos HTTP
+
+Veja o detalhamento e exemplos de corpo de resposta em [Direct Message API](/integracoes/direct-message-api#respostas).
+
+| Código | Significado |
+|---|---|
+| `200 - OK` | Mensagem validada, mas não enviada — canal sem broker configurado. |
+| `202 - Accepted` | Mensagem validada e enfileirada para envio. |
+| `400 - Bad Request` | Nome de `broker` inválido (campo opcional, apenas SMS/RCS). |
+| `401 - Unauthorized` | Falha de autenticação (token ausente, inválido ou expirado). |
+| `422 - UnprocessableEntity` | Campo obrigatório ausente ou inválido no corpo da requisição. |
+| `409 - Conflict` | Disparo bloqueado pelo Motor de Regras — corpo traz a lista de motivos em `conflicts`. |
+
+## Motor de Regras — formato de conflito (409)
+
+Tanto a Direct Message API quanto o processamento de campanhas usam a mesma estrutura para reportar bloqueios do motor de regras:
+
+```json
+{
+  "message": "Erro na validação do Motor de Regras.",
+  "errors": {},
+  "record_errors": [],
+  "conflicts": [
+    "Domínio de e-mail bloqueado na Lista de Restrição",
+    "E-mail bloqueado na Lista de Restrição"
+  ],
+  "requestId": "00-80016a94505f232820c73054f2ee1fa2-12c5228b9f317e12-00"
+}
+```
+
+Para campanhas via SFTP, o mesmo tipo de motivo aparece por linha, na coluna `Motivo Falha` do arquivo `{nome original}_EXCEPTIONS.csv` — veja [Uso de SFTP](/integracoes/uso-de-sftp).
+
+## Arquivos de retorno do SFTP
+
+| Arquivo | Onde aparece | Significado |
+|---|---|---|
+| `{nome}_EXCEPTIONS.csv` | `/maestro/campaigns/processed` | Linhas do arquivo de campanha que quebraram alguma regra — coluna `Motivo Falha` explica o motivo por linha. |
+| `{nome}_created.csv` | `/maestro/campaigns/processed` | Contatos processados, mas sem provedor configurado para o canal (não houve disparo). |
+| `{nome}_VALIDATED.csv` | `/maestro/campaigns/processed` | Contatos processados e efetivamente disparados (havia provedor configurado). |
+| `{nome}_errorDetail.txt` | `/maestro/campaigns/error` ou `/maestro/templates/error` | Falha no arquivo inteiro (nome fora do padrão, erro de linha em importação de template, etc.). |
+
+Veja o fluxo completo em [Uso de SFTP](/integracoes/uso-de-sftp).

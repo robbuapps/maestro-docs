@@ -1,0 +1,31 @@
+---
+title: "Campanhas"
+description: "Criação e disparo de campanhas por WhatsApp, E-mail, SMS e RCS."
+---
+
+O menu de Campanhas traz as opções de realizar campanhas pelos canais WhatsApp, E-mail, SMS ou RCS.
+
+## Criando uma campanha
+
+1. Escolha o canal desejado e clique em **Criar campanha**.
+2. Informe um nome descritivo para a campanha.
+3. Escolha o [segmento](/guia-do-usuario/segmentos) e o [público](/guia-do-usuario/publico) importado associado a esse segmento (o público deve ter sido previamente importado na seção Público).
+4. Escolha uma data e hora de início dos disparos.
+5. Em **Fluxo de envio**, você pode fracionar os envios por intervalo em minutos e percentual de envios por intervalo.
+
+## Campanhas WhatsApp
+
+- Em **Remetente**, escolha o número de saída. Os números exibidos são vinculados ao segmento da campanha, ou são números que permitem envios de qualquer segmento.
+- Escolha o [template](/guia-do-usuario/templates) de mensagem relacionado ao número de saída.
+- Se houver variáveis no template, preencha-as com o nome das colunas do CSV de público: `{{Var1}}`, `{{Var2}}`, `{{Var3}}`...
+
+## Campanhas E-mail ou SMS
+
+- Selecione o template que será utilizado no envio.
+- Se houver variáveis no template, preencha-as com o nome das colunas do CSV de público: `{{Var1}}`, `{{Var2}}`, `{{Var3}}`...
+
+<Note>
+Toda campanha passa pelo [Motor de Regras](/motor-de-regras/visao-geral) na criação (regras de horário, feriado e limite de erros do arquivo de público) e em cada disparo individual (contatos autorizados/bloqueados, restrições de localidade, limite diário por contrato, domínios bloqueados).
+</Note>
+
+Campanha não disparou como esperado? Veja [Troubleshooting](/central-de-suporte/troubleshooting).

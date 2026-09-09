@@ -1,0 +1,258 @@
+---
+title: "Direct Message API"
+description: "Envio de mensagens transacionais via E-mail, SMS, WhatsApp e RCS, sem campanha."
+---
+
+## Informações Gerais
+
+- **Versão da API**: `/v1`
+- **Nome da API**: Direct Message API
+- **Canais suportados**: envio de mensagens sem campanha — E-mail, SMS, WhatsApp e RCS
+
+## Visão Geral
+
+A Direct Message API permite o disparo de mensagens unitárias (fora do ciclo de campanhas), utilizando os mesmos recursos do Maestro, incluindo:
+
+- Motor de regras de validação de mensagem
+- Serviços e brokers configurados no Maestro
+
+Ideal para integrações automatizadas, como envio de confirmações, alertas, autenticações e notificações em tempo real.
+
+## Integração
+
+### Autenticação
+
+O token de autenticação é obtido em **Configurações > Empresa > Integração**, no Maestro. Gere um novo token ou renove o existente.
+
+<Warning>
+Ao clicar em "Renovar token", o token anterior será invalidado.
+</Warning>
+
+O token deve ser passado como header nas chamadas: `Authorization: Bearer {token}`.
+
+### Endpoints
+
+Base de produção: `https://api.common.maestro.robbu.global/`
+
+#### Envio de E-mail
+
+```http
+POST /v1/directmessage/email
+```
+
+```json
+{
+  "recipient_email": "usuario@dominio.com",
+  "variable_values": {
+    "Var1": "valor1",
+    "Var2": "valor2"
+  },
+  "document_number": "12345678900",
+  "contract_code": "CT-98765",
+  "template_code": "E001",
+  "segment": "Cartao Credito"
+}
+```
+
+#### Envio de WhatsApp
+
+```http
+POST /v1/directmessage/whatsapp
+```
+
+```json
+{
+  "recipient_number": "5511999998888",
+  "whatsapp_sender_number": "5500000000000",
+  "variables": {
+    "header_key": "Var3",
+    "header_value": "João Silva",
+    "body": {
+      "Var1": "CDI-00987",
+      "Var2": "R. Padre Anchieta, 115. Centro."
+    }
+  },
+  "document_number": "12345678900",
+  "contract_code": "CT-000123",
+  "template_code": "W001",
+  "segment": "Cartao Credito"
+}
+```
+
+#### Envio de SMS
+
+```http
+POST /v1/directmessage/sms
+```
+
+```json
+{
+  "recipient_number": "5511999998888",
+  "variable_values": {
+    "Var1": "123456",
+    "Var2": "João"
+  },
+  "document_number": "12345678900",
+  "contract_code": "CT-00987",
+  "template_code": "S001",
+  "segment": "Cartao Credito",
+  "flash_sms": false,
+  "broker": "Pontal"
+}
+```
+
+<Warning>
+O recurso de SMS Flash (`flash_sms`) também deve ser contratado/habilitado no provedor Pontal — não basta habilitar apenas no Maestro.
+</Warning>
+
+#### Envio de RCS
+
+```http
+POST /v1/directmessage/rcs
+```
+
+```json
+{
+  "recipient_number": "5511999998888",
+  "variable_values": {
+    "Var1": "123456",
+    "Var2": "João"
+  },
+  "document_number": "12345678900",
+  "contract_code": "CT-00987",
+  "template_code": "R001",
+  "segment": "Cartao Credito",
+  "broker": "Pontal"
+}
+```
+
+### Campo `broker` (opcional — apenas SMS e RCS)
+
+Define qual provedor fará o disparo, com o nome exatamente como cadastrado no Maestro (ex.: `Pontal`, `Classe A`). Sensível a maiúsculas/minúsculas e a espaços.
+
+- Omitido ou vazio → mantém o roteamento por segmento atual, conforme [Integração com Provedores](/integracoes/integracao-com-provedores).
+- Preenchido e válido → dispara pelo provedor indicado.
+- Nome inválido → `400 - Bad Request`.
+- E-mail e WhatsApp ignoram o campo.
+
+### Variáveis de Template
+
+Para E-mail e SMS, use `variable_values` com as variáveis dinâmicas conforme o template configurado no Maestro:
+
+```json
+"variable_values": {
+  "Var1": "João Silva",
+  "Var2": "CDI-00987"
+}
+```
+
+### Respostas
+
+| Código | Descrição |
+|---|---|
+| `200 - OK` | Mensagem validada, mas não enviada — não há serviço/broker configurado para o canal. |
+| `202 - Accepted` | Mensagem em processamento — passou pelas validações e foi enfileirada para envio. |
+| `400 - Bad Request` | Nome de broker inválido — não corresponde a um provedor cadastrado. |
+| `401 - Unauthorized` | Falha na autenticação. |
+| `422 - UnprocessableEntity` | Erros de validação — campos obrigatórios não preenchidos ou dados inválidos. |
+| `409 - Conflict` | Erros de validação do Motor de Regras — lista os motivos de bloqueio. |
+
+```json title="200 - OK"
+{
+  "result": "Mensagem validada, mas não enviada. Não há serviço de envio de mensagens configurado para esse canal."
+}
+```
+
+```json title="202 - Accepted"
+{
+  "result": "Mensagem em processamento."
+}
+```
+
+```json title="400 - Bad Request"
+{
+  "result": "Broker informado é inválido."
+}
+```
+
+`401 - Unauthorized` não retorna corpo de resposta.
+
+```json title="422 - UnprocessableEntity"
+{
+  "message": "Não foi possível enviar a mensagem.",
+  "errors": {
+    "contract_code": [
+      "O código do contrato é obrigatório."
+    ]
+  },
+  "record_errors": [],
+  "conflicts": [],
+  "requestId": "00-6b732c3ed78165728d77ccd4487fc564-07c6e0cee7e9335d-00"
+}
+```
+
+```json title="409 - Conflict"
+{
+  "message": "Erro na validação do Motor de Regras.",
+  "errors": {},
+  "record_errors": [],
+  "conflicts": [
+    "Domínio de e-mail bloqueado na Lista de Restrição",
+    "E-mail bloqueado na Lista de Restrição"
+  ],
+  "requestId": "00-80016a94505f232820c73054f2ee1fa2-12c5228b9f317e12-00"
+}
+```
+
+### Callback
+
+É possível informar uma URL de callback e campos customizados, enviados a essa URL a partir do disparo, usando o objeto `callback_details`:
+
+```json
+{
+  "recipient_number": "5511999998888",
+  "variable_values": {
+    "Var1": "123456",
+    "Var2": "João"
+  },
+  "document_number": "12345678900",
+  "contract_code": "CT-00987",
+  "template_code": "TEMPLATE_SMS_002",
+  "segment": "Cartao Credito",
+  "callback_details": {
+    "url": "https://minhaurl.com.br/meu_endpoint_de_callback",
+    "custom_fields": {
+      "additionalProp1": "string",
+      "additionalProp2": "string",
+      "additionalProp3": "string"
+    }
+  }
+}
+```
+
+## Boas Práticas
+
+- Valide previamente os templates e variáveis definidos no Maestro.
+- Sempre trate erros `401` e `403` com lógica de fallback ou renovação de token.
+- Implemente monitoramento e logs para mensurar falhas por canal e acionar novas tentativas ou alertas.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Posso enviar mensagens sem configurar um template no Maestro?">
+    Não. É obrigatório vincular um template previamente configurado.
+  </Accordion>
+  <Accordion title="E se o canal não estiver configurado?">
+    A API retornará `200 - OK`, informando que não há serviço de envio para aquele canal.
+  </Accordion>
+  <Accordion title="Como renovar o token?">
+    Acesse Configurações > Empresa e gere um novo token.
+
+    ⚠️ O token anterior será revogado.
+  </Accordion>
+  <Accordion title="Qual o tempo de processamento da mensagem?">
+    O envio é feito em tempo real, dependendo da disponibilidade do canal.
+  </Accordion>
+</AccordionGroup>
+
+Precisa consultar todos os erros possíveis? Veja [Códigos de Erro e Status](/central-de-suporte/codigos-de-erro-e-status).

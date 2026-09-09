@@ -1,0 +1,216 @@
+---
+title: "Motor de Regras"
+description: "Regras de restrição, bloqueio e controle aplicadas às campanhas no Maestro."
+---
+
+O motor de regras é um mecanismo do Maestro para gerenciar e supervisionar os disparos feitos pelas assessorias. A Gerente do Ambiente pode configurar diversas regras dentro deste motor, e essas regras são verificadas durante campanhas, disparos por API (Direct Message) ou upload de campanhas por SFTP.
+
+## Configuração Inicial
+
+O acesso às regras deve ser feito com perfil Gerente do Ambiente, em **Configurações > Regras**.
+
+## Tipos de regras
+
+Há dois tipos primários de regras:
+
+1. **Regras implícitas** — validam conceitos do sistema e não podem ser desativadas.
+2. **Regras customizáveis** — cada uma pode ser ativada ou desativada individualmente.
+
+## Regras implícitas
+
+Algumas regras não são exibidas no motor de regras, mas rodam como validadores de disparos e campanhas:
+
+### Segmento válido
+
+A assessoria só consegue criar templates, criar campanhas e disparar mensagens em segmentos aos quais tem acesso.
+
+### Template aprovado
+
+Apenas templates aprovados são válidos para criar campanhas e disparar mensagens.
+
+- Se houver broker configurado para o canal utilizado, o template deve estar **Publicado**.
+- Se não houver broker configurado, a mensagem não será disparada, mas o template é considerado válido e pode ser usado para integrações externas.
+- Templates expirados não ficam disponíveis para uso após a rotina de expiração — vencidos há mais de 5 dias não aparecem na lista de seleção.
+
+### DDD e Telefone
+
+Quando o disparo é feito para um telefone (WhatsApp ou SMS):
+
+- Campanhas devem ter DDD mapeado corretamente.
+- Telefones com formatação inválida são rejeitados.
+
+## Regras customizáveis
+
+### Horários
+
+Campanhas e disparos fora da faixa configurada são bloqueados. Dois modos coexistem:
+
+- **Horário comercial** — janela fixa de segunda a sexta-feira.
+- **Períodos específicos** — intervalos com datas de início e fim, podendo incluir sábados e domingos. Múltiplos intervalos podem ser cadastrados.
+
+### Feriados
+
+Campanhas e disparos são bloqueados nos dias configurados como feriado, em dois níveis independentes:
+
+- Bloqueio por feriados nacionais (ativável separadamente).
+- Bloqueio por datas avulsas inseridas manualmente.
+
+### Localidades
+
+Define janelas de envio diferenciadas por localidade do contato. Quando ativa, disparos fora do horário permitido para a localidade do destinatário são bloqueados.
+
+### Contatos
+
+Permite autorizar ou bloquear contatos específicos no momento do envio.
+
+**Escopo do bloqueio**: aplica-se quando todos os campos preenchidos na entrada coincidem com o envio. Quanto mais campos informados, mais específico e restrito é o escopo.
+
+Exemplo:
+- Apenas telefone preenchido → qualquer envio para aquele telefone é bloqueado, independente do contrato.
+- Telefone + contrato preenchidos → só a combinação exata é bloqueada.
+
+<Warning>Contatos duplicados são rejeitados pelo motor de regras.</Warning>
+
+#### 1. Contatos Autorizados
+
+Somente contatos presentes na lista podem receber mensagens pelos canais selecionados. A lista é atualizada via arquivos CSV no diretório `maestro/allow_list` do SFTP. A regra se aplica apenas aos canais explicitamente configurados.
+
+| Campo | Obrigatório | Descrição |
+|---|---|---|
+| `CPF_CNPJ` | ❌ | Documento do cliente (validações ou relatórios). |
+| `CD_CONTRATO` | ❌ | Número do contrato do cliente. |
+| `CD_TELEFONE_CONTATO` | ✅ se `EMAIL` não estiver preenchido | Número de telefone com DDD. |
+| `EMAIL` | ✅ se `CD_TELEFONE_CONTATO` não estiver preenchido | E-mail do cliente. |
+
+<Note>
+É possível combinar os campos acima. A única combinação inválida no mesmo contato é `CD_TELEFONE_CONTATO` + `EMAIL` preenchidos simultaneamente.
+</Note>
+
+```
+Exemplo inválido:
+CPF_CNPJ;CD_CONTRATO;CD_TELEFONE_CONTATO;EMAIL
+12345678965;456;+5511981236549;cliente@dominio.com   ❌ (telefone e e-mail juntos)
+
+Exemplo válido:
+CPF_CNPJ;CD_CONTRATO;CD_TELEFONE_CONTATO;EMAIL
+12345678965;456;+5511981236549;
+98765432156;654;;cliente@dominio.com
+```
+
+#### 2. Contatos Bloqueados
+
+Contatos presentes na lista são impedidos de receber mensagens em qualquer canal. A lista é atualizada via arquivos CSV no diretório `maestro/block_list` do SFTP.
+
+<Warning>Contatos bloqueados prevalecem sobre contatos autorizados — se um contato estiver nas duas listas, ele é bloqueado.</Warning>
+
+| Campo | Obrigatório | Descrição |
+|---|---|---|
+| `TIPO_BLOQUEIO` | ❌ | `1` (Permanente), `2` (Temporário) ou vazio. |
+| `CPF_CNPJ` | ❌ | Documento do cliente. |
+| `DATA_SOLICITACAO` | ❌ | Data da solicitação do bloqueio. |
+| `DATA_EXPIRACAO` | ❌ | Data de expiração do bloqueio. |
+| `NUCONTRATOGESTAO` | ❌ | Número do contrato do cliente. |
+| `NUMERO` | ❌ | Número de telefone com DDD. |
+| `EMAIL` | ❌ | E-mail do cliente. |
+| `MOTIVO` | ❌ | Motivo do bloqueio. |
+
+A única combinação inválida no mesmo contato é `NUMERO` + `EMAIL` preenchidos simultaneamente.
+
+```
+Exemplo inválido:
+TIPO_BLOQUEIO;CPF_CNPJ;DATA_SOLICITACAO;DATA_EXPIRACAO;NUCONTRATOGESTAO;NUMERO;EMAIL;MOTIVO
+2;12313213213;;;1516;+5511930457438;cliente@dominio.com;Motivo 1   ❌
+
+Exemplo válido:
+TIPO_BLOQUEIO;CPF_CNPJ;DATA_SOLICITACAO;DATA_EXPIRACAO;NUCONTRATOGESTAO;NUMERO;EMAIL;MOTIVO
+2;12313213213;;;1516;;cliente@dominio.com;Motivo 1
+;45665465464;;25/04/2026;;+5511930457438;;Motivo 2
+```
+
+### Domínios
+
+Domínios de e-mail configurados têm todas as tentativas de disparo rejeitadas.
+
+### Limites
+
+**1. Limite de erros por arquivo de Público**: se o percentual de erros no arquivo da campanha ultrapassar o limite configurado, a base inteira é invalidada e nenhum disparo é efetuado. Com o limite em 0%, nenhuma base é invalidada por esta regra, mesmo ativa.
+
+**2. Limite diário de disparos por contrato**: cada contrato tem uma cota diária de mensagens. Ao atingir o limite, novos disparos daquele contrato são bloqueados pelo restante do dia. Se um contato estiver vinculado a mais de um contrato, apenas o contrato que ultrapassar o limite é bloqueado.
+
+<Note>
+Campanhas agendadas consomem a cota do dia do **processamento**, não do dia da entrega. O contador é incrementado quando a campanha é processada (logo após a criação) — uma campanha criada hoje e agendada para amanhã consome a cota de hoje, não a de amanhã.
+</Note>
+
+## Como o motor de regras funciona
+
+### Campanhas
+
+Ao criar uma campanha, o motor de regras é executado. A criação é **rejeitada** se estas regras forem inválidas:
+
+- Regra de Horário
+- Bloqueio por Feriado
+- Limite de erros por arquivo de Público
+
+Se válidas, a campanha é criada e cada disparo é processado individualmente — o disparo pode ser bloqueado por:
+
+- Contatos Autorizados / Contatos Bloqueados
+- Restrições de horário por Localidade
+- Limite diário de disparos por contrato
+- Bloqueio por Domínio de E-mail
+
+### API Direct Message
+
+Cada chamada é considerada um disparo avulso, bloqueado caso quebre alguma regra:
+
+```json title="409 - Conflict"
+{
+  "message": "Erro na validação do Motor de Regras.",
+  "errors": {},
+  "record_errors": [],
+  "conflicts": [
+    "Domínio de e-mail bloqueado na Lista de Restrição",
+    "E-mail bloqueado na Lista de Restrição"
+  ],
+  "requestId": "00-80016a94505f232820c73054f2ee1fa2-12c5228b9f317e12-00"
+}
+```
+
+Veja mais em [Direct Message API](/integracoes/direct-message-api).
+
+### SFTP
+
+Valida o arquivo linha a linha. Linhas invalidadas geram, na pasta `/maestro/campaigns/processed`, um arquivo `{nome original}_EXCEPTIONS.csv` com a cópia da linha original e uma coluna adicional `Motivo Falha`:
+
+```
+(Outras colunas...), MotivoFalha
+..., Excedido o limite de envios diários para esse contato
+..., Número bloqueado na lista de restrição
+..., Envio bloqueado fora do horário permitido para este código de área
+```
+
+## Histórico
+
+No botão "Histórico" de cada regra é possível ver as alterações realizadas ao longo do tempo, incluindo o usuário responsável e o que foi alterado.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="O que acontece se eu tentar criar uma campanha fora do horário permitido?">
+    A campanha não será criada, pois o motor valida a regra de horário durante a criação.
+  </Accordion>
+  <Accordion title="Campanhas são enviadas em feriados?">
+    Não. Em dias configurados como feriado, os disparos são bloqueados automaticamente.
+  </Accordion>
+  <Accordion title="E se o percentual de erros da base for maior que o limite configurado?">
+    A base será invalidada e a campanha não seguirá adiante.
+  </Accordion>
+  <Accordion title="Posso reutilizar templates expirados?">
+    Não. Templates expirados ficam indisponíveis após a rotina de expiração e não aparecem na lista de seleção.
+  </Accordion>
+  <Accordion title="O que ocorre se o nome do arquivo enviado via SFTP estiver fora do padrão?">
+    O arquivo será rejeitado e não será processado.
+  </Accordion>
+  <Accordion title="Uma mensagem agendada para amanhã consome o limite diário de hoje ou de amanhã?">
+    De hoje. O contador da cota diária é incrementado no momento em que a campanha é processada (logo após a criação), não quando a mensagem é enviada. O limite diário sempre vale para o dia do processamento, nunca para o dia da entrega.
+  </Accordion>
+</AccordionGroup>

@@ -1,0 +1,186 @@
+---
+title: "Troubleshooting"
+description: "Diagnóstico e resolução dos problemas mais comuns no Maestro."
+---
+
+<Note>
+Cada tópico segue o formato sintoma → causas prováveis → como confirmar → como resolver. Esta é uma primeira versão baseada no comportamento documentado do produto — deve ser expandida pelo time de suporte com casos reais de atendimento.
+</Note>
+
+## Campanha não dispara
+
+**Causas prováveis:**
+
+1. A campanha foi bloqueada na criação pelo [Motor de Regras](/motor-de-regras/visao-geral) — regra de Horário, Feriado ou Limite de erros por arquivo de Público.
+2. O template usado não está com status **Publicado** (quando há broker configurado) ou está expirado.
+3. O segmento informado não existe, ou a assessoria não tem acesso a ele.
+4. Não há provedor (broker) configurado para o canal do disparo.
+
+**Como confirmar:**
+
+- Verifique se a criação da campanha foi realmente aceita (campanhas rejeitadas pelo motor de regras na criação não chegam a existir).
+- Confira o status do template em [Templates](/guia-do-usuario/templates).
+- Confira se o horário/data do disparo está dentro de uma janela permitida (Configurações > Regras > Horários/Feriados).
+- Confira se há um provedor cadastrado para o canal em [Integração com Provedores](/integracoes/integracao-com-provedores).
+
+**Como resolver:**
+
+- Ajuste o horário de disparo ou aguarde a janela permitida, se bloqueado por regra de Horário/Feriado.
+- Publique/aprove o template antes de disparar.
+- Corrija o segmento ou solicite acesso a ele para a assessoria.
+- Configure um provedor para o canal — sem broker, o disparo é apenas validado, mas não enviado.
+
+## Disparo individual bloqueado dentro de uma campanha válida
+
+Diferente da campanha inteira ser rejeitada, disparos individuais (linhas) podem ser bloqueados mesmo com a campanha criada com sucesso.
+
+**Causas prováveis:**
+
+- Contato presente na lista de Contatos Bloqueados, ou ausente da lista de Contatos Autorizados (quando essa regra está ativa para o canal).
+- Contato fora da janela de horário permitida para sua localidade.
+- Contrato já atingiu o limite diário de disparos.
+- Domínio de e-mail bloqueado.
+
+**Como confirmar:**
+
+- Se o disparo veio de um arquivo (Público ou SFTP), procure o arquivo `{nome original}_EXCEPTIONS.csv` gerado na pasta `/processed` — ele traz a coluna `Motivo Falha` com o motivo exato por linha.
+- Se o disparo veio da Direct Message API, o motivo aparece no corpo da resposta `409 - Conflict`, no campo `conflicts`.
+
+**Como resolver:**
+
+- Revise as listas de Contatos Autorizados/Bloqueados em Configurações > Regras > Contatos.
+- Para limite diário, aguarde o próximo dia ou revise a cota configurada para o contrato.
+- Para domínio bloqueado, remova o domínio da lista de restrição, se o bloqueio não for mais necessário.
+
+## Template rejeitado na revisão
+
+**Causas prováveis:**
+
+- O conteúdo não segue os limites de caracteres/formatação do canal (ex.: WhatsApp: corpo até 1.024 caracteres, cabeçalho com uma única variável, nome sem acentos/espaços).
+- O motivo específico de rejeição foi registrado pelo revisor.
+- No canal WhatsApp, o template pode ter sido aprovado internamente mas rejeitado pela Meta (status **Rejeitado por Meta**).
+
+**Como confirmar:**
+
+- Consulte o motivo de rejeição na tela de Templates ou na seção de Revisão de Templates em [Templates](/guia-do-usuario/templates) (visível para Gerente do Ambiente e empresas Revisoras).
+- Confirme o status exato do template — "Rejeitado" (revisor interno) é diferente de "Rejeitado por Meta".
+
+**Como resolver:**
+
+- Ajuste o conteúdo do template conforme o motivo indicado e reenvie para revisão.
+- Se rejeitado pela Meta, revise as diretrizes de conteúdo da Meta para templates de WhatsApp antes de reenviar.
+
+## Template expirado ou fora da lista de seleção
+
+**Causas prováveis:**
+
+- O template ultrapassou o prazo de validade configurado em Configurações > Ambiente > Configurações de templates.
+- Templates expirados há mais de 5 dias não aparecem na lista de seleção para novos disparos (regra implícita do motor de regras).
+
+**Como confirmar:**
+
+- Veja a data de vencimento na coluna "Inclusão" da listagem de templates.
+- Confira a configuração de "Quantidade de dias para expiração" do ambiente.
+
+**Como resolver:**
+
+- Duplique o template (gera um novo código, já enviado para aprovação) — veja a seção "Duplicar template" em [Templates](/guia-do-usuario/templates).
+- Se o prazo de expiração está inadequado à operação, ajuste-o em Configurações > Ambiente.
+
+## Importação de público rejeitada
+
+**Causas prováveis:**
+
+- Nome ou ordem incorreta das colunas obrigatórias (os **nomes** das colunas devem ser exatamente como documentado; a ordem não importa).
+- `CODIGO_TEMPLATE` e `CODIGO_TEMPLATE_EXTERNO` ambos vazios na mesma linha.
+- `CODIGO_TEMPLATE_EXTERNO` informado, mas não encontrado, e `CODIGO_TEMPLATE` também não encontrado.
+- Segmento informado não existe ou a assessoria não tem acesso a ele.
+- Percentual de erros no arquivo acima do limite configurado na regra de Limite de erros por arquivo de Público — nesse caso, a base inteira é invalidada.
+- Nome de provedor inválido na coluna `BROKER` (SMS/RCS) — rejeita o arquivo inteiro.
+
+**Como confirmar:**
+
+- Compare o cabeçalho do arquivo com o layout documentado em [Público](/guia-do-usuario/publico) (importação manual) ou [Uso de SFTP](/integracoes/uso-de-sftp) (importação automática — layout diferente).
+- Baixe o modelo mais atualizado em Público > Importar público > Baixar modelo.
+
+**Como resolver:**
+
+- Corrija o cabeçalho e reenvie o arquivo.
+- Preencha ao menos um dos campos de código de template.
+- Corrija o nome do segmento ou solicite acesso.
+- Se o volume de erros for esperado, revise o limite da regra em Configurações > Regras > Limites.
+
+## SFTP não conecta ou arquivo não é processado
+
+**Causas prováveis:**
+
+- Credenciais de SFTP próprio incorretas ou incompletas — a importação é silenciosamente ignorada nesse caso.
+- Diretórios `/processed` e `/error` ainda não apareceram (podem levar até 10 minutos após a configuração inicial).
+- Nome do arquivo fora do padrão esperado (campanhas: `.csv` sem extensão duplicada; templates: `{segmento}_{canal}_[{waba}]_{data}.csv`).
+- O arquivo já foi processado antes — arquivos em `/processed` não são reprocessados.
+- O serviço de importação roda a cada 10 minutos — arquivos recém-enviados podem levar até esse tempo para aparecer processados.
+
+**Como confirmar:**
+
+- Verifique se o arquivo apareceu em `/processed` (sucesso) ou `/error` (falha) após ~10 minutos.
+- Em caso de erro no arquivo inteiro, abra `{nome do arquivo original}_errorDetail.txt` na pasta `/error`.
+- Em caso de erro em linhas específicas (campanhas), abra `{nome original}_EXCEPTIONS.csv` em `/processed`.
+
+**Como resolver:**
+
+- Revise as credenciais de SFTP próprio em Configurações > Empresa > Transferência de Arquivos, ou use o SFTP gerenciado pela Robbu.
+- Corrija o nome do arquivo conforme o padrão documentado e reenvie com um nome novo (não reenvie o mesmo nome já processado).
+- Aguarde o próximo ciclo de 10 minutos antes de considerar o arquivo "travado".
+
+## Webhook não recebe eventos
+
+**Causas prováveis:**
+
+- URL de webhook incorreta ou inacessível publicamente.
+- Headers de autenticação configurados incorretamente, fazendo a aplicação do cliente rejeitar a requisição (isso não é visível do lado do Maestro).
+- Expectativa de eventos que o Maestro não envia hoje — atualmente, o único evento suportado é atualização de status de mensagem (`message_status`).
+
+**Como confirmar:**
+
+- Reconfira a URL e os headers em Configurações > Empresa > Webhook.
+- Verifique se o endpoint do cliente está de fato público e aceitando `POST`.
+- Teste com uma mensagem que já tenha mudado de status recentemente.
+
+**Como resolver:**
+
+- Corrija a URL/headers do webhook.
+- Garanta que o endpoint responda rapidamente com sucesso (2xx) para evitar problemas de timeout do lado do cliente.
+- Não assuma eventos além de `message_status` — veja [Webhook de Eventos](/integracoes/webhook-de-eventos).
+
+## Mensagem com status de falha
+
+**Causas prováveis:**
+
+- Falha reportada pelo broker (ex.: número inválido, sem WhatsApp ativo, caixa de e-mail inexistente, operadora sem suporte a RCS).
+- Regra de negócio bloqueou o envio antes de chegar ao broker (ver seções acima).
+
+**Como confirmar:**
+
+- Consulte o status da mensagem nos [Relatórios](/guia-do-usuario/relatorios-e-dashboards) ou no evento de webhook (`details.status.description` e `details.provider.details.statusDescription`, quando disponível) — veja [Códigos de Erro e Status](/central-de-suporte/codigos-de-erro-e-status).
+
+**Como resolver:**
+
+- Para falhas do broker, confirme o dado de contato (número/e-mail) e a disponibilidade do canal para aquele destinatário.
+- Para RCS sem suporte no dispositivo/operadora, confirme que o template tem uma mensagem SMS de contingência configurada.
+
+## Regra bloqueando disparo inesperadamente
+
+**Causas prováveis:**
+
+- Alguma regra customizável (Horários, Feriados, Localidades, Contatos, Domínios, Limites) está ativa e não era esperada pela operação.
+- Contato duplicado nas listas de Contatos Autorizados/Bloqueados (é rejeitado pelo motor de regras).
+
+**Como confirmar:**
+
+- Acesse Configurações > Regras e revise quais regras customizáveis estão ativas.
+- Use o botão "Histórico" de cada regra para ver quando e por quem ela foi alterada — veja [Motor de Regras](/motor-de-regras/visao-geral).
+
+**Como resolver:**
+
+- Ajuste ou desative a regra customizável responsável pelo bloqueio, se o comportamento não for o desejado.
+- Corrija duplicidades nas listas de contatos antes de reenviar.

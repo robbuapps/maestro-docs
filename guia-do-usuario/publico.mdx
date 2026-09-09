@@ -1,0 +1,105 @@
+---
+title: "Público"
+description: "Importação e gestão de contatos para uso em campanhas."
+---
+
+A seção **Público** permite importar contatos que serão utilizados em campanhas. Essa importação é o ponto de partida para campanhas massificadas e garante maior agilidade na preparação de campanhas e na gestão contínua da base de público — um mesmo público pode ser utilizado por mais de uma campanha, se necessário.
+
+<Note>
+Esta página descreve a importação manual feita em **Público > Importar público**. Para a importação automática de campanhas via SFTP, que usa um layout de arquivo diferente, veja [Uso de SFTP](/integracoes/uso-de-sftp).
+</Note>
+
+Você pode baixar o arquivo modelo mais atualizado em **Público > Importar público > Baixar modelo**.
+
+## Colunas do arquivo de importação
+
+O layout padrão do arquivo de importação possui as seguintes colunas:
+
+```
+TIPO_DE_REGISTRO, VALOR_DO_REGISTRO, CANAL, CODIGO_TEMPLATE, CODIGO_TEMPLATE_EXTERNO, SEGMENTO,
+CPF_CNPJ, COD_CONTRATO, REMETENTE, DATA_HORA_DISPARO, NOME_CLIENTE, NOME_ARQUIVO_ANEXO,
+OBS1, OBS2, OBS3, OBS4, BROKER_REFERENCE, BROKER, Var1, Var2, Var3, SMS_FLASH
+```
+
+| Coluna | Obrigatório | Descrição |
+|---|---|---|
+| `TIPO_DE_REGISTRO` | ✅ | `TELEFONE` ou `EMAIL`. Um contato pode ter múltiplas linhas (um canal por linha). |
+| `VALOR_DO_REGISTRO` | ✅ | Registro do destinatário: número de telefone com DDD ou e-mail. |
+| `CANAL` | ✅ | Canal de envio: `whatsapp`, `sms`, `email` ou `rcs`. |
+| `CODIGO_TEMPLATE` | ✅* | Código do template a ser usado. |
+| `CODIGO_TEMPLATE_EXTERNO` | ✅* | Código externo do template (ver seção "Código do Template Externo" abaixo). |
+| `SEGMENTO` | ✅ | Segmento associado à campanha. |
+| `CPF_CNPJ` | ✅ | Importante para evitar homônimos e permitir integrações externas. |
+| `COD_CONTRATO` | ✅ | Identificador interno da empresa (ex.: número de contrato). |
+| `REMETENTE` | Opcional | Número ou identificador do remetente. |
+| `DATA_HORA_DISPARO` | Opcional | Data e hora para envio da mensagem. |
+| `NOME_CLIENTE` | Opcional | Recomendado para facilitar localização e interação. |
+| `NOME_ARQUIVO_ANEXO` | Opcional | Nome do arquivo de anexo. |
+
+\* Pelo menos um dos dois (`CODIGO_TEMPLATE` ou `CODIGO_TEMPLATE_EXTERNO`) deve ser informado — veja as regras abaixo.
+
+## Campos de Observação
+
+`OBS1`, `OBS2`, `OBS3`, `OBS4` (opcionais) são campos livres para informações adicionais. Esses dados:
+
+- são armazenados no Maestro;
+- podem ser utilizados em relatórios;
+- não interferem na validação ou envio das campanhas.
+
+## Campo de Referência para o Provedor
+
+`BROKER_REFERENCE` (opcional) é um campo livre para uma referência externa. Quando informado, é armazenado no Maestro e pode ser enviado ao provedor no momento do disparo (quando suportado).
+
+<Warning>
+Não confunda `BROKER_REFERENCE` com a coluna `BROKER`. `BROKER_REFERENCE` é uma referência externa livre, repassada ao provedor; `BROKER` define qual provedor fará o disparo.
+</Warning>
+
+## Definir o Provedor no Disparo (BROKER)
+
+`BROKER` (opcional — apenas SMS e RCS) define o provedor de saída para o registro, informando o nome do provedor exatamente como cadastrado em **Configurações > Integração com provedores** (ex.: `Pontal`, `Classe A`). O valor é sensível a maiúsculas/minúsculas e a espaços.
+
+- Vazio → mantém o roteamento por segmento atual, conforme configurado na [Integração com Provedores](/integracoes/integracao-com-provedores).
+- Preenchido e válido → força a utilização do provedor indicado.
+- Nome inválido → o arquivo é rejeitado.
+- Canais diferentes de SMS e RCS ignoram a coluna.
+
+## Variáveis do Template
+
+As variáveis do template devem ser adicionadas após a última coluna do arquivo — atualmente a coluna `BROKER`. Tudo que estiver após a última coluna do modelo é tratado como campo adicionado manualmente pelo usuário:
+
+```
+...;OBS1;OBS2;OBS3;OBS4;BROKER_REFERENCE;BROKER;Var1;Var2;Var3;Var4
+```
+
+Essas variáveis podem ser utilizadas no template como `{{Var1}}`, `{{Var2}}`, `{{Var3}}` etc.
+
+## Coluna SMS_FLASH
+
+`SMS_FLASH` (opcional): valores possíveis `SIM` ou `NÃO`. Indica que o contato deve receber um SMS do tipo flash (mensagem em formato de pop-up).
+
+<Warning>
+O recurso de SMS Flash também precisa estar contratado/habilitado no provedor Pontal — não basta habilitar apenas no Maestro.
+</Warning>
+
+## Código do Template Externo (CODIGO_TEMPLATE_EXTERNO)
+
+A coluna `CODIGO_TEMPLATE_EXTERNO` permite a integração com sistemas externos de validação de templates.
+
+**Como funciona:**
+- Representa um identificador externo do template.
+- Pode ser usado como alternativa ao `CODIGO_TEMPLATE`.
+- O sistema prioriza o código externo quando informado.
+
+**Regras:**
+- Pelo menos um dos campos (`CODIGO_TEMPLATE` ou `CODIGO_TEMPLATE_EXTERNO`) deve ser informado — se ambos estiverem vazios, ocorre erro.
+- Se o código externo não for encontrado, o sistema procura pelo código de template do Maestro.
+- Se nenhum dos dois for encontrado, ocorre erro.
+
+## Observações importantes
+
+- As colunas `OBS1` a `OBS4` são apenas informativas.
+- O campo `BROKER_REFERENCE` é opcional.
+- A coluna `BROKER` é opcional e vale apenas para SMS e RCS.
+- Todas as colunas após `BROKER` são tratadas como variáveis dinâmicas.
+
+Teve o arquivo rejeitado na importação? Veja [Troubleshooting](/central-de-suporte/troubleshooting).

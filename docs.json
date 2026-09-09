@@ -1,0 +1,67 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Maestro Docs",
+  "description": "Documentação oficial do Maestro — orquestrador de campanhas multicanal da Robbu.",
+  "colors": {
+    "primary": "#0F9D8B",
+    "light": "#4DD9BE",
+    "dark": "#0B7A6C"
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Introdução",
+        "pages": [
+          "introducao/visao-geral",
+          "introducao/perfis-de-uso",
+          "introducao/primeiros-passos",
+          "introducao/glossario"
+        ]
+      },
+      {
+        "group": "Guia do Usuário",
+        "pages": [
+          "guia-do-usuario/publico",
+          "guia-do-usuario/campanhas",
+          "guia-do-usuario/templates",
+          "guia-do-usuario/segmentos",
+          "guia-do-usuario/relatorios-e-dashboards",
+          "guia-do-usuario/empresas-e-usuarios",
+          "guia-do-usuario/configuracoes"
+        ]
+      },
+      {
+        "group": "Motor de Regras",
+        "pages": [
+          "motor-de-regras/visao-geral"
+        ]
+      },
+      {
+        "group": "Integrações",
+        "pages": [
+          "integracoes/direct-message-api",
+          "integracoes/webhook-de-eventos",
+          "integracoes/integracao-com-provedores",
+          "integracoes/uso-de-sftp"
+        ]
+      },
+      {
+        "group": "Central de Suporte",
+        "pages": [
+          "central-de-suporte/faq",
+          "central-de-suporte/troubleshooting",
+          "central-de-suporte/codigos-de-erro-e-status"
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Suporte",
+        "href": "mailto:help@robbu.global"
+      }
+    ]
+  }
+}

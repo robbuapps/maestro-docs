@@ -1,0 +1,42 @@
+---
+title: "Configurações"
+description: "Configurações de Ambiente, Empresa, Regras, Provedores, SFTP, Webhook e Token de Integração."
+---
+
+A seção de Configurações permite gerenciar preferências relacionadas ao ambiente, à empresa e aos templates.
+
+## Ambiente
+
+### Configurações de Templates
+
+Define regras relacionadas ao uso e validade dos templates disponíveis no sistema: período de validade (em dias), após o qual o template é considerado expirado. Templates expirados ainda podem ser visualizados, mas não ficam disponíveis para novas utilizações até serem atualizados ou revalidados. Veja o detalhamento completo em [Templates](/guia-do-usuario/templates).
+
+<Note>
+O sincronismo de expiração de todos os templates ocorre uma vez ao dia, durante o período noturno.
+</Note>
+
+## Empresa
+
+### Autenticação
+
+Permite definir como os usuários acessam o sistema, com suporte a Single Sign-On (SSO) via Azure AD — é necessário informar o ID da aplicação no Azure Active Directory. Veja o passo a passo em [Primeiros Passos](/introducao/primeiros-passos).
+
+### SFTP
+
+Configuração de conexão SFTP própria ou gerenciada pela Robbu, usada para importação automática de templates e campanhas. Veja [Uso de SFTP](/integracoes/uso-de-sftp).
+
+### Token de Integração
+
+Credencial única e confidencial que permite a comunicação segura entre sistemas — funciona como chave de autenticação para autorizar e validar requisições feitas via API (ex.: [Direct Message API](/integracoes/direct-message-api)).
+
+<Warning>
+Ao clicar em "Renovar token", o token anterior é invalidado imediatamente.
+</Warning>
+
+### Regras
+
+Configuração do motor de regras que valida e pode bloquear campanhas e disparos. Veja [Motor de Regras](/motor-de-regras/visao-geral).
+
+### Integração com provedores
+
+Cada assessoria integra seus próprios provedores (brokers) de envio nesta seção. A Gerente do Ambiente pode visualizar quais provedores cada assessoria usa, sem acesso às credenciais. Veja [Integração com Provedores](/integracoes/integracao-com-provedores).

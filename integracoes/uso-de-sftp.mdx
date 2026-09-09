@@ -1,0 +1,254 @@
+---
+title: "Uso de SFTP"
+description: "Importação automática de templates e campanhas via SFTP no Maestro."
+---
+
+Esta página orienta como usar os serviços automáticos de importação via SFTP para Templates e Campanhas no Maestro.
+
+## Configuração
+
+A configuração de SFTP é feita em **Configurações > Empresa > Transferência de Arquivos**. A Gerente do Ambiente decide se as assessorias podem usar um SFTP próprio ou apenas o gerenciado pela Robbu.
+
+### SFTP Robbu
+
+A Robbu disponibiliza um servidor SFTP gerenciado, pronto para uso imediato. Ao habilitar, o sistema fornece servidor, porta, nome de usuário e senha.
+
+### SFTP Próprio
+
+A própria empresa gerencia seu SFTP.
+
+<Warning>
+Essa opção deve ser habilitada pela Gerente do Ambiente nas configurações de Ambiente. Se algum parâmetro estiver em branco ou inválido, a importação será ignorada.
+</Warning>
+
+### Segurança
+
+- Mantenha as credenciais em segurança.
+- Garanta o uso correto de porta e endereço do servidor.
+- A proteção desses dados garante a integridade dos arquivos durante as transferências.
+
+## Diretórios
+
+| Uso | Caminho SFTP |
+|---|---|
+| Templates a serem importados | `/maestro/templates` |
+| Campanhas a serem importadas | `/maestro/campaigns` |
+
+Dentro de cada diretório acima, duas pastas são criadas automaticamente:
+
+- `/processed` — arquivos importados com sucesso
+- `/error` — importações que falharam, com sinalização do erro encontrado
+
+<Note>
+Esses diretórios são criados automaticamente após a conexão do servidor SFTP na tela de configuração, mas pode levar até 10 minutos para aparecerem.
+</Note>
+
+## Importar campanhas
+
+### Nome do arquivo
+
+Não há nomenclatura obrigatória — o nome do arquivo será o nome do Público importado, então recomenda-se um nome descritivo.
+
+<Warning>
+Verifique se a extensão não está duplicada, como em `arquivo.csv.csv`.
+</Warning>
+
+### Colunas do arquivo
+
+```
+TIPO_DE_REGISTRO,VALOR_DO_REGISTRO,CANAL,CODIGO_TEMPLATE,CODIGO_TEMPLATE_EXTERNO,SEGMENTO,CPF_CNPJ,COD_CONTRATO,
+REMETENTE,DATA_HORA_DISPARO,NOME_CLIENTE,NOME_ARQUIVO_ANEXO,Var1,Var2,...,Var20,SMS_FLASH,BROKER
+```
+
+| Campo | Obrigatório | Descrição |
+|---|---|---|
+| `TIPO_DE_REGISTRO` | ✅ | Tipo de contato (`TELEFONE` ou `EMAIL`). |
+| `VALOR_DO_REGISTRO` | ✅ | Valor do contato (número com DDD ou e-mail). |
+| `CANAL` | ✅ | `whatsapp`, `email`, `sms` ou `rcs`. |
+| `CODIGO_TEMPLATE` | ✅ | Código do template aprovado no Maestro (ex.: `W0003`, `E0001`). |
+| `CODIGO_TEMPLATE_EXTERNO` | ✅ | Código externo do template (ex.: ID no sistema do cliente). |
+| `SEGMENTO` | ✅ | Nome do segmento cadastrado no Maestro. |
+| `CPF_CNPJ` | ✅ | Documento do cliente. |
+| `COD_CONTRATO` | ✅ | Código do contrato do cliente. |
+| `REMETENTE` | apenas WhatsApp | Número de envio no WhatsApp ou remetente configurado. |
+| `DATA_HORA_DISPARO` | ❌ | Formato `yyyy-MM-dd HH:mm:ss`. |
+| `NOME_CLIENTE` | ❌ | Nome do cliente, para referência. |
+| `NOME_ARQUIVO_ANEXO` | apenas E-mail | Arquivo inserido na mesma pasta do CSV no SFTP, adicionado como anexo. |
+| `SMS_FLASH` | apenas SMS | Ativa SMS Flash, se a conta tiver a opção disponível. |
+| `BROKER` | apenas SMS/RCS | Nome do provedor cadastrado, exatamente como em Configurações > Integração com provedores (ex.: `Pontal`, `Classe A`). Vazio → roteamento por segmento. Demais canais ignoram o campo. |
+| `Var1`…`Var20` | ❌ | Variáveis dinâmicas que alimentam os placeholders do template. |
+
+<Note>
+Não é necessário manter a ordem sugerida das colunas, mas os nomes devem ser exatamente como documentado.
+</Note>
+
+Exemplo:
+
+```csv
+TIPO_DE_REGISTRO,VALOR_DO_REGISTRO,CANAL,CODIGO_TEMPLATE,CODIGO_TEMPLATE_EXTERNO,SEGMENTO,CPF_CNPJ,COD_CONTRATO,REMETENTE,DATA_HORA_DISPARO,NOME_CLIENTE,NOME_ARQUIVO_ANEXO,Var1,Var2,...,SMS_FLASH,BROKER
+TELEFONE,+5511988887777,whatsapp,W0003,,Varejo,12345678900,CT-98765,+5511999998888,2025-09-01 14:56:00,João Silva,,Promoção de Inverno,10%,...,NÃO,
+EMAIL,cliente@dominio.com,email,E0001,BR001,Financeiro,98765432100,CT-12345,,2025-09-01 15:10:00,Maria Souza,Fatura_Maria_Souza_07_2025.pdf,Fatura 07/2025,R$350,...,NÃO,
+TELEFONE,+5511977776666,sms,S0002,BR002,Atacado,11223344556,CT-45678,,2025-09-01 15:30:00,Carlos Lima,BoletoCarlosLima.pdf,Código 123456,Validade 5min,...,SIM,Pontal
+```
+
+### Fluxo de processamento
+
+1. Faça upload do arquivo `.csv` em `/maestro/campaigns`.
+2. Um serviço rotineiro roda a cada 10 minutos: cria `/processed` e `/error` se não existirem, e busca arquivos `.csv` ainda não importados.
+3. Durante a importação, são validados: o nome do arquivo, se cada linha cumpre as regras do ambiente (segmento existe e assessoria tem acesso; templates aprovados; horários de saída válidos; se a coluna `BROKER` for informada, se o provedor existe e é compatível com o segmento — nome inválido ou provedor sem perfil rejeita **o arquivo inteiro**).
+4. Na importação: linhas que quebram regras geram `{nome original}_EXCEPTIONS.csv` em `/processed`, com a coluna adicional `Motivo Falha`.
+5. Se não houver provedor para o canal configurado, é criado `{nome original}_created.csv` em `/processed` com os contatos processados (sem disparo). Se houver provedor, os disparos são criados e o arquivo gerado é `{nome original}_VALIDATED.csv`.
+6. Arquivos de anexo (se houver) são destruídos após o envio.
+7. Se houver falha no arquivo inteiro, é gerado `{nome do arquivo original}_errorDetail.txt` em `/error`.
+
+## Importar templates
+
+### Nome do arquivo
+
+```
+{nome do segmento}_{canal}_[{nome da WABA}]_{data}.csv
+```
+
+- **nome do segmento**: nome exato do segmento configurado (Segmentos).
+- **canal**: `email` | `sms` | `whatsapp` | `rcs` (case-insensitive).
+- **nome da WABA** (opcional, apenas WhatsApp): descrição da WABA.
+- **data**: formato `yyyyMMdd` (ex.: `20250531`).
+
+Exemplos: `retail_email_20250510.csv`, `finance_sms_20250101.csv`, `store_whatsapp_MinhaWaba_20250320.csv`
+
+### Colunas do arquivo, por canal
+
+<Note>
+Não é necessário manter a ordem sugerida das colunas, mas os nomes devem ser exatamente como documentado.
+</Note>
+
+**Templates WhatsApp:**
+
+```
+TEMPLATE_NAME,LANGUAGE,CATEGORY,HEADER_TEXT,BODY_TEXT,FOOTER_TEXT,REPLYBUTTON_1,REPLYBUTTON_2,REPLYBUTTON_3,
+URL_BUTTON,URL_BUTTON_TEXT,TEMPLATE_STATUS,REASONS,TEMPLATE_CODE,EXTERNAL_CODE
+```
+
+| Campo | Obrigatório | Descrição |
+|---|---|---|
+| `TEMPLATE_NAME` | ✅ (criação) | Nome único do template (sem espaços; usar `_` se necessário). |
+| `LANGUAGE` | ✅ (criação) | Idioma, formato `pt_BR`, `en_US` etc. |
+| `CATEGORY` | ✅ (criação) | `MARKETING`, `UTILITY` ou `AUTHENTICATION`. |
+| `HEADER_TEXT` | ❌ | Texto do cabeçalho. |
+| `BODY_TEXT` | ✅ (criação) | Texto do corpo da mensagem. |
+| `FOOTER_TEXT` | ❌ | Texto do rodapé. |
+| `REPLYBUTTON_1`/`_2`/`_3` | ❌ | Texto dos botões de resposta rápida. |
+| `URL_BUTTON` | ❌ | URL do botão de ação (se existir). |
+| `URL_BUTTON_TEXT` | ❌ | Texto do botão de URL. |
+| `TEMPLATE_STATUS` | ❌ | `APROVADO` ou `REJEITADO` (status da revisão). |
+| `REASONS` | ❌ | Motivos de reprovação, separados por `\|`. Cada motivo deve estar cadastrado no Maestro. |
+| `TEMPLATE_CODE` | ❌ | Código do template no Maestro (identifica o template na revisão). |
+| `EXTERNAL_CODE` | ❌ | Identificador externo do template. Deve ser único. |
+
+**Templates de E-mail:**
+
+```
+TEMPLATE_NAME,SUBJECT,BODY_HTML,TEMPLATE_STATUS,REASONS,TEMPLATE_CODE,EXTERNAL_CODE
+```
+
+| Campo | Obrigatório | Descrição |
+|---|---|---|
+| `TEMPLATE_NAME` | ✅ (criação) | Nome único do template. |
+| `SUBJECT` | ✅ (criação) | Assunto do e-mail. |
+| `BODY_HTML` | ✅ (criação) | Corpo em HTML (inline). |
+| `TEMPLATE_STATUS` | ❌ | `APROVADO` ou `REJEITADO`. |
+| `REASONS` | ❌ | Motivos de reprovação, separados por `\|`. |
+| `TEMPLATE_CODE` | ❌ | Código do template no Maestro. |
+| `EXTERNAL_CODE` | ❌ | Identificador externo, único. |
+
+**Templates de SMS:**
+
+```
+TEMPLATE_NAME,TEXT_BODY,TEMPLATE_STATUS,REASONS,TEMPLATE_CODE,EXTERNAL_CODE
+```
+
+| Campo | Obrigatório | Descrição |
+|---|---|---|
+| `TEMPLATE_NAME` | ✅ (criação) | Nome único do template. |
+| `TEXT_BODY` | ✅ (criação) | Texto do corpo, pode conter variáveis (ex.: `{{1}}`). |
+| `TEMPLATE_STATUS` | ❌ | `APROVADO` ou `REJEITADO`. |
+| `REASONS` | ❌ | Motivos de reprovação, separados por `\|`. |
+| `TEMPLATE_CODE` | ❌ | Código do template no Maestro. |
+| `EXTERNAL_CODE` | ❌ | Identificador externo, único. |
+
+**Templates de RCS:**
+
+```
+TEMPLATE_NAME;MESSAGE_TYPE;MESSAGE;TITLE;FALLBACK;SUGGESTION_1_TITLE;SUGGESTION_1_TYPE;SUGGESTION_1_VALUE;
+SUGGESTION_2_TITLE;SUGGESTION_2_TYPE;SUGGESTION_2_VALUE;SUGGESTION_3_TITLE;SUGGESTION_3_TYPE;SUGGESTION_3_VALUE;
+SUGGESTION_4_TITLE;SUGGESTION_4_TYPE;SUGGESTION_4_VALUE;TEMPLATE_STATUS;REASONS;TEMPLATE_CODE;EXTERNAL_CODE
+```
+
+| Campo | Obrigatório | Descrição |
+|---|---|---|
+| `TEMPLATE_NAME` | ✅ (criação) | Nome único do template. |
+| `MESSAGE_TYPE` | ✅ | `Texto simples`, `Sugestão` ou `RichCard`. |
+| `MESSAGE` | ✅ | Texto do corpo, pode conter variáveis (ex.: `{{1}}`). |
+| `TITLE` | ❌ | Título do cartão (usado em `RichCard`). |
+| `FALLBACK` | ❌ | Texto alternativo quando o dispositivo/operadora não suporta RCS. |
+| `SUGGESTION_x_TITLE` | ❌ | Texto do botão de sugestão x (1 a 4). |
+| `SUGGESTION_x_TYPE` | ❌ | `Resposta rápida`, `Abrir URL`, `Ligar`, `Criar evento`, `Compartilhar localização` ou `Ver localização`. |
+| `SUGGESTION_x_VALUE` | ❌ | Valor correspondente ao tipo (URL, telefone etc.). Vazio quando o tipo for `Resposta rápida`. |
+| `TEMPLATE_STATUS` | ❌ | `APROVADO` ou `REJEITADO`. |
+| `REASONS` | ❌ | Motivos de reprovação, separados por `\|`. |
+| `TEMPLATE_CODE` | ❌ | Código do template no Maestro. |
+| `EXTERNAL_CODE` | ❌ | Identificador externo, único. |
+
+<Warning>
+Regra específica do RCS: templates dos tipos `Texto simples` e `Sugestão` podem ser criados e revisados via importação. O tipo `RichCard` é **apenas revisado** — o template já deve existir no Maestro.
+</Warning>
+
+### Fluxo de processamento
+
+1. Faça upload do `.csv` em `/maestro/templates`.
+2. Um serviço rotineiro roda a cada 10 minutos: cria `/processed` e `/error` se não existirem, e busca arquivos ainda não importados.
+3. Validações: nome do arquivo segue o padrão, segmento existe e assessoria tem acesso, campos obrigatórios do cenário estão presentes.
+4. O comportamento da importação varia conforme os campos informados — veja [Fluxos](#fluxos).
+5. O arquivo é movido para `/processed` (sucesso) ou `/error` (falha), gerando `{nome do arquivo original}_errorDetail.txt` em caso de erro.
+
+### Fluxos
+
+| Situação | Ação do Maestro |
+|---|---|
+| Template não existe + `TEMPLATE_STATUS` ausente | Cria o template |
+| Template não existe + `TEMPLATE_STATUS` informado | Cria e revisa |
+| Template existe + `TEMPLATE_STATUS` informado | Apenas revisa |
+| Template existe + `TEMPLATE_STATUS` ausente | Erro |
+
+<Warning>
+RCS: templates com `MESSAGE_TYPE` igual a `Texto simples` ou `Sugestão` seguem a tabela acima. O tipo `RichCard` é apenas revisado — não é criado pela importação.
+</Warning>
+
+**Identificação do template existente** — o Maestro busca nesta ordem: `TEMPLATE_CODE` (código interno) → `EXTERNAL_CODE` (identificador externo) → se nenhum for informado, um novo template é criado.
+
+### Regras
+
+- `TEMPLATE_STATUS` aceita apenas `APROVADO` ou `REJEITADO`.
+- `REASONS` é obrigatório quando `TEMPLATE_STATUS=REJEITADO`; motivos múltiplos separados por `|`, cada um previamente cadastrado no Maestro.
+- O template existente deve estar com status **Em Revisão** para ser revisado.
+- `EXTERNAL_CODE` deve ser único por empresa.
+- Se qualquer linha do arquivo contiver erro, **nenhuma linha é processada**.
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Posso enviar arquivos sem seguir o padrão de nomenclatura?">
+    Não. O arquivo será rejeitado e movido para a pasta `error`, com um `_errorDetail.txt`.
+  </Accordion>
+  <Accordion title="Preciso recriar os diretórios processed e error manualmente?">
+    Não. O sistema os cria automaticamente quando não existirem.
+  </Accordion>
+  <Accordion title="Posso reaproveitar um arquivo já processado?">
+    Não. Arquivos em `processed` não são reprocessados. Para enviar novamente, gere um novo `.csv`.
+  </Accordion>
+  <Accordion title="Com que frequência os arquivos são processados?">
+    A cada 10 minutos, via rotina automática.
+  </Accordion>
+</AccordionGroup>
+
+SFTP não conecta ou arquivo não sai da pasta de origem? Veja [Troubleshooting](/central-de-suporte/troubleshooting).

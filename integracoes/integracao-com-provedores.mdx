@@ -1,0 +1,77 @@
+---
+title: "Integração com Provedores (Brokers)"
+description: "Configuração dos brokers de envio de E-mail, SMS, WhatsApp e RCS."
+---
+
+Esta seção permite que cada assessoria integre os seus provedores. A Gerente do Ambiente também pode visualizar quais provedores cada assessoria usa, sem a possibilidade de ver as credenciais.
+
+## Provedores (brokers) suportados
+
+O Maestro suporta vários brokers de terceiros para realizar o envio das mensagens:
+
+- **E-mail**: RobbuMail, SendGrid
+- **SMS**: Classe A, Pontal
+- **WhatsApp**: Positus
+- **RCS**: Pontal, Classe A
+
+## Como configurar
+
+1. Acesse **Configurações > Integração com provedores**.
+2. Informe as credenciais fornecidas pelo provedor (token de autenticação — JWT, Bearer Token ou chave fixa — ou usuário e senha).
+3. Se o provedor oferecer alguma configuração personalizada, defina a opção desejada.
+
+O sistema envia a mensagem para o endpoint do provedor, que processa e entrega ao destinatário, retornando uma resposta com o status do envio (sucesso, falha, pendente etc.).
+
+<Warning>
+Se o seu broker exigir uma URL de webhook para que o Maestro receba atualizações de status das mensagens, use:
+`https://api.common.maestro.robbu.global/v1/messages/events`
+</Warning>
+
+**Configurações personalizadas**: Pontal permite concatenar mensagens com mais de 160 caracteres — se esta opção estiver marcada e a conta Pontal não tiver o serviço habilitado, a Pontal rejeitará todos os envios de SMS.
+
+## Direcionamento por Segmento
+
+Um provedor de E-mail ou SMS pode ser configurado para enviar mensagens para todos os segmentos, ou para segmentos específicos:
+
+- **Provedor sem segmento** → usado para qualquer segmento que não tenha um provedor dedicado.
+- **Provedor com segmento** → usado exclusivamente para os segmentos vinculados; tem prioridade sobre o provedor sem segmento.
+- **Exclusividade** → um segmento só pode ser vinculado a um único provedor.
+
+## Definir o provedor no momento do disparo (SMS e RCS)
+
+Para os canais SMS e RCS (que podem ter mais de um provedor cadastrado), é possível indicar o provedor de saída por registro, sem alterar o cadastro de provedores — útil para teste A/B, contorno de instabilidade ou equilíbrio de custo.
+
+- No arquivo da campanha (Público ou SFTP), use a coluna opcional `BROKER`.
+- Na [Direct Message API](/integracoes/direct-message-api), use o campo opcional `broker`.
+
+O valor é o nome do provedor exatamente como cadastrado (ex.: `Pontal`, `Classe A`), sensível a maiúsculas/minúsculas e a espaços.
+
+- Vazio → mantém o roteamento por segmento atual.
+- Preenchido e válido → força a utilização do provedor indicado.
+- Nome inválido, ou provedor sem perfil para o segmento → o disparo é rejeitado (na campanha, o arquivo inteiro; na Direct Message, erro `400` para nome inválido e rejeição no disparo).
+
+## Envio de SMS Concatenado
+
+O Maestro permite o envio automático de SMS concatenados quando o conteúdo da mensagem ultrapassa 160 caracteres — mensagens mais longas são enviadas em múltiplas partes, de forma transparente para a operação. A cobrança segue proporcional ao número de segmentos enviados (prática já adotada pela Pontal).
+
+## Envio de SMS Flash
+
+O Maestro pode enviar SMS no formato flash (mensagem em pop-up) se isso estiver indicado no contato do destinatário e devidamente configurado.
+
+<Warning>
+O recurso de SMS Flash também deve ser contratado/habilitado no provedor Pontal, não apenas habilitado no Maestro.
+</Warning>
+
+**Como configurar**: acesse **Configurações > Integração com provedores > Adicionar provedor > Canal: Sms** — para o provedor Pontal é possível habilitar/desabilitar o recurso.
+
+## Envio de RCS
+
+O Maestro pode enviar RCS (Rich Communication Services) se isso estiver indicado no contato do destinatário e devidamente configurado. O RCS permite mensagens mais ricas que o SMS tradicional, com título, mídia (imagem/vídeo) e botões de sugestão.
+
+Quando o dispositivo ou a operadora do destinatário não suportam RCS, o conteúdo da mensagem SMS de contingência definido no template é usado, garantindo a entrega como SMS tradicional.
+
+<Warning>
+O recurso de RCS também deve ser contratado/habilitado no provedor, não apenas configurado no Maestro.
+</Warning>
+
+**Como configurar**: acesse **Configurações > Integração com provedores > Adicionar provedor > Canal: RCS** e informe as credenciais do provedor.
