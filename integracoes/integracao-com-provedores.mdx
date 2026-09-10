@@ -1,13 +1,13 @@
 ---
-title: "Integração com Provedores (Brokers)"
-description: "Configuração dos brokers de envio de E-mail, SMS, WhatsApp e RCS."
+title: "Integração com Provedores"
+description: "Configuração dos provedores de envio de E-mail, SMS, WhatsApp e RCS."
 ---
 
 Esta seção permite que cada assessoria integre os seus provedores. A Gerente do Ambiente também pode visualizar quais provedores cada assessoria usa, sem a possibilidade de ver as credenciais.
 
-## Provedores (brokers) suportados
+## Provedores suportados
 
-O Maestro suporta vários brokers de terceiros para realizar o envio das mensagens:
+O Maestro suporta vários provedores de terceiros para realizar o envio das mensagens:
 
 - **E-mail**: RobbuMail, SendGrid
 - **SMS**: Classe A, Pontal
@@ -23,7 +23,7 @@ O Maestro suporta vários brokers de terceiros para realizar o envio das mensage
 O sistema envia a mensagem para o endpoint do provedor, que processa e entrega ao destinatário, retornando uma resposta com o status do envio (sucesso, falha, pendente etc.).
 
 <Warning>
-Se o seu broker exigir uma URL de webhook para que o Maestro receba atualizações de status das mensagens, use:
+Se o seu provedor exigir uma URL de webhook para que o Maestro receba atualizações de status das mensagens, use:
 `https://api.common.maestro.robbu.global/v1/messages/events`
 </Warning>
 
@@ -31,13 +31,13 @@ Se o seu broker exigir uma URL de webhook para que o Maestro receba atualizaçõ
 
 ## Direcionamento por Segmento
 
-Um provedor de E-mail ou SMS pode ser configurado para enviar mensagens para todos os segmentos, ou para segmentos específicos:
+Um provedor de E-mail, SMS ou RCS — ou um número de WhatsApp — pode ser vinculado a um segmento específico, para que seja usado no envio de mensagens desse segmento:
 
 - **Provedor sem segmento** → usado para qualquer segmento que não tenha um provedor dedicado.
 - **Provedor com segmento** → usado exclusivamente para os segmentos vinculados; tem prioridade sobre o provedor sem segmento.
-- **Exclusividade** → um segmento só pode ser vinculado a um único provedor.
+- **Exclusividade** → um segmento só pode estar vinculado a um único provedor (ou número de WhatsApp) por canal.
 
-## Definir o provedor no momento do disparo (SMS e RCS)
+## Definir o provedor no momento do envio (SMS e RCS)
 
 Para os canais SMS e RCS (que podem ter mais de um provedor cadastrado), é possível indicar o provedor de saída por registro, sem alterar o cadastro de provedores — útil para teste A/B, contorno de instabilidade ou equilíbrio de custo.
 
@@ -48,7 +48,7 @@ O valor é o nome do provedor exatamente como cadastrado (ex.: `Pontal`, `Classe
 
 - Vazio → mantém o roteamento por segmento atual.
 - Preenchido e válido → força a utilização do provedor indicado.
-- Nome inválido, ou provedor sem perfil para o segmento → o disparo é rejeitado (na campanha, o arquivo inteiro; na Direct Message, erro `400` para nome inválido e rejeição no disparo).
+- Nome inválido, ou provedor sem perfil para o segmento → o envio é rejeitado (na campanha, o arquivo inteiro; na Direct Message, erro `400` para nome inválido e rejeição no envio).
 
 ## Envio de SMS Concatenado
 

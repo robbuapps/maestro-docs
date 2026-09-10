@@ -31,7 +31,7 @@ OBS1, OBS2, OBS3, OBS4, BROKER_REFERENCE, BROKER, Var1, Var2, Var3, SMS_FLASH
 | `SEGMENTO` | ✅ | Segmento associado à campanha. |
 | `CPF_CNPJ` | ✅ | Importante para evitar homônimos e permitir integrações externas. |
 | `COD_CONTRATO` | ✅ | Identificador interno da empresa (ex.: número de contrato). |
-| `REMETENTE` | Opcional | Número ou identificador do remetente. |
+| `REMETENTE` | apenas WhatsApp | Número de envio no WhatsApp. |
 | `DATA_HORA_DISPARO` | Opcional | Data e hora para envio da mensagem. |
 | `NOME_CLIENTE` | Opcional | Recomendado para facilitar localização e interação. |
 | `NOME_ARQUIVO_ANEXO` | Opcional | Nome do arquivo de anexo. |
@@ -48,13 +48,13 @@ OBS1, OBS2, OBS3, OBS4, BROKER_REFERENCE, BROKER, Var1, Var2, Var3, SMS_FLASH
 
 ## Campo de Referência para o Provedor
 
-`BROKER_REFERENCE` (opcional) é um campo livre para uma referência externa. Quando informado, é armazenado no Maestro e pode ser enviado ao provedor no momento do disparo (quando suportado).
+`BROKER_REFERENCE` (opcional) é um campo livre para uma referência externa. Quando informado, é armazenado no Maestro e pode ser enviado ao provedor no momento do envio (quando suportado).
 
 <Warning>
-Não confunda `BROKER_REFERENCE` com a coluna `BROKER`. `BROKER_REFERENCE` é uma referência externa livre, repassada ao provedor; `BROKER` define qual provedor fará o disparo.
+Não confunda `BROKER_REFERENCE` com a coluna `BROKER`. `BROKER_REFERENCE` é uma referência externa livre, repassada ao provedor; `BROKER` define qual provedor fará o envio.
 </Warning>
 
-## Definir o Provedor no Disparo (BROKER)
+## Definir o Provedor no Envio (BROKER)
 
 `BROKER` (opcional — apenas SMS e RCS) define o provedor de saída para o registro, informando o nome do provedor exatamente como cadastrado em **Configurações > Integração com provedores** (ex.: `Pontal`, `Classe A`). O valor é sensível a maiúsculas/minúsculas e a espaços.
 

@@ -97,7 +97,7 @@ TELEFONE,+5511977776666,sms,S0002,BR002,Atacado,11223344556,CT-45678,,2025-09-01
 2. Um serviço rotineiro roda a cada 10 minutos: cria `/processed` e `/error` se não existirem, e busca arquivos `.csv` ainda não importados.
 3. Durante a importação, são validados: o nome do arquivo, se cada linha cumpre as regras do ambiente (segmento existe e assessoria tem acesso; templates aprovados; horários de saída válidos; se a coluna `BROKER` for informada, se o provedor existe e é compatível com o segmento — nome inválido ou provedor sem perfil rejeita **o arquivo inteiro**).
 4. Na importação: linhas que quebram regras geram `{nome original}_EXCEPTIONS.csv` em `/processed`, com a coluna adicional `Motivo Falha`.
-5. Se não houver provedor para o canal configurado, é criado `{nome original}_created.csv` em `/processed` com os contatos processados (sem disparo). Se houver provedor, os disparos são criados e o arquivo gerado é `{nome original}_VALIDATED.csv`.
+5. Se não houver provedor para o canal configurado, é criado `{nome original}_created.csv` em `/processed` com os contatos processados (sem envio). Se houver provedor, os envios são criados e o arquivo gerado é `{nome original}_VALIDATED.csv`.
 6. Arquivos de anexo (se houver) são destruídos após o envio.
 7. Se houver falha no arquivo inteiro, é gerado `{nome do arquivo original}_errorDetail.txt` em `/error`.
 
@@ -238,7 +238,7 @@ RCS: templates com `MESSAGE_TYPE` igual a `Texto simples` ou `Sugestão` seguem 
 
 <AccordionGroup>
   <Accordion title="Posso enviar arquivos sem seguir o padrão de nomenclatura?">
-    Não. O arquivo será rejeitado e movido para a pasta `error`, com um `_errorDetail.txt`.
+    Depende do tipo de importação. Na importação de **templates**, não — o arquivo será rejeitado e movido para a pasta `error`, com um `_errorDetail.txt`. Na importação de **campanhas**, não há validação de nome de arquivo.
   </Accordion>
   <Accordion title="Preciso recriar os diretórios processed e error manualmente?">
     Não. O sistema os cria automaticamente quando não existirem.

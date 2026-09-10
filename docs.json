@@ -15,7 +15,6 @@
         "pages": [
           "introducao/visao-geral",
           "introducao/perfis-de-uso",
-          "introducao/primeiros-passos",
           "introducao/glossario"
         ]
       },
@@ -26,7 +25,7 @@
           "guia-do-usuario/campanhas",
           "guia-do-usuario/templates",
           "guia-do-usuario/segmentos",
-          "guia-do-usuario/relatorios-e-dashboards",
+          "guia-do-usuario/relatorios",
           "guia-do-usuario/empresas-e-usuarios",
           "guia-do-usuario/configuracoes"
         ]

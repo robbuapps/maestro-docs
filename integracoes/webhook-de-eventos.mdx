@@ -14,7 +14,7 @@ Os webhooks permitem que o Maestro envie notificações em tempo real para uma U
 
 ## Estrutura de Requisição
 
-Quando um evento é disparado, o Maestro envia uma requisição HTTP `POST` para a URL configurada. Atualmente, o único evento enviado é:
+Quando um evento ocorre, o Maestro envia uma requisição HTTP `POST` para a URL configurada. Atualmente, o único evento enviado é:
 
 - Atualização do status de mensagens
 
@@ -89,7 +89,7 @@ Quando um evento é disparado, o Maestro envia uma requisição HTTP `POST` para
 | `details.status.id` | `1` - Queued · `2` - Sent · `3` - Delivered · `4` - Failed · `5` - Read |
 
 <Note>
-O evento traz também `details.provider.details.status` — este é o status bruto retornado pelo provedor (broker), específico de cada integração, e não deve ser confundido com `details.status.id` (o status normalizado do Maestro).
+O evento traz também `details.provider.details.status` — este é o status bruto retornado pelo provedor, específico de cada integração, e não deve ser confundido com `details.status.id` (o status normalizado do Maestro).
 </Note>
 
 Não está recebendo eventos no seu endpoint? Veja [Troubleshooting](/central-de-suporte/troubleshooting).

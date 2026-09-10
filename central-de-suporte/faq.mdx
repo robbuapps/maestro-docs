@@ -11,10 +11,7 @@ Esta é uma primeira versão do FAQ geral, escrita a partir do conteúdo já doc
 
 <AccordionGroup>
   <Accordion title="Esqueci minha senha, como recupero o acesso?">
-    Utilize a opção de recuperação de senha na tela de login. Se sua empresa usa apenas SSO, não há senha própria do Maestro — o acesso é feito pelas credenciais corporativas.
-  </Accordion>
-  <Accordion title="O login por SSO não funciona, o que verificar?">
-    Confirme que: (1) o usuário já está previamente cadastrado na tela de Usuários do Maestro — o SSO não cria usuários novos; (2) o ID da aplicação do Microsoft Entra ID (Azure AD) está corretamente configurado em Configurações > Empresa; (3) a URL `https://api.maestro.robbu.global/v1/auth/login/sso/callback` está liberada no aplicativo de SSO. Veja [Primeiros Passos](/introducao/primeiros-passos).
+    Utilize a opção de recuperação de senha na tela de login.
   </Accordion>
   <Accordion title="Qual a diferença entre perfil de empresa e perfil de usuário?">
     Perfil de **empresa** (Gerente do Ambiente, Assessoria, Revisora) define o escopo de dados e telas visíveis. Perfil de **usuário** (Administrador, Colaborador, Visualizador) define o que aquele usuário específico pode fazer dentro da empresa. Veja [Perfis de Uso](/introducao/perfis-de-uso) e [Empresas e Usuários](/guia-do-usuario/empresas-e-usuarios).
@@ -25,7 +22,7 @@ Esta é uma primeira versão do FAQ geral, escrita a partir do conteúdo já doc
 
 <AccordionGroup>
   <Accordion title="Por que meu template não aparece na hora de criar uma campanha?">
-    Só templates com status **Publicado** (quando há broker configurado para o canal) ficam disponíveis para novas campanhas. Templates em criação, em revisão, rejeitados ou expirados não aparecem na lista. Veja [Templates](/guia-do-usuario/templates).
+    Só templates com status **Publicado** (quando há provedor configurado para o canal) ficam disponíveis para novas campanhas. Templates em criação, em revisão, rejeitados ou expirados não aparecem na lista. Veja [Templates](/guia-do-usuario/templates).
   </Accordion>
   <Accordion title="Quanto tempo demora a aprovação de um template?">
     Não há um SLA fixo documentado — a aprovação depende da revisão feita pela Gerente do Ambiente ou pela empresa Revisora. Para WhatsApp, após a aprovação interna ainda há o envio para análise da Meta, que pode rejeitar o template mesmo após aprovado internamente.
@@ -39,9 +36,9 @@ Esta é uma primeira versão do FAQ geral, escrita a partir do conteúdo já doc
 
 <AccordionGroup>
   <Accordion title="Qual a diferença entre uma Campanha e a Direct Message API?">
-    Campanha é um disparo em massa para um público importado. Direct Message é o envio de uma mensagem unitária, via API, fora do ciclo de campanhas — mas usando os mesmos templates, brokers e motor de regras. Veja [Campanhas](/guia-do-usuario/campanhas) e [Direct Message API](/integracoes/direct-message-api).
+    Campanha é um envio em massa de mensagens para um público importado. Direct Message é o envio de uma mensagem unitária, via API, fora do ciclo de campanhas — mas usando os mesmos templates, provedores e motor de regras. Veja [Campanhas](/guia-do-usuario/campanhas) e [Direct Message API](/integracoes/direct-message-api).
   </Accordion>
-  <Accordion title="Por que minha campanha não disparou?">
+  <Accordion title="Por que minha campanha não foi enviada?">
     Veja o passo a passo de diagnóstico em [Troubleshooting](/central-de-suporte/troubleshooting).
   </Accordion>
 </AccordionGroup>
@@ -53,17 +50,17 @@ Esta é uma primeira versão do FAQ geral, escrita a partir do conteúdo já doc
     As causas mais comuns são: nome de colunas diferente do esperado, `CODIGO_TEMPLATE` e `CODIGO_TEMPLATE_EXTERNO` ambos vazios, ou segmento inexistente/sem permissão. Veja [Público](/guia-do-usuario/publico) e [Troubleshooting](/central-de-suporte/troubleshooting).
   </Accordion>
   <Accordion title="Qual a diferença entre importar Público pela tela e importar Campanha por SFTP?">
-    São dois fluxos com layouts de arquivo diferentes. A importação em Público > Importar público cria uma base reutilizável em múltiplas campanhas. A importação de campanha via SFTP (`/maestro/campaigns`) já dispara a campanha diretamente. Veja [Público](/guia-do-usuario/publico) e [Uso de SFTP](/integracoes/uso-de-sftp).
+    São dois fluxos com layouts de arquivo diferentes. A importação em Público > Importar público cria uma base reutilizável em múltiplas campanhas. A importação de campanha via SFTP (`/maestro/campaigns`) já envia a campanha diretamente. Veja [Público](/guia-do-usuario/publico) e [Uso de SFTP](/integracoes/uso-de-sftp).
   </Accordion>
 </AccordionGroup>
 
-## Provedores (brokers)
+## Provedores
 
 <AccordionGroup>
-  <Accordion title="Como saber qual broker está sendo usado em um disparo?">
+  <Accordion title="Como saber qual provedor está sendo usado em um envio?">
     Por padrão, o roteamento segue a configuração de segmento em Configurações > Integração com provedores. Para SMS e RCS, é possível forçar um provedor específico por registro usando a coluna/campo `BROKER`. Veja [Integração com Provedores](/integracoes/integracao-com-provedores).
   </Accordion>
   <Accordion title="Um segmento pode usar mais de um provedor?">
-    Não. Um segmento só pode estar vinculado a um único provedor por vez (exclusividade). É possível, porém, indicar um provedor diferente pontualmente no momento do disparo (SMS/RCS), via coluna `BROKER`.
+    Não. Um segmento só pode estar vinculado a um único provedor por vez (exclusividade). É possível, porém, indicar um provedor diferente pontualmente no momento do envio (SMS/RCS), via coluna `BROKER`.
   </Accordion>
 </AccordionGroup>

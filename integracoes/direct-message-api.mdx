@@ -11,10 +11,10 @@ description: "Envio de mensagens transacionais via E-mail, SMS, WhatsApp e RCS, 
 
 ## Visão Geral
 
-A Direct Message API permite o disparo de mensagens unitárias (fora do ciclo de campanhas), utilizando os mesmos recursos do Maestro, incluindo:
+A Direct Message API permite o envio de mensagens unitárias (fora do ciclo de campanhas), utilizando os mesmos recursos do Maestro, incluindo:
 
 - Motor de regras de validação de mensagem
-- Serviços e brokers configurados no Maestro
+- Serviços e provedores configurados no Maestro
 
 Ideal para integrações automatizadas, como envio de confirmações, alertas, autenticações e notificações em tempo real.
 
@@ -128,16 +128,16 @@ POST /v1/directmessage/rcs
 
 ### Campo `broker` (opcional — apenas SMS e RCS)
 
-Define qual provedor fará o disparo, com o nome exatamente como cadastrado no Maestro (ex.: `Pontal`, `Classe A`). Sensível a maiúsculas/minúsculas e a espaços.
+Define qual provedor fará o envio, com o nome exatamente como cadastrado no Maestro (ex.: `Pontal`, `Classe A`). Sensível a maiúsculas/minúsculas e a espaços.
 
 - Omitido ou vazio → mantém o roteamento por segmento atual, conforme [Integração com Provedores](/integracoes/integracao-com-provedores).
-- Preenchido e válido → dispara pelo provedor indicado.
+- Preenchido e válido → envia pelo provedor indicado.
 - Nome inválido → `400 - Bad Request`.
 - E-mail e WhatsApp ignoram o campo.
 
 ### Variáveis de Template
 
-Para E-mail e SMS, use `variable_values` com as variáveis dinâmicas conforme o template configurado no Maestro:
+Para E-mail, SMS e RCS, use `variable_values` com as variáveis dinâmicas conforme o template configurado no Maestro:
 
 ```json
 "variable_values": {
@@ -146,13 +146,15 @@ Para E-mail e SMS, use `variable_values` com as variáveis dinâmicas conforme o
 }
 ```
 
+Para WhatsApp, a estrutura é um pouco diferente — o objeto `variables` (com `header_key`/`header_value` para o cabeçalho e `body` para as variáveis do corpo), como no exemplo em [Envio de WhatsApp](#envio-de-whatsapp) — mas cumpre o mesmo objetivo de preencher os placeholders do template.
+
 ### Respostas
 
 | Código | Descrição |
 |---|---|
-| `200 - OK` | Mensagem validada, mas não enviada — não há serviço/broker configurado para o canal. |
+| `200 - OK` | Mensagem validada, mas não enviada — não há serviço/provedor configurado para o canal. |
 | `202 - Accepted` | Mensagem em processamento — passou pelas validações e foi enfileirada para envio. |
-| `400 - Bad Request` | Nome de broker inválido — não corresponde a um provedor cadastrado. |
+| `400 - Bad Request` | Nome de provedor inválido — não corresponde a um provedor cadastrado. |
 | `401 - Unauthorized` | Falha na autenticação. |
 | `422 - UnprocessableEntity` | Erros de validação — campos obrigatórios não preenchidos ou dados inválidos. |
 | `409 - Conflict` | Erros de validação do Motor de Regras — lista os motivos de bloqueio. |
@@ -206,7 +208,7 @@ Para E-mail e SMS, use `variable_values` com as variáveis dinâmicas conforme o
 
 ### Callback
 
-É possível informar uma URL de callback e campos customizados, enviados a essa URL a partir do disparo, usando o objeto `callback_details`:
+É possível informar uma URL de callback e campos customizados, enviados a essa URL a partir do envio, usando o objeto `callback_details`:
 
 ```json
 {
