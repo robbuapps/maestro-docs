@@ -10,23 +10,23 @@ Na seção **Templates**, há quatro possibilidades distintas de criação de te
 - Acompanhar o fluxo de aprovação (quando aplicável)
 - Duplicar templates ativos ou expirados
 
-Os templates são categorizados de acordo com o canal de disparo.
+Os templates são categorizados de acordo com o canal de envio.
 
 ## Status de um template
 
 | Status | Significado |
 |---|---|
-| **Em criação** | O template está em desenvolvimento e ainda não foi submetido para revisão. Existe apenas no canal E-mail. |
-| **Em revisão** | Submetido para revisão da Gerente do Ambiente ou da empresa Revisora, aguardando análise. Templates em reaprovação também aparecem com este status. |
-| **Aprovado** | Aprovado por um revisor, mas ainda não publicado no broker. |
-| **Publicado** | Aprovado por um revisor e já disponível para uso no broker. |
+| **Em criação** | O template está em desenvolvimento e ainda não foi submetido para revisão. Existe nos canais E-mail e RCS. |
+| **Em revisão** | Submetido para revisão da Gerente do Ambiente ou da empresa Revisora, aguardando análise. |
+| **Aprovado** | Aprovado por um revisor, mas ainda não publicado no provedor. |
+| **Publicado** | Aprovado por um revisor e já disponível para uso no provedor. |
 | **Rejeitado** | Reprovado por um revisor — o motivo fica disponível para consulta. |
 | **Expirado** | Expirou devido à configuração de expiração de templates. |
 | **Rejeitado por Meta** | Aprovado pelo revisor, mas rejeitado pela Meta. Existe apenas no canal WhatsApp. |
 
 ## Ciclo de vida dos templates
 
-Templates expirados permanecem visíveis na listagem por 30 dias após a expiração, mas não ficam disponíveis para novos disparos. Após 90 dias, são movidos para cold storage, com histórico mantido para relatórios e auditoria. Um filtro rápido está disponível na listagem para facilitar a navegação.
+Templates expirados permanecem visíveis na listagem por 30 dias após a expiração, mas não ficam disponíveis para novos envios. Após 90 dias, saem da listagem padrão — o histórico continua disponível para consulta em relatórios e auditoria. Um filtro rápido está disponível na listagem para facilitar a navegação.
 
 ## Alertas de vencimento
 
@@ -34,7 +34,6 @@ Na coluna "Inclusão" da listagem é exibida a data de vencimento do template. A
 
 1. Vence amanhã
 2. Expirado há X dias — exclusão ocorrerá em 30 dias
-3. Em reaprovação
 
 Todos os usuários cadastrados pela Assessoria recebem notificação por e-mail conforme a janela de alerta configurada.
 
@@ -42,8 +41,8 @@ Todos os usuários cadastrados pela Assessoria recebem notificação por e-mail 
 
 Em **Configurações > Ambiente > Configurações de templates** é possível definir:
 
-- **Quantidade de dias para expiração** — após quantos dias o template é considerado expirado. Templates expirados ficam visíveis mas indisponíveis para novos disparos até serem atualizados ou revalidados.
-- **Quantidade de dias para alertar** — com quantos dias de antecedência os alertas visuais e as notificações por e-mail são disparados.
+- **Quantidade de dias para expiração** — após quantos dias o template é considerado expirado. Templates expirados ficam visíveis mas indisponíveis para novos envios até serem atualizados ou revalidados.
+- **Quantidade de dias para alertar** — com quantos dias de antecedência os alertas visuais e as notificações por e-mail são enviadas.
 
 <Note>
 O sincronismo de expiração de todos os templates ocorre uma vez ao dia, durante o período noturno.
@@ -69,7 +68,7 @@ Qualquer template ativo ou expirado pode ser duplicado. A duplicação gera um n
 
 **Estrutura do template:**
 
-- **Header (opcional)** — texto (até 60 caracteres) ou mídia (imagem, vídeo, documento). O cabeçalho pode conter apenas uma única variável.
+- **Cabeçalho (opcional)** — texto (até 60 caracteres) ou mídia (imagem, vídeo, documento). O cabeçalho pode conter apenas uma única variável.
 - **Corpo (obrigatório)** — até 1.024 caracteres, aceita emojis e variáveis (`{{Var1}}`, `{{Var2}}`...). Não misture múltiplos formatos em uma única palavra (ex.: negrito + itálico).
 - **Rodapé (opcional)** — texto pequeno e discreto, até 60 caracteres.
 - **Botões (opcional)** — um único tipo por template:

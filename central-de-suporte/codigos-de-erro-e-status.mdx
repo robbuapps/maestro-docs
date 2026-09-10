@@ -32,7 +32,7 @@ O canal RCS não aparece na referência de `details.channel.id` documentada para
 </Warning>
 
 <Note>
-`details.provider.details.status` / `statusDescription` trazem o status **bruto** retornado pelo broker (específico de cada provedor) — não confundir com `details.status.id`, que é o status normalizado do Maestro.
+`details.provider.details.status` / `statusDescription` trazem o status **bruto** retornado pelo provedor — específico de cada integração — não confundir com `details.status.id`, que é o status normalizado do Maestro.
 </Note>
 
 ## Status de template
@@ -43,8 +43,8 @@ Veja a lista completa e o ciclo de vida em [Templates](/guia-do-usuario/template
 |---|---|---|
 | Em criação | E-mail | Template em desenvolvimento, ainda não submetido para revisão. |
 | Em revisão | Todos | Submetido para revisão, aguardando análise. |
-| Aprovado | Todos | Aprovado pelo revisor, ainda não publicado no broker. |
-| Publicado | Todos | Aprovado e disponível para uso no broker. |
+| Aprovado | Todos | Aprovado pelo revisor, ainda não publicado no provedor. |
+| Publicado | Todos | Aprovado e disponível para uso no provedor. |
 | Rejeitado | Todos | Reprovado pelo revisor (motivo disponível para consulta). |
 | Expirado | Todos | Expirou pela configuração de expiração de templates. |
 | Rejeitado por Meta | WhatsApp | Aprovado internamente, mas rejeitado pela Meta. |
@@ -55,12 +55,12 @@ Veja o detalhamento e exemplos de corpo de resposta em [Direct Message API](/int
 
 | Código | Significado |
 |---|---|
-| `200 - OK` | Mensagem validada, mas não enviada — canal sem broker configurado. |
+| `200 - OK` | Mensagem validada, mas não enviada — canal sem provedor configurado. |
 | `202 - Accepted` | Mensagem validada e enfileirada para envio. |
-| `400 - Bad Request` | Nome de `broker` inválido (campo opcional, apenas SMS/RCS). |
+| `400 - Bad Request` | Nome de provedor inválido no campo `broker` (opcional, apenas SMS/RCS). |
 | `401 - Unauthorized` | Falha de autenticação (token ausente, inválido ou expirado). |
 | `422 - UnprocessableEntity` | Campo obrigatório ausente ou inválido no corpo da requisição. |
-| `409 - Conflict` | Disparo bloqueado pelo Motor de Regras — corpo traz a lista de motivos em `conflicts`. |
+| `409 - Conflict` | Envio bloqueado pelo Motor de Regras — corpo traz a lista de motivos em `conflicts`. |
 
 ## Motor de Regras — formato de conflito (409)
 
@@ -86,8 +86,8 @@ Para campanhas via SFTP, o mesmo tipo de motivo aparece por linha, na coluna `Mo
 | Arquivo | Onde aparece | Significado |
 |---|---|---|
 | `{nome}_EXCEPTIONS.csv` | `/maestro/campaigns/processed` | Linhas do arquivo de campanha que quebraram alguma regra — coluna `Motivo Falha` explica o motivo por linha. |
-| `{nome}_created.csv` | `/maestro/campaigns/processed` | Contatos processados, mas sem provedor configurado para o canal (não houve disparo). |
-| `{nome}_VALIDATED.csv` | `/maestro/campaigns/processed` | Contatos processados e efetivamente disparados (havia provedor configurado). |
+| `{nome}_created.csv` | `/maestro/campaigns/processed` | Contatos processados, mas sem provedor configurado para o canal (não houve envio). |
+| `{nome}_VALIDATED.csv` | `/maestro/campaigns/processed` | Contatos processados e efetivamente enviados (havia provedor configurado). |
 | `{nome}_errorDetail.txt` | `/maestro/campaigns/error` ou `/maestro/templates/error` | Falha no arquivo inteiro (nome fora do padrão, erro de linha em importação de template, etc.). |
 
 Veja o fluxo completo em [Uso de SFTP](/integracoes/uso-de-sftp).

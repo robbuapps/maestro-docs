@@ -12,13 +12,13 @@ Página nova (não existe em `docs.robbu.global`). As definições abaixo consol
 | **Gerente do Ambiente** | Empresa administradora do ambiente Maestro, com acesso completo e supervisão de todas as assessorias. |
 | **Assessoria** | Empresa com acesso restrito às próprias campanhas, públicos, segmentos, relatórios e templates. |
 | **Revisora** | Empresa responsável por revisar e aprovar templates de outras empresas. |
-| **Broker** | Provedor terceiro responsável pelo envio efetivo da mensagem em um canal (ex.: Positus para WhatsApp, Pontal e Classe A para SMS/RCS, RobbuMail e SendGrid para E-mail). |
+| **Provedor** | Serviço terceiro responsável pelo envio efetivo da mensagem em um canal (ex.: Positus para WhatsApp, Pontal e Classe A para SMS/RCS, RobbuMail e SendGrid para E-mail). Aparece como `broker` em alguns campos técnicos (API e arquivos CSV). |
 | **Segmento** | Agrupamento usado para organizar contatos/templates e restringir o acesso de assessorias e provedores a um assunto ou público específico. |
 | **Público** | Base de contatos importada no Maestro, usada como ponto de partida para uma ou mais campanhas. |
-| **Campanha** | Disparo em massa de mensagens para um público, usando um template aprovado e um segmento. |
-| **Direct Message** | Envio de uma mensagem unitária (fora do ciclo de campanhas) via API, usando a mesma infraestrutura de regras e brokers do Maestro. |
+| **Campanha** | Envio em massa de mensagens para um público, usando um template aprovado e um segmento. |
+| **Direct Message** | Envio de uma mensagem unitária (fora do ciclo de campanhas) via API, usando a mesma infraestrutura de regras e provedores do Maestro. |
 | **Template** | Modelo de mensagem (WhatsApp, E-mail, SMS ou RCS) usado em campanhas e Direct Message. Passa por um ciclo de vida com status (veja [Templates](/guia-do-usuario/templates)). |
-| **Motor de Regras** | Mecanismo que valida e pode bloquear campanhas e disparos, com regras implícitas (não desativáveis) e customizáveis (ativáveis/desativáveis). Veja [Motor de Regras](/motor-de-regras/visao-geral). |
+| **Motor de Regras** | Mecanismo que valida e pode bloquear campanhas e envios, com regras implícitas (não desativáveis) e customizáveis (ativáveis/desativáveis). Veja [Motor de Regras](/motor-de-regras/visao-geral). |
 | **Regra implícita** | Regra do motor de regras que valida um conceito do sistema e não pode ser desativada (ex.: template aprovado, segmento válido). |
 | **Regra customizável** | Regra do motor de regras que pode ser ativada ou desativada pela Gerente do Ambiente (ex.: horários, feriados, contatos bloqueados). |
 | **Webhook de eventos** | Mecanismo pelo qual o Maestro notifica, via HTTP POST, uma URL do cliente sobre eventos como atualização de status de mensagem. |
