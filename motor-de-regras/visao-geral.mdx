@@ -81,22 +81,22 @@ Se o arquivo do cliente usa nomes de coluna diferentes dos abaixo, um [Mapeament
 
 | Campo | Obrigatório | Descrição |
 |---|---|---|
-| `CPF_CNPJ` | ❌ | Documento do cliente (validações ou relatórios). |
-| `CD_CONTRATO` | ❌ | Número do contrato do cliente. |
-| `CD_TELEFONE_CONTATO` | ✅ se `EMAIL` não estiver preenchido | Número de telefone com DDD. |
-| `EMAIL` | ✅ se `CD_TELEFONE_CONTATO` não estiver preenchido | E-mail do cliente. |
+| `document_number` | ❌ | Documento do cliente (validações ou relatórios). |
+| `contract_code` | ✅ (coluna deve existir no arquivo) | Número do contrato do cliente. |
+| `phone_number` | ✅ (coluna deve existir no arquivo) | Número de telefone com DDD. |
+| `email` | ❌ | E-mail do cliente. |
 
 <Note>
-É possível combinar os campos acima. A única combinação inválida no mesmo contato é `CD_TELEFONE_CONTATO` + `EMAIL` preenchidos simultaneamente.
+É possível combinar os campos acima. A única combinação inválida no mesmo contato é `phone_number` + `email` preenchidos simultaneamente na mesma linha.
 </Note>
 
 ```
 Exemplo inválido:
-CPF_CNPJ;CD_CONTRATO;CD_TELEFONE_CONTATO;EMAIL
+document_number;contract_code;phone_number;email
 12345678965;456;+5511981236549;cliente@dominio.com   ❌ (telefone e e-mail juntos)
 
 Exemplo válido:
-CPF_CNPJ;CD_CONTRATO;CD_TELEFONE_CONTATO;EMAIL
+document_number;contract_code;phone_number;email
 12345678965;456;+5511981236549;
 98765432156;654;;cliente@dominio.com
 ```
@@ -113,24 +113,24 @@ Se o arquivo do cliente usa nomes de coluna diferentes dos abaixo, um [Mapeament
 
 | Campo | Obrigatório | Descrição |
 |---|---|---|
-| `TIPO_BLOQUEIO` | ❌ | `1` (Permanente), `2` (Temporário) ou vazio. |
-| `CPF_CNPJ` | ❌ | Documento do cliente. |
-| `DATA_SOLICITACAO` | ❌ | Data da solicitação do bloqueio. |
-| `DATA_EXPIRACAO` | ❌ | Data de expiração do bloqueio. |
-| `NUCONTRATOGESTAO` | ❌ | Número do contrato do cliente. |
-| `NUMERO` | ❌ | Número de telefone com DDD. |
-| `EMAIL` | ❌ | E-mail do cliente. |
-| `MOTIVO` | ❌ | Motivo do bloqueio. |
+| `block_type` | ❌ | Ação a aplicar: `1` bloqueia permanentemente, `2` bloqueia temporariamente, `3` desbloqueia (remove) o contato. Vazio segue o comportamento padrão de bloqueio. |
+| `document_number` | ❌ | Documento do cliente. |
+| `block_requested_at` | ❌ | Data da solicitação do bloqueio. |
+| `block_expires_at` | ❌ | Data de expiração do bloqueio. |
+| `contract_code` | ✅ (coluna deve existir no arquivo) | Número do contrato do cliente. |
+| `phone_number` | ✅ (coluna deve existir no arquivo) | Número de telefone com DDD. |
+| `email` | ✅ (coluna deve existir no arquivo) | E-mail do cliente. |
+| `reason` | ❌ | Motivo do bloqueio. |
 
-A única combinação inválida no mesmo contato é `NUMERO` + `EMAIL` preenchidos simultaneamente.
+A única combinação inválida no mesmo contato é `phone_number` + `email` preenchidos simultaneamente na mesma linha.
 
 ```
 Exemplo inválido:
-TIPO_BLOQUEIO;CPF_CNPJ;DATA_SOLICITACAO;DATA_EXPIRACAO;NUCONTRATOGESTAO;NUMERO;EMAIL;MOTIVO
+block_type;document_number;block_requested_at;block_expires_at;contract_code;phone_number;email;reason
 2;12313213213;;;1516;+5511930457438;cliente@dominio.com;Motivo 1   ❌
 
 Exemplo válido:
-TIPO_BLOQUEIO;CPF_CNPJ;DATA_SOLICITACAO;DATA_EXPIRACAO;NUCONTRATOGESTAO;NUMERO;EMAIL;MOTIVO
+block_type;document_number;block_requested_at;block_expires_at;contract_code;phone_number;email;reason
 2;12313213213;;;1516;;cliente@dominio.com;Motivo 1
 ;45665465464;;25/04/2026;;+5511930457438;;Motivo 2
 ```

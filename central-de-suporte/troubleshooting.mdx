@@ -92,11 +92,11 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 **Causas prováveis:**
 
 - Nome ou ordem incorreta das colunas obrigatórias (os **nomes** das colunas devem ser exatamente como documentado; a ordem não importa).
-- `CODIGO_TEMPLATE` e `CODIGO_TEMPLATE_EXTERNO` ambos vazios na mesma linha.
-- `CODIGO_TEMPLATE_EXTERNO` informado, mas não encontrado, e `CODIGO_TEMPLATE` também não encontrado.
+- `template_code` e `template_external_code` ambos vazios na mesma linha.
+- `template_external_code` informado, mas não encontrado, e `template_code` também não encontrado.
 - Segmento informado não existe ou a assessoria não tem acesso a ele.
 - Percentual de erros no arquivo acima do limite configurado na regra de Limite de erros por arquivo de Público — nesse caso, a base inteira é invalidada.
-- Nome de provedor inválido na coluna `BROKER` (SMS/RCS) — rejeita o arquivo inteiro.
+- Nome de provedor inválido na coluna `broker` (SMS/RCS) — rejeita o arquivo inteiro.
 
 **Como confirmar:**
 

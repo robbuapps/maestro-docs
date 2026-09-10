@@ -47,10 +47,10 @@ Esta é uma primeira versão do FAQ geral, escrita a partir do conteúdo já doc
 
 <AccordionGroup>
   <Accordion title="Por que meu arquivo de importação foi rejeitado?">
-    As causas mais comuns são: nome de colunas diferente do esperado, `CODIGO_TEMPLATE` e `CODIGO_TEMPLATE_EXTERNO` ambos vazios, ou segmento inexistente/sem permissão. Veja [Público](/guia-do-usuario/publico) e [Troubleshooting](/central-de-suporte/troubleshooting).
+    As causas mais comuns são: nome de colunas diferente do esperado, `template_code` e `template_external_code` ambos vazios, ou segmento inexistente/sem permissão. Veja [Público](/guia-do-usuario/publico) e [Troubleshooting](/central-de-suporte/troubleshooting).
   </Accordion>
   <Accordion title="Qual a diferença entre importar Público pela tela e importar Campanha por SFTP?">
-    São dois fluxos com layouts de arquivo diferentes. A importação em Público > Importar público cria uma base reutilizável em múltiplas campanhas. A importação de campanha via SFTP (`/maestro/campaigns`) já envia a campanha diretamente. Veja [Público](/guia-do-usuario/publico) e [Uso de SFTP](/integracoes/uso-de-sftp).
+    O layout do arquivo é o mesmo — a diferença é só o ponto de entrada. A importação em Público > Importar público cria uma base reutilizável em múltiplas campanhas. A importação via SFTP (`/maestro/campaigns`) já envia a campanha diretamente. Veja [Público](/guia-do-usuario/publico) e [Uso de SFTP](/integracoes/uso-de-sftp).
   </Accordion>
 </AccordionGroup>
 
@@ -58,9 +58,9 @@ Esta é uma primeira versão do FAQ geral, escrita a partir do conteúdo já doc
 
 <AccordionGroup>
   <Accordion title="Como saber qual provedor está sendo usado em um envio?">
-    Por padrão, o roteamento segue a configuração de segmento em Configurações > Integração com provedores. Para SMS e RCS, é possível forçar um provedor específico por registro usando a coluna/campo `BROKER`. Veja [Integração com Provedores](/integracoes/integracao-com-provedores).
+    Por padrão, o roteamento segue a configuração de segmento em Configurações > Integração com provedores. Para SMS e RCS, é possível forçar um provedor específico por registro usando a coluna/campo `broker`. Veja [Integração com Provedores](/integracoes/integracao-com-provedores).
   </Accordion>
   <Accordion title="Um segmento pode usar mais de um provedor?">
-    Não. Um segmento só pode estar vinculado a um único provedor por vez (exclusividade). É possível, porém, indicar um provedor diferente pontualmente no momento do envio (SMS/RCS), via coluna `BROKER`.
+    Não. Um segmento só pode estar vinculado a um único provedor por vez (exclusividade). É possível, porém, indicar um provedor diferente pontualmente no momento do envio (SMS/RCS), via coluna `broker`.
   </Accordion>
 </AccordionGroup>

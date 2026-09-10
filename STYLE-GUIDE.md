@@ -17,7 +17,7 @@ Padrões de escrita e organização fixados durante a construção deste site. S
 ## Terminologia
 
 - Mantenha um termo canônico por conceito em toda a prosa (ex.: neste site, "envio"/"enviar" — não "disparo"/"disparar"; "provedor" — não "broker"). Ao trocar um termo, faça a varredura completa do site, não só o trecho pedido — mas **pergunte antes de aplicar a outras ocorrências** que pareçam similares e não tenham sido explicitamente confirmadas.
-- **Nunca traduza ou renomeie identificadores literais** do sistema: nomes de coluna de CSV (`BROKER`, `BROKER_REFERENCE`, `DATA_HORA_DISPARO`), campos de JSON de API (`"broker"`), nomes de header HTTP, códigos de erro. Esses são contratos reais, não prosa.
+- **Nunca traduza ou renomeie identificadores literais** do sistema: nomes de coluna de CSV (`broker`, `broker_account_reference`, `dispatch_at`), campos de JSON de API (`"broker"`), nomes de header HTTP, códigos de erro. Esses são contratos reais, não prosa. Isso vale mesmo quando o próprio sistema renomeia esses identificadores (ex.: o padrão de colunas de importação passou de português maiúsculo para inglês minúsculo em 2026-09) — reflita o nome atual exatamente como está no código, não invente uma tradução própria.
 
 ## Precisão
 

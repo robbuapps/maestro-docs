@@ -59,47 +59,22 @@ Verifique se a extensão não está duplicada, como em `arquivo.csv.csv`.
 
 ### Colunas do arquivo
 
-```
-TIPO_DE_REGISTRO,VALOR_DO_REGISTRO,CANAL,CODIGO_TEMPLATE,CODIGO_TEMPLATE_EXTERNO,SEGMENTO,CPF_CNPJ,COD_CONTRATO,
-REMETENTE,DATA_HORA_DISPARO,NOME_CLIENTE,NOME_ARQUIVO_ANEXO,Var1,Var2,...,Var20,SMS_FLASH,BROKER
-```
-
-| Campo | Obrigatório | Descrição |
-|---|---|---|
-| `TIPO_DE_REGISTRO` | ✅ | Tipo de contato (`TELEFONE` ou `EMAIL`). |
-| `VALOR_DO_REGISTRO` | ✅ | Valor do contato (número com DDD ou e-mail). |
-| `CANAL` | ✅ | `whatsapp`, `email`, `sms` ou `rcs`. |
-| `CODIGO_TEMPLATE` | ✅ | Código do template aprovado no Maestro (ex.: `W0003`, `E0001`). |
-| `CODIGO_TEMPLATE_EXTERNO` | ✅ | Código externo do template (ex.: ID no sistema do cliente). |
-| `SEGMENTO` | ✅ | Nome do segmento cadastrado no Maestro. |
-| `CPF_CNPJ` | ✅ | Documento do cliente. |
-| `COD_CONTRATO` | ✅ | Código do contrato do cliente. |
-| `REMETENTE` | apenas WhatsApp | Número de envio no WhatsApp ou remetente configurado. |
-| `DATA_HORA_DISPARO` | ❌ | Formato `yyyy-MM-dd HH:mm:ss`. |
-| `NOME_CLIENTE` | ❌ | Nome do cliente, para referência. |
-| `NOME_ARQUIVO_ANEXO` | apenas E-mail | Arquivo inserido na mesma pasta do CSV no SFTP, adicionado como anexo. |
-| `SMS_FLASH` | apenas SMS | Ativa SMS Flash, se a conta tiver a opção disponível. |
-| `BROKER` | apenas SMS/RCS | Nome do provedor cadastrado, exatamente como em Configurações > Integração com provedores (ex.: `Pontal`, `Classe A`). Vazio → roteamento por segmento. Demais canais ignoram o campo. |
-| `Var1`…`Var20` | ❌ | Variáveis dinâmicas que alimentam os placeholders do template. |
-
-<Note>
-Não é necessário manter a ordem sugerida das colunas, mas os nomes devem ser exatamente como documentado.
-</Note>
+O layout é o mesmo usado na importação manual de público pela tela — colunas, obrigatoriedade e o mecanismo de variáveis dinâmicas estão documentados em [Público](/guia-do-usuario/publico).
 
 Exemplo:
 
 ```csv
-TIPO_DE_REGISTRO,VALOR_DO_REGISTRO,CANAL,CODIGO_TEMPLATE,CODIGO_TEMPLATE_EXTERNO,SEGMENTO,CPF_CNPJ,COD_CONTRATO,REMETENTE,DATA_HORA_DISPARO,NOME_CLIENTE,NOME_ARQUIVO_ANEXO,Var1,Var2,...,SMS_FLASH,BROKER
-TELEFONE,+5511988887777,whatsapp,W0003,,Varejo,12345678900,CT-98765,+5511999998888,2025-09-01 14:56:00,João Silva,,Promoção de Inverno,10%,...,NÃO,
-EMAIL,cliente@dominio.com,email,E0001,BR001,Financeiro,98765432100,CT-12345,,2025-09-01 15:10:00,Maria Souza,Fatura_Maria_Souza_07_2025.pdf,Fatura 07/2025,R$350,...,NÃO,
-TELEFONE,+5511977776666,sms,S0002,BR002,Atacado,11223344556,CT-45678,,2025-09-01 15:30:00,Carlos Lima,BoletoCarlosLima.pdf,Código 123456,Validade 5min,...,SIM,Pontal
+destination_value,channel,template_code,template_external_code,segment,document_number,contract_code,sender,dispatch_at,customer_name,attachment_file_name,notes_1,notes_2,notes_3,notes_4,broker_account_reference,broker,sms_flash,Var1,Var2
++5511988887777,whatsapp,W0003,,Varejo,12345678900,CT-98765,+5511999998888,2025-09-01 14:56:00,João Silva,,,,,,,,NÃO,Promoção de Inverno,10%
+cliente@dominio.com,email,E0001,BR001,Financeiro,98765432100,CT-12345,,2025-09-01 15:10:00,Maria Souza,Fatura_Maria_Souza_07_2025.pdf,,,,,,NÃO,Fatura 07/2025,R$350
++5511977776666,sms,S0002,BR002,Atacado,11223344556,CT-45678,,2025-09-01 15:30:00,Carlos Lima,,,,,,Pontal,SIM,Código 123456,Validade 5min
 ```
 
 ### Fluxo de processamento
 
 1. Faça upload do arquivo `.csv` em `/maestro/campaigns`.
 2. Um serviço rotineiro roda a cada 10 minutos: cria `/processed` e `/error` se não existirem, e busca arquivos `.csv` ainda não importados.
-3. Durante a importação, são validados: o nome do arquivo, se cada linha cumpre as regras do ambiente (segmento existe e assessoria tem acesso; templates aprovados; horários de saída válidos; se a coluna `BROKER` for informada, se o provedor existe e é compatível com o segmento — nome inválido ou provedor sem perfil rejeita **o arquivo inteiro**).
+3. Durante a importação, são validados: se cada linha cumpre as regras do ambiente (segmento existe e assessoria tem acesso; templates aprovados; horários de saída válidos; se a coluna `broker` for informada, se o provedor existe e é compatível com o segmento — nome inválido ou provedor sem perfil rejeita **o arquivo inteiro**).
 4. Na importação: linhas que quebram regras geram `{nome original}_EXCEPTIONS.csv` em `/processed`, com a coluna adicional `Motivo Falha`.
 5. Se não houver provedor para o canal configurado, é criado `{nome original}_created.csv` em `/processed` com os contatos processados (sem envio). Se houver provedor, os envios são criados e o arquivo gerado é `{nome original}_VALIDATED.csv`.
 6. Arquivos de anexo (se houver) são destruídos após o envio.
@@ -129,79 +104,83 @@ Não é necessário manter a ordem sugerida das colunas, mas os nomes devem ser 
 **Templates WhatsApp:**
 
 ```
-TEMPLATE_NAME,LANGUAGE,CATEGORY,HEADER_TEXT,BODY_TEXT,FOOTER_TEXT,REPLYBUTTON_1,REPLYBUTTON_2,REPLYBUTTON_3,
-URL_BUTTON,URL_BUTTON_TEXT,TEMPLATE_STATUS,REASONS,TEMPLATE_CODE,EXTERNAL_CODE
+template_name,language,category,header_text,body_text,footer_text,reply_button_1,reply_button_2,reply_button_3,
+url_button,url_button_text,template_status,reasons,template_code,external_code
 ```
 
 | Campo | Obrigatório | Descrição |
 |---|---|---|
-| `TEMPLATE_NAME` | ✅ (criação) | Nome único do template (sem espaços; usar `_` se necessário). |
-| `LANGUAGE` | ✅ (criação) | Idioma, formato `pt_BR`, `en_US` etc. |
-| `CATEGORY` | ✅ (criação) | `MARKETING`, `UTILITY` ou `AUTHENTICATION`. |
-| `HEADER_TEXT` | ❌ | Texto do cabeçalho. |
-| `BODY_TEXT` | ✅ (criação) | Texto do corpo da mensagem. |
-| `FOOTER_TEXT` | ❌ | Texto do rodapé. |
-| `REPLYBUTTON_1`/`_2`/`_3` | ❌ | Texto dos botões de resposta rápida. |
-| `URL_BUTTON` | ❌ | URL do botão de ação (se existir). |
-| `URL_BUTTON_TEXT` | ❌ | Texto do botão de URL. |
-| `TEMPLATE_STATUS` | ❌ | `APROVADO` ou `REJEITADO` (status da revisão). |
-| `REASONS` | ❌ | Motivos de reprovação, separados por `\|`. Cada motivo deve estar cadastrado no Maestro. |
-| `TEMPLATE_CODE` | ❌ | Código do template no Maestro (identifica o template na revisão). |
-| `EXTERNAL_CODE` | ❌ | Identificador externo do template. Deve ser único. |
+| `template_name` | ✅ (criação) | Nome único do template (sem espaços; usar `_` se necessário). |
+| `language` | ✅ (criação) | Idioma, formato `pt_BR`, `en_US` etc. |
+| `category` | ✅ (criação) | `MARKETING`, `UTILITY` ou `AUTHENTICATION`. |
+| `header_text` | ✅ (coluna deve existir; valor pode ficar vazio) | Texto do cabeçalho. |
+| `body_text` | ✅ (criação) | Texto do corpo da mensagem. |
+| `footer_text` | ✅ (coluna deve existir; valor pode ficar vazio) | Texto do rodapé. |
+| `reply_button_1`/`_2`/`_3` | ✅ (coluna deve existir; valor pode ficar vazio) | Texto dos botões de resposta rápida. |
+| `url_button` | ✅ (coluna deve existir; valor pode ficar vazio) | URL do botão de ação (se existir). |
+| `url_button_text` | ✅ (coluna deve existir; valor pode ficar vazio) | Texto do botão de URL. |
+| `template_status` | ❌ | `APROVADO` ou `REJEITADO` (status da revisão). |
+| `reasons` | ❌ | Motivos de reprovação, separados por `\|`. Cada motivo deve estar cadastrado no Maestro. |
+| `template_code` | ❌ | Código do template no Maestro (identifica o template na revisão). |
+| `external_code` | ❌ | Identificador externo do template. Deve ser único. |
+
+<Note>
+Para `header_text`, `footer_text`, `reply_button_1`/`_2`/`_3`, `url_button` e `url_button_text`, a coluna precisa existir no cabeçalho do arquivo mesmo quando não usada — só o valor da linha pode ficar em branco.
+</Note>
 
 **Templates de E-mail:**
 
 ```
-TEMPLATE_NAME,SUBJECT,BODY_HTML,TEMPLATE_STATUS,REASONS,TEMPLATE_CODE,EXTERNAL_CODE
+template_name,subject,body_html,template_status,reasons,template_code,external_code
 ```
 
 | Campo | Obrigatório | Descrição |
 |---|---|---|
-| `TEMPLATE_NAME` | ✅ (criação) | Nome único do template. |
-| `SUBJECT` | ✅ (criação) | Assunto do e-mail. |
-| `BODY_HTML` | ✅ (criação) | Corpo em HTML (inline). |
-| `TEMPLATE_STATUS` | ❌ | `APROVADO` ou `REJEITADO`. |
-| `REASONS` | ❌ | Motivos de reprovação, separados por `\|`. |
-| `TEMPLATE_CODE` | ❌ | Código do template no Maestro. |
-| `EXTERNAL_CODE` | ❌ | Identificador externo, único. |
+| `template_name` | ✅ (criação) | Nome único do template. |
+| `subject` | ✅ (criação) | Assunto do e-mail. |
+| `body_html` | ✅ (criação) | Corpo em HTML (inline). |
+| `template_status` | ❌ | `APROVADO` ou `REJEITADO`. |
+| `reasons` | ❌ | Motivos de reprovação, separados por `\|`. |
+| `template_code` | ❌ | Código do template no Maestro. |
+| `external_code` | ❌ | Identificador externo, único. |
 
 **Templates de SMS:**
 
 ```
-TEMPLATE_NAME,TEXT_BODY,TEMPLATE_STATUS,REASONS,TEMPLATE_CODE,EXTERNAL_CODE
+template_name,text_body,template_status,reasons,template_code,external_code
 ```
 
 | Campo | Obrigatório | Descrição |
 |---|---|---|
-| `TEMPLATE_NAME` | ✅ (criação) | Nome único do template. |
-| `TEXT_BODY` | ✅ (criação) | Texto do corpo, pode conter variáveis (ex.: `{{1}}`). |
-| `TEMPLATE_STATUS` | ❌ | `APROVADO` ou `REJEITADO`. |
-| `REASONS` | ❌ | Motivos de reprovação, separados por `\|`. |
-| `TEMPLATE_CODE` | ❌ | Código do template no Maestro. |
-| `EXTERNAL_CODE` | ❌ | Identificador externo, único. |
+| `template_name` | ✅ (criação) | Nome único do template. |
+| `text_body` | ✅ (criação) | Texto do corpo, pode conter variáveis (ex.: `{{1}}`). |
+| `template_status` | ❌ | `APROVADO` ou `REJEITADO`. |
+| `reasons` | ❌ | Motivos de reprovação, separados por `\|`. |
+| `template_code` | ❌ | Código do template no Maestro. |
+| `external_code` | ❌ | Identificador externo, único. |
 
 **Templates de RCS:**
 
 ```
-TEMPLATE_NAME;MESSAGE_TYPE;MESSAGE;TITLE;FALLBACK;SUGGESTION_1_TITLE;SUGGESTION_1_TYPE;SUGGESTION_1_VALUE;
-SUGGESTION_2_TITLE;SUGGESTION_2_TYPE;SUGGESTION_2_VALUE;SUGGESTION_3_TITLE;SUGGESTION_3_TYPE;SUGGESTION_3_VALUE;
-SUGGESTION_4_TITLE;SUGGESTION_4_TYPE;SUGGESTION_4_VALUE;TEMPLATE_STATUS;REASONS;TEMPLATE_CODE;EXTERNAL_CODE
+template_name;message_type;message;title;fallback;suggestion_1_title;suggestion_1_type;suggestion_1_value;
+suggestion_2_title;suggestion_2_type;suggestion_2_value;suggestion_3_title;suggestion_3_type;suggestion_3_value;
+suggestion_4_title;suggestion_4_type;suggestion_4_value;template_status;reasons;template_code;external_code
 ```
 
 | Campo | Obrigatório | Descrição |
 |---|---|---|
-| `TEMPLATE_NAME` | ✅ (criação) | Nome único do template. |
-| `MESSAGE_TYPE` | ✅ | `Texto simples`, `Sugestão` ou `RichCard`. |
-| `MESSAGE` | ✅ | Texto do corpo, pode conter variáveis (ex.: `{{1}}`). |
-| `TITLE` | ❌ | Título do cartão (usado em `RichCard`). |
-| `FALLBACK` | ❌ | Texto alternativo quando o dispositivo/operadora não suporta RCS. |
-| `SUGGESTION_x_TITLE` | ❌ | Texto do botão de sugestão x (1 a 4). |
-| `SUGGESTION_x_TYPE` | ❌ | `Resposta rápida`, `Abrir URL`, `Ligar`, `Criar evento`, `Compartilhar localização` ou `Ver localização`. |
-| `SUGGESTION_x_VALUE` | ❌ | Valor correspondente ao tipo (URL, telefone etc.). Vazio quando o tipo for `Resposta rápida`. |
-| `TEMPLATE_STATUS` | ❌ | `APROVADO` ou `REJEITADO`. |
-| `REASONS` | ❌ | Motivos de reprovação, separados por `\|`. |
-| `TEMPLATE_CODE` | ❌ | Código do template no Maestro. |
-| `EXTERNAL_CODE` | ❌ | Identificador externo, único. |
+| `template_name` | ✅ (criação) | Nome único do template. |
+| `message_type` | ✅ | `Texto simples`, `Sugestão` ou `RichCard`. |
+| `message` | ✅ | Texto do corpo, pode conter variáveis (ex.: `{{1}}`). |
+| `title` | ❌ | Título do cartão (usado em `RichCard`). |
+| `fallback` | ❌ | Texto alternativo quando o dispositivo/operadora não suporta RCS. |
+| `suggestion_x_title` | ❌ | Texto do botão de sugestão x (1 a 4). |
+| `suggestion_x_type` | ❌ | `Resposta rápida`, `Abrir URL`, `Ligar`, `Criar evento`, `Compartilhar localização` ou `Ver localização`. |
+| `suggestion_x_value` | ❌ | Valor correspondente ao tipo (URL, telefone etc.). Vazio quando o tipo for `Resposta rápida`. |
+| `template_status` | ❌ | `APROVADO` ou `REJEITADO`. |
+| `reasons` | ❌ | Motivos de reprovação, separados por `\|`. |
+| `template_code` | ❌ | Código do template no Maestro. |
+| `external_code` | ❌ | Identificador externo, único. |
 
 <Warning>
 Regra específica do RCS: templates dos tipos `Texto simples` e `Sugestão` podem ser criados e revisados via importação. O tipo `RichCard` é **apenas revisado** — o template já deve existir no Maestro.
@@ -219,23 +198,23 @@ Regra específica do RCS: templates dos tipos `Texto simples` e `Sugestão` pode
 
 | Situação | Ação do Maestro |
 |---|---|
-| Template não existe + `TEMPLATE_STATUS` ausente | Cria o template |
-| Template não existe + `TEMPLATE_STATUS` informado | Cria e revisa |
-| Template existe + `TEMPLATE_STATUS` informado | Apenas revisa |
-| Template existe + `TEMPLATE_STATUS` ausente | Erro |
+| Template não existe + `template_status` ausente | Cria o template |
+| Template não existe + `template_status` informado | Cria e revisa |
+| Template existe + `template_status` informado | Apenas revisa |
+| Template existe + `template_status` ausente | Erro |
 
 <Warning>
-RCS: templates com `MESSAGE_TYPE` igual a `Texto simples` ou `Sugestão` seguem a tabela acima. O tipo `RichCard` é apenas revisado — não é criado pela importação.
+RCS: templates com `message_type` igual a `Texto simples` ou `Sugestão` seguem a tabela acima. O tipo `RichCard` é apenas revisado — não é criado pela importação.
 </Warning>
 
-**Identificação do template existente** — o Maestro busca nesta ordem: `TEMPLATE_CODE` (código interno) → `EXTERNAL_CODE` (identificador externo) → se nenhum for informado, um novo template é criado.
+**Identificação do template existente** — o Maestro busca nesta ordem: `template_code` (código interno) → `external_code` (identificador externo) → se nenhum for informado, um novo template é criado.
 
 ### Regras
 
-- `TEMPLATE_STATUS` aceita apenas `APROVADO` ou `REJEITADO`.
-- `REASONS` é obrigatório quando `TEMPLATE_STATUS=REJEITADO`; motivos múltiplos separados por `|`, cada um previamente cadastrado no Maestro.
+- `template_status` aceita apenas `APROVADO` ou `REJEITADO`.
+- `reasons` é obrigatório quando `template_status=REJEITADO`; motivos múltiplos separados por `|`, cada um previamente cadastrado no Maestro.
 - O template existente deve estar com status **Em Revisão** para ser revisado.
-- `EXTERNAL_CODE` deve ser único por empresa.
+- `external_code` deve ser único por empresa.
 - Se qualquer linha do arquivo contiver erro, **nenhuma linha é processada**.
 
 ## FAQ

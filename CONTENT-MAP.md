@@ -15,7 +15,7 @@ Este mapa **não** é checado durante a revisão de código (decisão deliberada
 
 | Domínio (`ai-context/`) | Arquivo fonte | Páginas afetadas |
 |---|---|---|
-| Brokers | `80-brokers-behavior.md` | `integracoes/integracao-com-provedores.mdx`, `guia-do-usuario/publico.mdx` (coluna `BROKER`), `integracoes/uso-de-sftp.mdx`, `integracoes/direct-message-api.mdx` (campo `broker`) |
+| Brokers | `80-brokers-behavior.md` | `integracoes/integracao-com-provedores.mdx`, `guia-do-usuario/publico.mdx` (coluna `broker`), `integracoes/uso-de-sftp.mdx`, `integracoes/direct-message-api.mdx` (campo `broker`) |
 | Campaigns | `81-campaigns-behavior.md` | `guia-do-usuario/campanhas.mdx`, `guia-do-usuario/publico.mdx`, `integracoes/uso-de-sftp.mdx` (importar campanhas) |
 | Companies | `82-companies-behavior.md` | `guia-do-usuario/empresas-e-usuarios.mdx`, `introducao/perfis-de-uso.mdx` |
 | Dashboards | `83-dashboards-behavior.md` | `guia-do-usuario/relatorios.mdx` (quando houver conteúdo) |
