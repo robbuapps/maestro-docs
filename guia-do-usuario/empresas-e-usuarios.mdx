@@ -17,27 +17,45 @@ Na seção **Usuários** é possível listar e gerenciar todos os usuários cada
 
 ### Perfis de Usuário
 
+<Note>
+Os perfis abaixo definem o acesso às áreas que ainda não migraram para o modelo de Perfis de Acesso (veja a seção seguinte).
+</Note>
+
 #### Administrador
 
 Permissão total dentro da empresa. Pode:
 
 - Criar, editar e excluir usuários da empresa
-- Criar públicos e enviar campanhas
+- Enviar campanhas
 - Criar, editar e excluir templates
-- Gerar relatórios
 - Gerenciar configurações da empresa
 
 #### Colaborador
 
-Usuário padrão, sem permissões administrativas. Pode realizar as operações do dia a dia de acordo com o perfil da empresa (campanhas, templates, relatórios), mas não pode gerenciar usuários nem alterar configurações da empresa.
+Usuário padrão, sem permissões administrativas. Pode realizar as operações do dia a dia de acordo com o perfil da empresa (campanhas, templates), mas não pode gerenciar usuários nem alterar configurações da empresa.
 
 #### Visualizador
 
 Acesso somente leitura. Pode visualizar templates cadastrados. Não tem acesso a:
 
-- Criar públicos
 - Enviar campanhas
 - Criar, editar ou excluir templates
-- Gerar relatórios
 - Gerenciar usuários da empresa
 - Gerenciar configurações da empresa
+
+### Perfis de Acesso
+
+Algumas áreas do Maestro usam um modelo de controle de acesso à parte, mais granular e configurável por empresa, no lugar do perfil de usuário fixo acima. Hoje isso vale para:
+
+- Segmentos
+- Público
+- Dashboards
+- Relatórios
+
+Nessas áreas, o Gerente do Ambiente concede, empresa por empresa, quais delas ela pode usar. Dentro de uma empresa liberada, o Administrador cria os perfis de acesso que fizerem sentido (por exemplo, "Operador" ou "Auditor") e atribui cada um aos usuários — um usuário pode acumular mais de um perfil, e sua permissão efetiva é a soma de todos eles.
+
+Uma empresa nova começa sem nenhuma dessas áreas liberada e sem nenhum perfil de acesso criado: até o Gerente do Ambiente liberar o acesso e o Administrador da empresa criar e atribuir os perfis, os usuários dela não conseguem usar nenhuma delas.
+
+<Note>
+Uma mudança de perfil de acesso só passa a valer no próximo login do usuário afetado.
+</Note>
