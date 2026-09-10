@@ -31,6 +31,14 @@
         ]
       },
       {
+        "group": "Permissões",
+        "pages": [
+          "permissoes/visao-geral",
+          "permissoes/gerente-do-ambiente",
+          "permissoes/perfis-de-acesso"
+        ]
+      },
+      {
         "group": "Motor de Regras",
         "pages": [
           "motor-de-regras/visao-geral"

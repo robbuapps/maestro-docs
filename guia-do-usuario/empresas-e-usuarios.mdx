@@ -18,7 +18,7 @@ Na seção **Usuários** é possível listar e gerenciar todos os usuários cada
 ### Perfis de Usuário
 
 <Note>
-Os perfis abaixo definem o acesso às áreas que ainda não migraram para o modelo de Perfis de Acesso (veja a seção seguinte).
+Os perfis abaixo definem o acesso às áreas que ainda não migraram para o modelo de Perfis de Acesso — veja [Como Funcionam as Permissões](/permissoes/visao-geral).
 </Note>
 
 #### Administrador
@@ -45,17 +45,4 @@ Acesso somente leitura. Pode visualizar templates cadastrados. Não tem acesso a
 
 ### Perfis de Acesso
 
-Algumas áreas do Maestro usam um modelo de controle de acesso à parte, mais granular e configurável por empresa, no lugar do perfil de usuário fixo acima. Hoje isso vale para:
-
-- Segmentos
-- Público
-- Dashboards
-- Relatórios
-
-Nessas áreas, o Gerente do Ambiente concede, empresa por empresa, quais delas ela pode usar. Dentro de uma empresa liberada, o Administrador cria os perfis de acesso que fizerem sentido (por exemplo, "Operador" ou "Auditor") e atribui cada um aos usuários — um usuário pode acumular mais de um perfil, e sua permissão efetiva é a soma de todos eles.
-
-Uma empresa nova começa sem nenhuma dessas áreas liberada e sem nenhum perfil de acesso criado: até o Gerente do Ambiente liberar o acesso e o Administrador da empresa criar e atribuir os perfis, os usuários dela não conseguem usar nenhuma delas.
-
-<Note>
-Uma mudança de perfil de acesso só passa a valer no próximo login do usuário afetado.
-</Note>
+Segmentos, Público, Dashboards e Relatórios usam um modelo de controle de acesso à parte, mais granular e configurável por empresa, no lugar do perfil de usuário fixo acima. Veja [Como Funcionam as Permissões](/permissoes/visao-geral).
