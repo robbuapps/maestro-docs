@@ -7,6 +7,7 @@ Padrões de escrita e organização fixados durante a construção deste site. S
 - Escreva a versão mais enxuta do fato, não a frase de quem explicou o fato. Ao incorporar uma explicação de alguém (usuário, PR, work item), reescreva — não transcreva.
 - Prefira frases curtas e diretas a período composto.
 - Não repita "isso fica em outra tela, não aqui" dos dois lados de uma referência — diga o fato uma vez e deixe o link carregar o "onde fica".
+- **Nunca descreva um comportamento por contraste com um estado anterior que o leitor não tem como conhecer** (ex.: "segue como funcionava antes dessa funcionalidade existir", "agora passou a exigir X"). O leitor de uma doc de produto não tem o "antes" como referência — só o que existe hoje. Descreva o comportamento atual de forma completa e autossuficiente, mesmo quando a informação chegou até você como um diff ou uma mudança ("card #X mudou Y para Z"). Isso vale mesmo que o texto de origem (PR, work item, explicação do usuário) esteja fraseado como mudança — a skill `doc-review` pode (e deve) registrar o achado como um delta; a skill `doc-update`, ao escrever a página, converte esse delta no fato presente, nunca na comparação.
 
 ## Links entre páginas
 

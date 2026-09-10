@@ -17,7 +17,7 @@ O Maestro suporta vários provedores de terceiros para realizar o envio das mens
 ## Como configurar
 
 1. Acesse **Configurações > Integração com provedores**.
-2. Informe as credenciais fornecidas pelo provedor (token de autenticação — JWT, Bearer Token ou chave fixa — ou usuário e senha).
+2. Cada provedor pode ter um ou mais **perfis** — uma combinação de credenciais e vínculo de segmento (veja [Direcionamento por Segmento](#direcionamento-por-segmento)). Adicione um perfil e informe as credenciais fornecidas pelo provedor (token de autenticação — JWT, Bearer Token ou chave fixa — ou usuário e senha).
 3. Se o provedor oferecer alguma configuração personalizada, defina a opção desejada.
 
 O sistema envia a mensagem para o endpoint do provedor, que processa e entrega ao destinatário, retornando uma resposta com o status do envio (sucesso, falha, pendente etc.).
@@ -36,6 +36,10 @@ Um provedor de E-mail, SMS ou RCS — ou um número de WhatsApp — pode ser vin
 - **Provedor sem segmento** → usado para qualquer segmento que não tenha um provedor dedicado.
 - **Provedor com segmento** → usado exclusivamente para os segmentos vinculados; tem prioridade sobre o provedor sem segmento.
 - **Exclusividade** → um segmento só pode estar vinculado a um único provedor (ou número de WhatsApp) por canal.
+
+## Nome do remetente (E-mail)
+
+Cada perfil de um provedor de E-mail tem um campo **Nome**, exibido como remetente nos e-mails enviados por esse perfil — substitui o nome padrão do sistema.
 
 ## Definir o provedor no momento do envio (SMS e RCS)
 

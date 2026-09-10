@@ -27,7 +27,7 @@ Este mapa **não** é checado durante a revisão de código (decisão deliberada
 | Tenants | `89-tenants-behavior.md` | `introducao/perfis-de-uso.mdx`, `guia-do-usuario/configuracoes.mdx` |
 | Users | `90-users-behavior.md` | `guia-do-usuario/empresas-e-usuarios.mdx` |
 | Permissions | `91-permissions-behavior.md` | `guia-do-usuario/empresas-e-usuarios.mdx` (perfis de usuário) |
-| Import layout | `93-import-layout-detection.md` | `integracoes/uso-de-sftp.mdx`, `guia-do-usuario/publico.mdx` |
+| Import layout | `93-import-layout-detection.md` | `integracoes/mapeamento-de-layouts.mdx`, `integracoes/uso-de-sftp.mdx`, `guia-do-usuario/publico.mdx`, `motor-de-regras/visao-geral.mdx` (Contatos Autorizados/Bloqueados) |
 
 ## Frontend: Módulo → Página
 
@@ -39,6 +39,7 @@ Este mapa **não** é checado durante a revisão de código (decisão deliberada
 | `configuration` | `/configuracoes/*` | `guia-do-usuario/configuracoes.mdx`, `motor-de-regras/visao-geral.mdx`, `integracoes/integracao-com-provedores.mdx`, `integracoes/uso-de-sftp.mdx`, `integracoes/webhook-de-eventos.mdx` |
 | `dashboard` | `/dashboards`, `/dashboards/campanhas`, `/dashboards/templates`, `/dashboards/canais` | `guia-do-usuario/relatorios.mdx` (quando houver conteúdo) |
 | `help` | `/ajuda` | `central-de-suporte/faq.mdx`, `central-de-suporte/troubleshooting.mdx` |
+| `import-layout-mappings` | `/configuracoes/mapeamento-colunas`, `/criar`, `/:id/editar` | `integracoes/mapeamento-de-layouts.mdx` |
 | `mailing` | `/publico` | `guia-do-usuario/publico.mdx` |
 | `permissions` | `/configuracoes/ambiente/features`, `/configuracoes/empresa/perfis-de-acesso` | `guia-do-usuario/empresas-e-usuarios.mdx` (perfis de usuário) |
 | `reports` | `/relatorios` | `guia-do-usuario/relatorios.mdx` |

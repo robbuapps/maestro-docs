@@ -13,7 +13,7 @@ Você pode baixar o arquivo modelo mais atualizado em **Público > Importar púb
 
 ## Colunas do arquivo de importação
 
-O layout padrão do arquivo de importação possui as seguintes colunas:
+O layout padrão do arquivo de importação possui as seguintes colunas. Se o arquivo do cliente usa nomes de coluna diferentes, um [Mapeamento de Layout de Importação](/integracoes/mapeamento-de-layouts) pode traduzi-los automaticamente.
 
 ```
 TIPO_DE_REGISTRO, VALOR_DO_REGISTRO, CANAL, CODIGO_TEMPLATE, CODIGO_TEMPLATE_EXTERNO, SEGMENTO,
@@ -65,7 +65,7 @@ Não confunda `BROKER_REFERENCE` com a coluna `BROKER`. `BROKER_REFERENCE` é um
 
 ## Variáveis do Template
 
-As variáveis do template devem ser adicionadas após a última coluna do arquivo — atualmente a coluna `BROKER`. Tudo que estiver após a última coluna do modelo é tratado como campo adicionado manualmente pelo usuário:
+As variáveis do template devem ser adicionadas após a última coluna do arquivo (`BROKER`). Tudo que estiver após a última coluna do modelo é tratado como campo adicionado manualmente pelo usuário:
 
 ```
 ...;OBS1;OBS2;OBS3;OBS4;BROKER_REFERENCE;BROKER;Var1;Var2;Var3;Var4

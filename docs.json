@@ -42,7 +42,8 @@
           "integracoes/direct-message-api",
           "integracoes/webhook-de-eventos",
           "integracoes/integracao-com-provedores",
-          "integracoes/uso-de-sftp"
+          "integracoes/uso-de-sftp",
+          "integracoes/mapeamento-de-layouts"
         ]
       },
       {

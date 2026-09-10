@@ -1,0 +1,55 @@
+---
+title: "Mapeamento de Layouts de Importação"
+description: "Personalize os nomes de coluna aceitos na importação de templates, campanhas e listas de bloqueio/autorização."
+---
+
+O Maestro exige, por padrão, uma nomenclatura fixa de colunas nos arquivos importados (templates, campanhas, lista de bloqueio, lista de contatos autorizados). Quando o arquivo de um cliente usa nomes de coluna diferentes (ex.: `CONTATO_CELULAR` em vez de `TELEFONE`), o Gerente do Ambiente pode cadastrar um mapeamento que traduz esses nomes automaticamente antes da importação, sem depender de ajuste manual do time técnico.
+
+<Note>
+O mapeamento é por **Ambiente (Tenant)** — todas as empresas que operam no mesmo Ambiente compartilham os mesmos mapeamentos cadastrados.
+</Note>
+
+## Onde configurar
+
+**Configurações > Mapeamento de colunas** (Gerente do Ambiente).
+
+## Tipos de layout
+
+Um mapeamento é cadastrado para um único tipo de importação:
+
+- Template de E-mail
+- Template de SMS
+- Template de RCS
+- Template de WhatsApp
+- Campanhas
+- Lista de Bloqueio
+- Lista de Contatos Autorizados (CPC)
+
+## Criando um mapeamento
+
+1. Clique em **Novo mapeamento**.
+2. Informe um nome (recomendado: o nome da origem do arquivo) e, opcionalmente, uma descrição.
+3. Escolha o tipo de layout — isso define quais colunas padrão do Maestro ficam disponíveis para o pareamento.
+4. Carregue um arquivo de exemplo para detectar as colunas automaticamente (só o cabeçalho é lido, nenhum contato é importado), ou informe os nomes manualmente.
+5. Pareie cada coluna do arquivo com a coluna correspondente do Maestro. Todas as colunas obrigatórias precisam estar pareadas antes de salvar.
+6. Salve. O mapeamento fica ativo por padrão.
+
+<Note>
+Um mapeamento pode ser desativado sem ser excluído (botão Ativar/Desativar na listagem). Ao excluir um mapeamento, importações que dependiam dele passam a usar os nomes de coluna padrão do Maestro.
+</Note>
+
+## Como funciona na importação
+
+O mapeamento **traduz o cabeçalho do arquivo antes da validação** — não substitui nem contorna as regras de importação existentes:
+
+1. O Maestro tenta processar o arquivo pelo layout padrão primeiro.
+2. Se o cabeçalho não bate com o padrão, verifica se há um mapeamento ativo daquele tipo para o Ambiente, e traduz os nomes de coluna do arquivo para os nomes padrão antes de validar.
+3. Se nenhum mapeamento for encontrado, ou nenhum estiver configurado para aquele tipo, a importação é validada diretamente contra os nomes de coluna padrão do Maestro (os documentados em [Público](/guia-do-usuario/publico) e [Uso de SFTP](/integracoes/uso-de-sftp)). Um arquivo com nomes de coluna diferentes desses, sem mapeamento cadastrado, é rejeitado normalmente pelas mesmas validações que já existem.
+
+<Note>
+Se mais de um mapeamento ativo do mesmo tipo existir para o Ambiente, o mais antigo (por data de criação) é usado — sem erro nem aviso.
+</Note>
+
+Arquivos de retorno (erro, validados) também são traduzidos de volta para os nomes de coluna originais do arquivo do cliente, não para os nomes padrão do Maestro.
+
+Precisa consultar as colunas padrão de cada tipo? Veja [Público](/guia-do-usuario/publico), [Uso de SFTP](/integracoes/uso-de-sftp) e as tabelas de Contatos Autorizados/Bloqueados em [Motor de Regras](/motor-de-regras/visao-geral).

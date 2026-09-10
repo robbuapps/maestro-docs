@@ -75,6 +75,10 @@ Exemplo:
 
 Somente contatos presentes na lista podem receber mensagens pelos canais selecionados. A lista é atualizada via arquivos CSV no diretório `maestro/allow_list` do SFTP. A regra se aplica apenas aos canais explicitamente configurados.
 
+<Note>
+Se o arquivo do cliente usa nomes de coluna diferentes dos abaixo, um [Mapeamento de Layout de Importação](/integracoes/mapeamento-de-layouts) (tipo "Lista de Contatos Autorizados") pode traduzi-los automaticamente.
+</Note>
+
 | Campo | Obrigatório | Descrição |
 |---|---|---|
 | `CPF_CNPJ` | ❌ | Documento do cliente (validações ou relatórios). |
@@ -102,6 +106,10 @@ CPF_CNPJ;CD_CONTRATO;CD_TELEFONE_CONTATO;EMAIL
 Contatos presentes na lista são impedidos de receber mensagens em qualquer canal. A lista é atualizada via arquivos CSV no diretório `maestro/block_list` do SFTP.
 
 <Warning>Contatos bloqueados prevalecem sobre contatos autorizados — se um contato estiver nas duas listas, ele é bloqueado.</Warning>
+
+<Note>
+Se o arquivo do cliente usa nomes de coluna diferentes dos abaixo, um [Mapeamento de Layout de Importação](/integracoes/mapeamento-de-layouts) (tipo "Lista de Bloqueio") pode traduzi-los automaticamente.
+</Note>
 
 | Campo | Obrigatório | Descrição |
 |---|---|---|

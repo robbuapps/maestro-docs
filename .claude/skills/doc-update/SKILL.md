@@ -46,6 +46,12 @@ aproveitar para reescrever o resto da página, a menos que o usuário peça. Sig
 - Se a mudança tocar um conceito documentado em mais de uma página (veja `CONTENT-MAP.md` e as
   "páginas transversais"), edite todas as ocorrências relevantes — não só a página apontada pelo
   relatório.
+- **O achado do `doc-review` chega como um delta** ("card #X mudou Y para Z", "antes era A, agora
+  é B") — isso é o formato certo pra um relatório de investigação, mas não pode vazar pra página.
+  Escreva o comportamento **atual** de forma completa e autossuficiente: explique o que de fato
+  acontece, sem contrastar com um "antes" que o leitor não tem como conhecer. Se a frase só faz
+  sentido pra quem já sabia como era antes, ela está errada — reescreva até fazer sentido pra
+  quem nunca usou o Maestro sem essa mudança.
 
 ## Passo 4 — Página nova ou removida
 
