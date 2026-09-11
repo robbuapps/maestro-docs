@@ -83,11 +83,11 @@ Se o arquivo do cliente usa nomes de coluna diferentes dos abaixo, um [Mapeament
 |---|---|---|
 | `document_number` | ❌ | Documento do cliente (validações ou relatórios). |
 | `contract_code` | ✅ (coluna deve existir no arquivo) | Número do contrato do cliente. |
-| `phone_number` | ✅ (coluna deve existir no arquivo) | Número de telefone com DDD. |
-| `email` | ❌ | E-mail do cliente. |
+| `phone_number` | ✅* | Número de telefone com DDD. |
+| `email` | ✅* | E-mail do cliente. |
 
 <Note>
-É possível combinar os campos acima. A única combinação inválida no mesmo contato é `phone_number` + `email` preenchidos simultaneamente na mesma linha.
+\* Pelo menos um dos dois (`phone_number` ou `email`) deve ser informado na linha. A única combinação inválida no mesmo contato é os dois preenchidos simultaneamente.
 </Note>
 
 ```
