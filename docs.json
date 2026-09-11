@@ -34,7 +34,7 @@
         "group": "Permissões",
         "pages": [
           "permissoes/visao-geral",
-          "permissoes/gerente-do-ambiente",
+          "permissoes/permissoes-por-empresa",
           "permissoes/perfis-de-acesso"
         ]
       },
