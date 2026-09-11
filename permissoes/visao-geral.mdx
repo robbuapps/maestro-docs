@@ -1,0 +1,88 @@
+---
+title: "Como Funcionam as Permissões"
+description: "Controle de acesso de empresas e usuários às funcionalidades do Maestro."
+---
+
+O Maestro controla o acesso a algumas áreas por empresa e por usuário: cada empresa tem um conjunto de permissões concedido a ela, e cada usuário usa o que o seu Perfil de Acesso inclui dentro desse conjunto. Hoje isso vale para:
+
+- Segmentos
+- Público
+- Dashboards
+- Relatórios
+
+<Note>
+As demais áreas do Maestro devem passar a usar esse modelo nas próximas semanas.
+</Note>
+
+Este documento explica a ideia geral. Para o passo a passo de cada tela, veja [Permissões por Empresa](/permissoes/permissoes-por-empresa) (conceder essas permissões a uma empresa) e [Perfis de Acesso](/permissoes/perfis-de-acesso) (criar e atribuir perfis dentro de uma empresa).
+
+## A regra, em duas partes
+
+Para um usuário conseguir usar uma permissão dessas áreas, duas coisas precisam estar certas ao mesmo tempo:
+
+1. A empresa dele precisa ter aquela permissão concedida.
+2. O Perfil de Acesso dele também precisa incluir aquela permissão.
+
+Se só uma das duas estiver certa, o acesso continua bloqueado para esse usuário.
+
+## Uma analogia para fixar a ideia
+
+Pense no Maestro como um prédio comercial, com vários andares:
+
+- Cada empresa que usa o Maestro é uma equipe que trabalha nesse prédio — não é dona de um andar inteiro, tem autorização para usar salas específicas, espalhadas por diferentes andares.
+- Uma empresa do tipo Gerente do Ambiente é a síndica do prédio: além do próprio espaço de trabalho, ela decide quais salas cada outra equipe (empresa) do prédio pode usar.
+- Um Perfil de Acesso é um modelo de cartão de acesso eletrônico, criado pelo Administrador de cada empresa, que abre um conjunto de salas dentro do que a própria empresa já tem autorizado.
+- Atribuir um Perfil de Acesso a alguém é dar um cartão a essa pessoa — ela só entra onde o cartão dela abre.
+
+O acesso real de uma pessoa é o que o cartão dela abre, dentro do que a própria equipe já tem autorizado — se faltar uma das duas coisas, a sala não abre.
+
+<Note>
+"Gerente do Ambiente" não é um cargo de uma pessoa — é o tipo de uma empresa (veja [Perfis de Uso](/introducao/perfis-de-uso)). Quem exerce esse papel na prática são os usuários dessa empresa, cada um com o Perfil de Acesso que a própria empresa atribuiu a ele.
+</Note>
+
+## Por que uma permissão às vezes não aparece
+
+Exemplo: a empresa fictícia "Assessoria Aurora" tem a permissão de Relatórios concedida pelo Gerente do Ambiente. Mas a usuária Maria, que trabalha na Aurora, só tem o Perfil de Acesso "Operador" — e esse perfil não inclui Relatórios. Maria não vê essa tela, mesmo a empresa dela tendo a permissão, porque falta a segunda condição (o perfil dela).
+
+Se o Administrador da Aurora editar o perfil "Operador" para incluir Relatórios, a Maria passa a ver a tela imediatamente — não precisa receber um novo perfil, o mesmo perfil passa a abrir mais coisas.
+
+## O que esperar de empresas e usuários novos
+
+- Uma empresa nova começa sem nenhuma permissão concedida e sem nenhum Perfil de Acesso criado.
+- Um usuário novo não vem com nenhum Perfil de Acesso atribuído.
+
+Nos dois casos, alguém precisa configurar o acesso manualmente: o Gerente do Ambiente concede as permissões para a empresa (veja [Permissões por Empresa](/permissoes/permissoes-por-empresa)), e o Administrador da empresa cria e atribui os Perfis de Acesso (veja [Perfis de Acesso](/permissoes/perfis-de-acesso)).
+
+<Warning>
+Editar um Perfil de Acesso já atribuído muda o acesso de todos os usuários que o têm, imediatamente — não é preciso reatribuir.
+</Warning>
+
+<Note>
+Uma mudança de acesso só passa a valer no próximo login de quem já estava com o sistema aberto quando ela foi feita.
+</Note>
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Por que eu não vejo mais um menu que eu via antes?">
+    Ou a sua empresa deixou de ter aquela permissão, ou o seu Perfil de Acesso deixou de incluí-la. Fale com o Administrador da sua empresa para confirmar qual dos dois foi.
+  </Accordion>
+  <Accordion title="Pedi para tirar (ou dar) um acesso, mas a mudança ainda não apareceu para o usuário — é normal?">
+    Sim, se essa pessoa já estava com o sistema aberto quando a mudança foi feita — ela continua com as permissões de quando entrou. Peça para ela sair e entrar de novo.
+  </Accordion>
+  <Accordion title="Criei um usuário novo e ele não vê nada no sistema — isso é normal?">
+    Sim. Usuário novo não vem com nenhum Perfil de Acesso atribuído. Alguém da empresa precisa atribuir um em [Perfis de Acesso](/permissoes/perfis-de-acesso).
+  </Accordion>
+  <Accordion title="Acabei de criar minha empresa e não tenho nenhuma permissão, nem para criar um Perfil de Acesso — isso é normal?">
+    Sim. Empresa nova começa sem nenhuma permissão concedida e sem nenhum Perfil de Acesso criado. O Gerente do Ambiente precisa conceder as permissões primeiro — só depois disso um Perfil de Acesso tem o que incluir.
+  </Accordion>
+  <Accordion title="Um usuário pode ter mais de um Perfil de Acesso ao mesmo tempo?">
+    Sim. O acesso soma: a pessoa consegue usar tudo que qualquer um dos perfis dela libera.
+  </Accordion>
+  <Accordion title="Se um usuário muda de empresa dentro do Maestro, ele perde os acessos que tinha antes?">
+    Sim, de propósito. Os Perfis de Acesso são específicos de cada empresa — ao mudar de empresa, o usuário perde os perfis da empresa anterior e passa a depender dos perfis que a nova empresa atribuir a ele.
+  </Accordion>
+  <Accordion title="Uma permissão que minha empresa contratou não aparece nem para o Gerente do Ambiente conceder — o que fazer?">
+    Fale com a Robbu: algumas permissões precisam ser habilitadas para o ambiente antes que o Gerente do Ambiente consiga concedê-las a uma empresa específica.
+  </Accordion>
+</AccordionGroup>

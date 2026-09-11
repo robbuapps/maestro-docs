@@ -168,6 +168,59 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 - Para falhas do provedor, confirme o dado de contato (número/e-mail) e a disponibilidade do canal para aquele destinatário.
 - Para RCS sem suporte no dispositivo/operadora, confirme que o template tem uma mensagem SMS de contingência configurada.
 
+## Usuário não vê uma área que deveria (Segmentos, Público, Dashboards, Relatórios)
+
+**Causas prováveis:**
+
+1. A empresa não tem essa permissão concedida pelo Gerente do Ambiente.
+2. O usuário não tem nenhum Perfil de Acesso atribuído.
+3. O Perfil de Acesso do usuário não inclui essa permissão especificamente.
+4. A permissão ainda não foi habilitada pela Robbu para o ambiente — costuma aparecer como a opção nem existindo para o Gerente do Ambiente conceder.
+
+**Como confirmar:**
+
+- Peça para o Gerente do Ambiente conferir a aba Permissões da empresa, em Empresas > menu de opções > Configurar permissões.
+- Confira se o usuário tem algum Perfil de Acesso atribuído, e o que esse perfil inclui, em Configurações > Perfis de Acesso.
+
+**Como resolver:**
+
+- Peça para o Gerente do Ambiente conceder a permissão para a empresa, se for o caso.
+- Peça para o Administrador da empresa atribuir ou editar um Perfil de Acesso que inclua essa permissão.
+- Se a opção nem aparecer para o Gerente do Ambiente conceder, fale com a Robbu.
+- Depois de qualquer uma dessas mudanças, peça para o usuário sair do sistema e entrar de novo — veja [Como Funcionam as Permissões](/permissoes/visao-geral).
+
+## Empresa ou usuário novo sem nenhum acesso liberado
+
+**Causas prováveis:**
+
+- Comportamento esperado: empresa nova nasce sem nenhuma permissão concedida nem nenhum Perfil de Acesso criado; usuário novo nasce sem nenhum perfil atribuído.
+
+**Como confirmar:**
+
+- Confirme se a empresa é realmente nova, ou se o usuário acabou de ser criado.
+
+**Como resolver:**
+
+- Para empresa nova: o Gerente do Ambiente concede as permissões em Empresas > menu de opções > Configurar permissões, e o Administrador da empresa cria os Perfis de Acesso em Configurações > Perfis de Acesso — veja [Permissões por Empresa](/permissoes/permissoes-por-empresa) e [Perfis de Acesso](/permissoes/perfis-de-acesso).
+- Para usuário novo: o Administrador da empresa atribui um Perfil de Acesso existente a ele, na mesma tela.
+
+## Gerente do Ambiente não consegue conceder/remover permissões de outra empresa
+
+**Causas prováveis:**
+
+- A empresa de quem está tentando não é do tipo Gerente do Ambiente.
+- A ação está sendo feita no lugar errado: Perfis de Acesso são sempre configurados dentro da própria empresa — nem uma empresa Gerente do Ambiente consegue criar ou editar Perfis de Acesso de outra empresa (isso é esperado, não é um erro).
+
+**Como confirmar:**
+
+- Confirme o tipo da empresa em [Perfis de Uso](/introducao/perfis-de-uso).
+- Confirme se a tentativa foi em Empresas > menu de opções > Configurar permissões (correto para conceder permissões) e não em Configurações > Perfis de Acesso (que só existe para a própria empresa).
+
+**Como resolver:**
+
+- Conceda a permissão pelo caminho de Empresas > Configurar permissões.
+- Para Perfis de Acesso de outra empresa, oriente que o Administrador daquela empresa faça a alteração — não existe caminho para isso em nome de outra empresa.
+
 ## Regra bloqueando envio inesperadamente
 
 **Causas prováveis:**
