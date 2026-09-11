@@ -44,7 +44,7 @@ O mapeamento **traduz o cabeçalho do arquivo antes da validação** — não su
 
 1. O Maestro tenta processar o arquivo pelo layout padrão primeiro.
 2. Se o cabeçalho não bate com o padrão, verifica se há um mapeamento ativo daquele tipo para o Ambiente, e traduz os nomes de coluna do arquivo para os nomes padrão antes de validar.
-3. Se nenhum mapeamento for encontrado, ou nenhum estiver configurado para aquele tipo, a importação é validada diretamente contra os nomes de coluna padrão do Maestro (os documentados em [Público](/guia-do-usuario/publico) e [Uso de SFTP](/integracoes/uso-de-sftp)). Um arquivo com nomes de coluna diferentes desses, sem mapeamento cadastrado, é rejeitado normalmente pelas mesmas validações que já existem.
+3. Se nenhum mapeamento for encontrado, ou nenhum estiver configurado para aquele tipo, a importação é validada diretamente contra os nomes de coluna padrão do Maestro (os documentados em [Público](/guia-do-usuario/publico) e [Uso de SFTP](/integracoes/uso-de-sftp)). Um arquivo com nomes de coluna diferentes desses, sem mapeamento cadastrado, é automaticamente rejeitado.
 
 <Note>
 Se mais de um mapeamento ativo do mesmo tipo existir para o Ambiente, o mais antigo (por data de criação) é usado — sem erro nem aviso.
