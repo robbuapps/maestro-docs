@@ -26,7 +26,7 @@ Este mapa **não** é checado durante a revisão de código (decisão deliberada
 | Segments | `88-segments-behavior.md` | `guia-do-usuario/segmentos.mdx`, `integracoes/integracao-com-provedores.mdx` (direcionamento por segmento) |
 | Tenants | `89-tenants-behavior.md` | `introducao/perfis-de-uso.mdx`, `guia-do-usuario/configuracoes.mdx` |
 | Users | `90-users-behavior.md` | `guia-do-usuario/empresas-e-usuarios.mdx` |
-| Permissions | `91-permissions-behavior.md` | `permissoes/visao-geral.mdx`, `permissoes/permissoes-por-empresa.mdx`, `permissoes/perfis-de-acesso.mdx`, `guia-do-usuario/empresas-e-usuarios.mdx` (perfil de usuário fixo, para as áreas ainda não migradas), `central-de-suporte/troubleshooting.mdx`, `introducao/glossario.mdx` |
+| Permissions | `91-permissions-behavior.md` | `permissoes/visao-geral.mdx`, `permissoes/permissoes-por-empresa.mdx`, `permissoes/perfis-de-acesso.mdx`, `guia-do-usuario/empresas-e-usuarios.mdx`, `central-de-suporte/troubleshooting.mdx`, `introducao/glossario.mdx` |
 | Import layout | `93-import-layout-detection.md` | `integracoes/mapeamento-de-layouts.mdx`, `integracoes/uso-de-sftp.mdx`, `guia-do-usuario/publico.mdx`, `motor-de-regras/visao-geral.mdx` (Contatos Autorizados/Bloqueados) |
 
 ## Frontend: Módulo → Página
