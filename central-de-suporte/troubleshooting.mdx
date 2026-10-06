@@ -193,7 +193,7 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 
 **Causas prováveis:**
 
-- Comportamento esperado: empresa nova nasce sem nenhuma permissão concedida nem nenhum Perfil de Acesso criado; usuário novo nasce sem nenhum perfil atribuído.
+- Comportamento esperado: empresa nova nasce sem nenhuma permissão concedida. O primeiro usuário dela recebe o Perfil de Acesso "Administrador", mas esse perfil só abre o que a empresa tiver concedido. Os demais usuários novos nascem sem nenhum perfil atribuído.
 
 **Como confirmar:**
 
@@ -201,7 +201,7 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 
 **Como resolver:**
 
-- Para empresa nova: o Gerente do Ambiente concede as permissões em Empresas > menu de opções > Configurar permissões, e o Administrador da empresa cria os Perfis de Acesso em Configurações > Perfis de Acesso — veja [Permissões por Empresa](/permissoes/permissoes-por-empresa) e [Perfis de Acesso](/permissoes/perfis-de-acesso).
+- Para empresa nova: o Gerente do Ambiente concede as permissões em Empresas > menu de opções > Configurar permissões. Depois, o Administrador da empresa cria os Perfis de Acesso dos demais usuários em Configurações > Perfis de Acesso — veja [Permissões por Empresa](/permissoes/permissoes-por-empresa) e [Perfis de Acesso](/permissoes/perfis-de-acesso).
 - Para usuário novo: o Administrador da empresa atribui um Perfil de Acesso existente a ele, na mesma tela.
 
 ## Gerente do Ambiente não consegue conceder/remover permissões de outra empresa

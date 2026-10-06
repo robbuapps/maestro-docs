@@ -6,7 +6,7 @@ description: "Controle de acesso de empresas e usuários às funcionalidades do 
 O Maestro controla o acesso às áreas do sistema por empresa e por usuário: cada empresa tem um conjunto de permissões concedido a ela, e cada usuário usa o que o seu Perfil de Acesso inclui dentro desse conjunto.
 
 <Note>
-As telas de administração de permissões (conceder permissões por empresa e criar Perfis de Acesso) têm seu próprio controle de acesso, à parte deste modelo — evita que o mecanismo decida quem administra o próprio mecanismo.
+As telas de administração de permissões (conceder permissões por empresa e criar Perfis de Acesso) seguem esta mesma regra, com uma diferença: a empresa não recebe essas permissões do Gerente do Ambiente — elas vêm do tipo da empresa. Toda empresa pode gerenciar os próprios Perfis de Acesso; só o Gerente do Ambiente pode conceder permissões a outras empresas.
 </Note>
 
 Este documento explica a ideia geral. Para o passo a passo de cada tela, veja [Permissões por Empresa](/permissoes/permissoes-por-empresa) (conceder essas permissões a uma empresa) e [Perfis de Acesso](/permissoes/perfis-de-acesso) (criar e atribuir perfis dentro de uma empresa).
@@ -43,10 +43,14 @@ Se o Administrador da Aurora editar o perfil "Operador" para incluir Relatórios
 
 ## O que esperar de empresas e usuários novos
 
-- Uma empresa nova começa sem nenhuma permissão concedida e sem nenhum Perfil de Acesso criado.
-- Um usuário novo não vem com nenhum Perfil de Acesso atribuído.
+- Uma empresa nova começa sem nenhuma permissão concedida, mas já vem com o Perfil de Acesso "Administrador", que inclui todas as permissões. O primeiro usuário da empresa recebe esse perfil automaticamente.
+- Os demais usuários novos não vêm com nenhum Perfil de Acesso atribuído.
 
-Nos dois casos, alguém precisa configurar o acesso manualmente: o Gerente do Ambiente concede as permissões para a empresa (veja [Permissões por Empresa](/permissoes/permissoes-por-empresa)), e o Administrador da empresa cria e atribui os Perfis de Acesso (veja [Perfis de Acesso](/permissoes/perfis-de-acesso)).
+O perfil "Administrador" só abre o que a empresa tiver concedido. Por isso, o Gerente do Ambiente precisa conceder as permissões para a empresa (veja [Permissões por Empresa](/permissoes/permissoes-por-empresa)). Depois, o Administrador da empresa cria e atribui os Perfis de Acesso dos demais usuários (veja [Perfis de Acesso](/permissoes/perfis-de-acesso)).
+
+<Note>
+O perfil "Administrador" não pode ser excluído nem renomeado, e precisa ter sempre pelo menos um usuário.
+</Note>
 
 <Warning>
 Editar um Perfil de Acesso já atribuído muda o acesso de todos os usuários que o têm, imediatamente — não é preciso reatribuir.
@@ -68,8 +72,8 @@ Uma mudança de acesso só passa a valer no próximo login de quem já estava co
   <Accordion title="Criei um usuário novo e ele não vê nada no sistema — isso é normal?">
     Sim. Usuário novo não vem com nenhum Perfil de Acesso atribuído. Alguém da empresa precisa atribuir um em [Perfis de Acesso](/permissoes/perfis-de-acesso).
   </Accordion>
-  <Accordion title="Acabei de criar minha empresa e não tenho nenhuma permissão, nem para criar um Perfil de Acesso — isso é normal?">
-    Sim. Empresa nova começa sem nenhuma permissão concedida e sem nenhum Perfil de Acesso criado. O Gerente do Ambiente precisa conceder as permissões primeiro — só depois disso um Perfil de Acesso tem o que incluir.
+  <Accordion title="Acabei de criar minha empresa e quase nenhuma tela aparece, mesmo com o perfil Administrador — isso é normal?">
+    Sim. Empresa nova começa sem nenhuma permissão concedida. O primeiro usuário já recebe o perfil "Administrador", mas esse perfil só abre o que a empresa tiver concedido. O Gerente do Ambiente precisa conceder as permissões primeiro.
   </Accordion>
   <Accordion title="Um usuário pode ter mais de um Perfil de Acesso ao mesmo tempo?">
     Sim. O acesso soma: a pessoa consegue usar tudo que qualquer um dos perfis dela libera.
