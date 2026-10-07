@@ -5,10 +5,6 @@ description: "Controle de acesso de empresas e usuários às funcionalidades do 
 
 O Maestro controla o acesso às áreas do sistema por empresa e por usuário: cada empresa tem um conjunto de permissões concedido a ela, e cada usuário usa o que o seu Perfil de Acesso inclui dentro desse conjunto.
 
-<Note>
-As telas de administração de permissões (conceder permissões por empresa e criar Perfis de Acesso) seguem esta mesma regra, com uma diferença: a empresa não recebe essas permissões do Gerente do Ambiente — elas vêm do tipo da empresa. Toda empresa pode gerenciar os próprios Perfis de Acesso; só o Gerente do Ambiente pode conceder permissões a outras empresas.
-</Note>
-
 Este documento explica a ideia geral. Para o passo a passo de cada tela, veja [Permissões por Empresa](/permissoes/permissoes-por-empresa) (conceder essas permissões a uma empresa) e [Perfis de Acesso](/permissoes/perfis-de-acesso) (criar e atribuir perfis dentro de uma empresa).
 
 ## A regra, em duas partes
@@ -20,13 +16,17 @@ Para um usuário conseguir usar uma permissão dessas áreas, duas coisas precis
 
 Se só uma das duas estiver certa, o acesso continua bloqueado para esse usuário.
 
+<Note>
+As telas de administração de permissões também seguem essa regra, mas a empresa recebe essas permissões pelo próprio tipo, não do Gerente do Ambiente. Toda empresa pode gerenciar os próprios Perfis de Acesso; só o Gerente do Ambiente concede permissões a outras empresas.
+</Note>
+
 ## Uma analogia para fixar a ideia
 
 Pense no Maestro como um prédio comercial, com vários andares:
 
 - Cada empresa que usa o Maestro é uma equipe que trabalha nesse prédio — não é dona de um andar inteiro, tem autorização para usar salas específicas, espalhadas por diferentes andares.
 - Uma empresa do tipo Gerente do Ambiente é a síndica do prédio: além do próprio espaço de trabalho, ela decide quais salas cada outra equipe (empresa) do prédio pode usar.
-- Um Perfil de Acesso é um modelo de cartão de acesso eletrônico, criado pelo Administrador de cada empresa, que abre um conjunto de salas dentro do que a própria empresa já tem autorizado.
+- Um Perfil de Acesso é um modelo de cartão de acesso eletrônico, criado por quem tem o perfil Administrador em cada empresa, que abre um conjunto de salas dentro do que a própria empresa já tem autorizado.
 - Atribuir um Perfil de Acesso a alguém é dar um cartão a essa pessoa — ela só entra onde o cartão dela abre.
 
 O acesso real de uma pessoa é o que o cartão dela abre, dentro do que a própria equipe já tem autorizado — se faltar uma das duas coisas, a sala não abre.
@@ -39,17 +39,17 @@ O acesso real de uma pessoa é o que o cartão dela abre, dentro do que a própr
 
 Exemplo: a empresa fictícia "Assessoria Aurora" tem a permissão de Relatórios concedida pelo Gerente do Ambiente. Mas a usuária Maria, que trabalha na Aurora, só tem o Perfil de Acesso "Operador" — e esse perfil não inclui Relatórios. Maria não vê essa tela, mesmo a empresa dela tendo a permissão, porque falta a segunda condição (o perfil dela).
 
-Se o Administrador da Aurora editar o perfil "Operador" para incluir Relatórios, a Maria passa a ver a tela imediatamente — não precisa receber um novo perfil, o mesmo perfil passa a abrir mais coisas.
+Se quem tem o perfil Administrador na Aurora editar o perfil "Operador" para incluir Relatórios, a Maria passa a ver a tela imediatamente — não precisa receber um novo perfil, o mesmo perfil passa a abrir mais coisas.
 
 ## O que esperar de empresas e usuários novos
 
 - Uma empresa nova começa sem nenhuma permissão concedida, mas já vem com o Perfil de Acesso "Administrador", que inclui todas as permissões. O primeiro usuário da empresa recebe esse perfil automaticamente.
 - Os demais usuários novos não vêm com nenhum Perfil de Acesso atribuído.
 
-O perfil "Administrador" só abre o que a empresa tiver concedido. Por isso, o Gerente do Ambiente precisa conceder as permissões para a empresa (veja [Permissões por Empresa](/permissoes/permissoes-por-empresa)). Depois, o Administrador da empresa cria e atribui os Perfis de Acesso dos demais usuários (veja [Perfis de Acesso](/permissoes/perfis-de-acesso)).
+O perfil "Administrador" e os demais Perfis de Acesso só abrem o que a empresa tiver concedido. Quem tem o perfil Administrador pode criar e atribuir perfis a qualquer momento (veja [Perfis de Acesso](/permissoes/perfis-de-acesso)), mas eles só passam a liberar algo depois que o Gerente do Ambiente conceder as permissões (veja [Permissões por Empresa](/permissoes/permissoes-por-empresa)).
 
 <Note>
-O perfil "Administrador" não pode ser excluído nem renomeado, e precisa ter sempre pelo menos um usuário.
+O perfil "Administrador" tem regras próprias: não pode ser excluído nem renomeado, não perde permissões e precisa ter sempre pelo menos um usuário. Veja [Perfis de Acesso](/permissoes/perfis-de-acesso).
 </Note>
 
 <Warning>
@@ -64,7 +64,7 @@ Uma mudança de acesso só passa a valer no próximo login de quem já estava co
 
 <AccordionGroup>
   <Accordion title="Por que eu não vejo mais um menu que eu via antes?">
-    Ou a sua empresa deixou de ter aquela permissão, ou o seu Perfil de Acesso deixou de incluí-la. Fale com o Administrador da sua empresa para confirmar qual dos dois foi.
+    Ou a sua empresa deixou de ter aquela permissão, ou o seu Perfil de Acesso deixou de incluí-la. Fale com quem tem o perfil Administrador na sua empresa para confirmar qual dos dois foi.
   </Accordion>
   <Accordion title="Pedi para tirar (ou dar) um acesso, mas a mudança ainda não apareceu para o usuário — é normal?">
     Sim, se essa pessoa já estava com o sistema aberto quando a mudança foi feita — ela continua com as permissões de quando entrou. Peça para ela sair e entrar de novo.
