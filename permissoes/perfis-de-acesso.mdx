@@ -1,6 +1,6 @@
 ---
 title: "Criando e Atribuindo Perfis de Acesso"
-description: "Como o Administrador de uma empresa cria Perfis de Acesso e os atribui a usuários."
+description: 'Como quem tem o perfil "Administrador" cria Perfis de Acesso e os atribui a usuários.'
 ---
 
 Este guia é para quem administra uma empresa específica no Maestro. Veja [Como Funcionam as Permissões](/permissoes/visao-geral) antes, se ainda não viu.
@@ -13,6 +13,20 @@ Aqui você cria Perfis de Acesso para a sua empresa, decide o que cada um libera
 
 No menu lateral, clique em **Configurações** e abra o card **Perfis de Acesso**. A lista mostra as colunas **Nome**, **Descrição**, **Permissões** e **Ações**.
 
+## O perfil "Administrador"
+
+Toda empresa já nasce com o perfil "Administrador", que inclui todas as permissões. O primeiro usuário da empresa recebe esse perfil automaticamente. Como os outros perfis, ele só abre o que a empresa tiver concedido.
+
+Esse perfil tem regras próprias:
+
+- Não pode ser renomeado nem excluído.
+- Não é possível remover permissões dele.
+- Precisa ter sempre pelo menos um usuário.
+
+<Warning>
+Se uma permissão recém-lançada não aparecer no perfil "Administrador" de uma empresa que já existia, fale com a Robbu.
+</Warning>
+
 ## Criando um Perfil de Acesso
 
 1. Clique em **Novo perfil**.
@@ -22,7 +36,7 @@ No menu lateral, clique em **Configurações** e abra o card **Perfis de Acesso*
 
 ## Editando um Perfil de Acesso
 
-Encontre o perfil na lista e abra **Editar perfil**. É possível mudar o nome, a descrição ou o que ele libera.
+Encontre o perfil na lista e abra **Editar perfil**. É possível mudar o nome, a descrição ou o que ele libera. No perfil "Administrador", não é possível mudar o nome nem remover permissões.
 
 <Warning>
 Editar um perfil muda o acesso de todos os usuários que já o têm, imediatamente — não é preciso reatribuir. Se alguém que já está com o sistema aberto não vir a mudança na hora, peça para essa pessoa sair e entrar de novo.
@@ -34,11 +48,11 @@ Editar um perfil muda o acesso de todos os usuários que já o têm, imediatamen
 2. Na janela "Atribuir usuários ao perfil", marque as pessoas que devem recebê-lo.
 3. Salve.
 
-Para remover o perfil de alguém, volte na mesma janela e desmarque a pessoa.
+Para remover o perfil de alguém, volte na mesma janela e desmarque a pessoa. No perfil "Administrador", não é possível desmarcar o último usuário.
 
 ## Removendo um Perfil de Acesso
 
-Na lista, use a ação de exclusão (**Remover perfil**). Isso tira esse perfil de todos que o tinham — as pessoas continuam com os outros perfis que já tiverem.
+Na lista, use a ação de exclusão (**Remover perfil**). Isso tira esse perfil de todos que o tinham — as pessoas continuam com os outros perfis que já tiverem. O perfil "Administrador" não pode ser removido.
 
 ## Perfis comuns como ponto de partida
 
