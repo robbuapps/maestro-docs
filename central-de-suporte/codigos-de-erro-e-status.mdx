@@ -85,9 +85,9 @@ Para campanhas via SFTP, o mesmo tipo de motivo aparece por linha, na coluna `Mo
 
 | Arquivo | Onde aparece | Significado |
 |---|---|---|
-| `{nome}_EXCEPTIONS.csv` | `/maestro/campaigns/processed` | Linhas do arquivo de campanha que quebraram alguma regra — coluna `Motivo Falha` explica o motivo por linha. |
-| `{nome}_created.csv` | `/maestro/campaigns/processed` | Contatos processados, mas sem provedor configurado para o canal (não houve envio). |
-| `{nome}_VALIDATED.csv` | `/maestro/campaigns/processed` | Contatos processados e efetivamente enviados (havia provedor configurado). |
-| `{nome}_errorDetail.txt` | `/maestro/campaigns/error` ou `/maestro/templates/error` | Falha no arquivo inteiro (nome fora do padrão, erro de linha em importação de template, etc.). |
+| `{nome}_EXCEPTIONS.csv` | `processed`, na pasta de Campanhas | Linhas do arquivo de campanha que quebraram alguma regra — coluna `Motivo Falha` explica o motivo por linha. |
+| `{nome}_created.csv` | `processed`, na pasta de Campanhas | Contatos processados, mas sem provedor configurado para o canal (não houve envio). |
+| `{nome}_VALIDATED.csv` | `processed`, na pasta de Campanhas | Contatos processados e efetivamente enviados (havia provedor configurado). |
+| `{nome}_errorDetail.txt` | `error`, na pasta de Campanhas ou de Templates | Falha no arquivo inteiro (nome fora do padrão, erro de linha em importação de template, etc.). |
 
 Veja o fluxo completo em [Uso de SFTP](/integracoes/uso-de-sftp).
