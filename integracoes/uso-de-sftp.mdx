@@ -1,9 +1,9 @@
 ---
 title: "Uso de SFTP"
-description: "Importação automática de templates e campanhas via SFTP no Maestro."
+description: "Contas SFTP e importação automática de templates, campanhas e listas de contatos no Maestro."
 ---
 
-Esta página orienta como usar os serviços automáticos de importação via SFTP para Templates e Campanhas no Maestro.
+Esta página orienta como configurar contas SFTP e usar os serviços automáticos de importação de Templates, Campanhas, Arquivo de Bloqueio e Contatos Autorizados no Maestro.
 
 <Note>
 Os nomes de coluna abaixo são o padrão do Maestro. Se o arquivo do cliente usa nomes diferentes, um [Mapeamento de Layout de Importação](/integracoes/mapeamento-de-layouts) pode traduzi-los automaticamente, sem precisar alterar o arquivo de origem.
@@ -11,15 +11,25 @@ Os nomes de coluna abaixo são o padrão do Maestro. Se o arquivo do cliente usa
 
 ## Configuração
 
-A configuração de SFTP é feita em **Configurações > Empresa > Transferência de Arquivos**. A Gerente do Ambiente decide se as assessorias podem usar um SFTP próprio ou apenas o gerenciado pela Robbu.
+As contas SFTP ficam em **Configurações > Empresa > Transferência de arquivos > Gerenciar contas**, na tela **Contas SFTP**. O acesso depende da permissão de atualizar as configurações da empresa.
+
+Uma empresa pode ter várias contas SFTP. Cada conta tem:
+
+- **Nome da conta**
+- **Conta ativa** — contas inativas não são lidas pelas rotinas de importação
+- **Serviços vinculados** — as importações que a conta atende, cada uma com a sua pasta (veja Serviços e pastas, abaixo)
+
+O tipo da conta, SFTP Robbu ou SFTP Próprio, é escolhido ao criá-la.
 
 ### SFTP Robbu
 
-A Robbu disponibiliza um servidor SFTP gerenciado, pronto para uso imediato. Ao habilitar, o sistema fornece servidor, porta, nome de usuário e senha.
+Servidor gerenciado pela Robbu. Servidor, usuário e senha são gerados automaticamente ao salvar a conta e não podem ser editados. A senha pode ser trocada com **Resetar senha**.
+
+Cada empresa pode ter no máximo uma conta SFTP Robbu.
 
 ### SFTP Próprio
 
-A própria empresa gerencia seu SFTP.
+Servidor da própria empresa. Informe **Servidor**, **Porta** e **Usuário**, e para autenticação a **Senha**, a **Chave privada SSH** (botão **Incluir chave**) ou as duas. Pelo menos uma delas é obrigatória; preencha as duas quando o servidor exigir senha e chave ao mesmo tempo.
 
 ### Segurança
 
@@ -27,21 +37,33 @@ A própria empresa gerencia seu SFTP.
 - Garanta o uso correto de porta e endereço do servidor.
 - A proteção desses dados garante a integridade dos arquivos durante as transferências.
 
-## Diretórios
+## Serviços e pastas
 
-| Uso | Caminho SFTP |
+| Serviço | O que importa |
 |---|---|
-| Templates a serem importados | `/maestro/templates` |
-| Campanhas a serem importadas | `/maestro/campaigns` |
+| Templates | Templates — veja Importar templates, abaixo |
+| Campanhas | Campanhas — veja Importar campanhas, abaixo |
+| Arquivo de Bloqueio | Lista de contatos bloqueados — veja [Motor de Regras](/motor-de-regras/visao-geral) |
+| Contatos Autorizados | Lista de contatos autorizados — veja [Motor de Regras](/motor-de-regras/visao-geral) |
 
-Dentro de cada diretório acima, duas pastas são criadas automaticamente:
+Arquivo de Bloqueio e Contatos Autorizados só estão disponíveis para empresas do tipo Gerente do Ambiente e Administradora do sistema.
 
-- `/processed` — arquivos importados com sucesso
-- `/error` — importações que falharam, com sinalização do erro encontrado
+Para cada serviço vinculado, informe em **Caminho da pasta** a pasta do servidor SFTP onde os arquivos serão colocados. Um serviço pode estar vinculado a mais de uma conta da empresa — todas as contas ativas com o serviço são lidas.
+
+Dentro da pasta de cada serviço, são criadas automaticamente:
+
+- `processed` — arquivos importados com sucesso
+- `error` — importações que falharam, com sinalização do erro encontrado
+
+Campanhas usam também a pasta `processing`, para arquivos em processamento.
 
 <Note>
-Esses diretórios são criados automaticamente após a conexão do servidor SFTP na tela de configuração, mas pode levar até 10 minutos para aparecerem.
+As pastas são criadas pela rotina de importação, executada a cada 10 minutos. Após salvar a conta, pode levar até 10 minutos para que fiquem visíveis.
 </Note>
+
+<Warning>
+Ao remover uma conta, os serviços que ela atendia param de importar arquivos até que outra conta seja configurada para atendê-los.
+</Warning>
 
 ## Importar campanhas
 
@@ -68,13 +90,13 @@ cliente@dominio.com,email,E0001,BR001,Financeiro,98765432100,CT-12345,,2025-09-0
 
 ### Fluxo de processamento
 
-1. Faça upload do arquivo `.csv` em `/maestro/campaigns`.
-2. Um serviço rotineiro roda a cada 10 minutos: cria `/processed` e `/error` se não existirem, e busca arquivos `.csv` ainda não importados.
-3. Durante a importação, são validados: se cada linha cumpre as regras do ambiente (segmento existe e assessoria tem acesso; templates aprovados; horários de saída válidos; se a coluna `broker` for informada, se o provedor existe e é compatível com o segmento — nome inválido ou provedor sem perfil rejeita **o arquivo inteiro**).
-4. Na importação: linhas que quebram regras geram `{nome original}_EXCEPTIONS.csv` em `/processed`, com a coluna adicional `Motivo Falha`.
-5. Se não houver provedor para o canal configurado, é criado `{nome original}_created.csv` em `/processed` com os contatos processados (sem envio). Se houver provedor, os envios são criados e o arquivo gerado é `{nome original}_VALIDATED.csv`.
+1. Faça upload do arquivo `.csv` na pasta configurada para o serviço Campanhas.
+2. Um serviço rotineiro roda a cada 10 minutos: cria as subpastas `processed`, `processing` e `error` na pasta de Campanhas, se não existirem, e busca arquivos `.csv` ainda não importados.
+3. Durante a importação, são validados: se cada linha cumpre as regras do ambiente (segmento existe e a empresa tem acesso; templates aprovados; horários de saída válidos; se a coluna `broker` for informada, se o provedor existe e é compatível com o segmento — nome inválido ou provedor sem perfil rejeita **o arquivo inteiro**).
+4. Na importação: linhas que quebram regras geram `{nome original}_EXCEPTIONS.csv` na subpasta `processed`, com a coluna adicional `Motivo Falha`.
+5. Se não houver provedor para o canal configurado, é criado `{nome original}_created.csv` na subpasta `processed` com os contatos processados (sem envio). Se houver provedor, os envios são criados e o arquivo gerado é `{nome original}_VALIDATED.csv`.
 6. Arquivos de anexo (se houver) são destruídos após o envio.
-7. Se houver falha no arquivo inteiro, é gerado `{nome do arquivo original}_errorDetail.txt` em `/error`.
+7. Se houver falha no arquivo inteiro, é gerado `{nome do arquivo original}_errorDetail.txt` na subpasta `error`.
 
 ## Importar templates
 
@@ -184,11 +206,11 @@ Regra específica do RCS: templates dos tipos `Texto simples` e `Sugestão` pode
 
 ### Fluxo de processamento
 
-1. Faça upload do `.csv` em `/maestro/templates`.
-2. Um serviço rotineiro roda a cada 10 minutos: cria `/processed` e `/error` se não existirem, e busca arquivos ainda não importados.
-3. Validações: nome do arquivo segue o padrão, segmento existe e assessoria tem acesso, campos obrigatórios do cenário estão presentes.
+1. Faça upload do `.csv` na pasta configurada para o serviço Templates.
+2. Um serviço rotineiro roda a cada 10 minutos: cria as subpastas `processed` e `error` na pasta de Templates, se não existirem, e busca arquivos ainda não importados.
+3. Validações: nome do arquivo segue o padrão, segmento existe e a empresa tem acesso, campos obrigatórios do cenário estão presentes.
 4. O comportamento da importação varia conforme os campos informados — veja [Fluxos](#fluxos).
-5. O arquivo é movido para `/processed` (sucesso) ou `/error` (falha), gerando `{nome do arquivo original}_errorDetail.txt` em caso de erro.
+5. O arquivo é movido para a subpasta `processed` (sucesso) ou `error` (falha), gerando `{nome do arquivo original}_errorDetail.txt` em caso de erro.
 
 ### Fluxos
 

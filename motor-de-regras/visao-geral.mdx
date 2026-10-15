@@ -73,7 +73,7 @@ Exemplo:
 
 #### 1. Contatos Autorizados
 
-Somente contatos presentes na lista podem receber mensagens pelos canais selecionados. A lista é atualizada via arquivos CSV no diretório `maestro/allow_list` do SFTP. A regra se aplica apenas aos canais explicitamente configurados.
+Somente contatos presentes na lista podem receber mensagens pelos canais selecionados. A lista é atualizada via arquivos CSV na pasta configurada para o serviço Contatos Autorizados de uma conta SFTP — veja [Uso de SFTP](/integracoes/uso-de-sftp). A regra se aplica apenas aos canais explicitamente configurados.
 
 <Note>
 Se o arquivo do cliente usa nomes de coluna diferentes dos abaixo, um [Mapeamento de Layout de Importação](/integracoes/mapeamento-de-layouts) (tipo "Lista de Contatos Autorizados") pode traduzi-los automaticamente.
@@ -103,7 +103,7 @@ document_number;contract_code;phone_number;email
 
 #### 2. Contatos Bloqueados
 
-Contatos presentes na lista são impedidos de receber mensagens em qualquer canal. A lista é atualizada via arquivos CSV no diretório `maestro/block_list` do SFTP.
+Contatos presentes na lista são impedidos de receber mensagens em qualquer canal. A lista é atualizada via arquivos CSV na pasta configurada para o serviço Arquivo de Bloqueio de uma conta SFTP — veja [Uso de SFTP](/integracoes/uso-de-sftp).
 
 <Warning>Contatos bloqueados prevalecem sobre contatos autorizados — se um contato estiver nas duas listas, ele é bloqueado.</Warning>
 
@@ -187,7 +187,7 @@ Veja mais em [Direct Message API](/integracoes/direct-message-api).
 
 ### SFTP
 
-Valida o arquivo linha a linha. Linhas invalidadas geram, na pasta `/maestro/campaigns/processed`, um arquivo `{nome original}_EXCEPTIONS.csv` com a cópia da linha original e uma coluna adicional `Motivo Falha`:
+Valida o arquivo linha a linha. Linhas invalidadas geram, na subpasta `processed` da pasta de Campanhas, um arquivo `{nome original}_EXCEPTIONS.csv` com a cópia da linha original e uma coluna adicional `Motivo Falha`:
 
 ```
 (Outras colunas...), MotivoFalha
