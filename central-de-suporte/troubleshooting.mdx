@@ -43,7 +43,7 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 
 **Como confirmar:**
 
-- Se o envio veio de um arquivo (Público ou SFTP), procure o arquivo `{nome original}_EXCEPTIONS.csv` gerado na pasta `/processed` — ele traz a coluna `Motivo Falha` com o motivo exato por linha.
+- Se o envio veio de um arquivo (Público ou SFTP), procure o arquivo `{nome original}_EXCEPTIONS.csv` gerado na subpasta `processed` da pasta de Campanhas — ele traz a coluna `Motivo Falha` com o motivo exato por linha.
 - Se o envio veio da Direct Message API, o motivo aparece no corpo da resposta `409 - Conflict`, no campo `conflicts`.
 
 **Como resolver:**
@@ -114,21 +114,24 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 
 **Causas prováveis:**
 
-- Credenciais de SFTP próprio incorretas ou incompletas — a importação é silenciosamente ignorada nesse caso.
-- Diretórios `/processed` e `/error` ainda não apareceram (podem levar até 10 minutos após a configuração inicial).
+- Credenciais de SFTP próprio incorretas ou incompletas — inclusive a chave privada SSH, quando o servidor exige senha e chave. A importação é silenciosamente ignorada nesse caso.
+- A conta SFTP está com **Conta ativa** desligada.
+- O serviço (Templates, Campanhas etc.) não está vinculado a nenhuma conta ativa.
+- O arquivo foi colocado numa pasta diferente do **Caminho da pasta** configurado para o serviço.
+- As pastas `processed` e `error` ainda não apareceram (podem levar até 10 minutos depois que a conta é salva).
 - Nome do arquivo de template fora do padrão esperado (`{segmento}_{canal}_[{waba}]_{data}.csv`) — não se aplica a campanhas, cujo nome de arquivo não é validado.
-- O arquivo já foi processado antes — arquivos em `/processed` não são reprocessados.
+- O arquivo já foi processado antes — arquivos na subpasta `processed` não são reprocessados.
 - O serviço de importação roda a cada 10 minutos — arquivos recém-enviados podem levar até esse tempo para aparecer processados.
 
 **Como confirmar:**
 
-- Verifique se o arquivo apareceu em `/processed` (sucesso) ou `/error` (falha) após ~10 minutos.
-- Em caso de erro no arquivo inteiro, abra `{nome do arquivo original}_errorDetail.txt` na pasta `/error`.
-- Em caso de erro em linhas específicas (campanhas), abra `{nome original}_EXCEPTIONS.csv` em `/processed`.
+- Verifique se o arquivo apareceu na subpasta `processed` (sucesso) ou `error` (falha) da pasta do serviço após ~10 minutos.
+- Em caso de erro no arquivo inteiro, abra `{nome do arquivo original}_errorDetail.txt` na subpasta `error`.
+- Em caso de erro em linhas específicas (campanhas), abra `{nome original}_EXCEPTIONS.csv` na subpasta `processed`.
 
 **Como resolver:**
 
-- Revise as credenciais de SFTP próprio em Configurações > Empresa > Transferência de Arquivos, ou use o SFTP gerenciado pela Robbu.
+- Revise a conta em Configurações > Empresa > Transferência de arquivos > Gerenciar contas: credenciais, **Conta ativa**, serviços vinculados e o caminho da pasta de cada serviço. Se preferir, use uma conta SFTP Robbu.
 - Corrija o nome do arquivo conforme o padrão documentado e reenvie com um nome novo (não reenvie o mesmo nome já processado).
 - Aguarde o próximo ciclo de 10 minutos antes de considerar o arquivo "travado".
 
@@ -167,6 +170,26 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 
 - Para falhas do provedor, confirme o dado de contato (número/e-mail) e a disponibilidade do canal para aquele destinatário.
 - Para RCS sem suporte no dispositivo/operadora, confirme que o template tem uma mensagem SMS de contingência configurada.
+
+## Usuário não consegue entrar no Maestro
+
+**Causas prováveis:**
+
+1. A mensagem "Empresa inativa." aparece: a empresa do usuário foi inativada ou excluída do ambiente. Vale para todos os usuários dela.
+2. A mensagem "Ambiente inativo." aparece: o ambiente foi inativado. Nenhum usuário do ambiente consegue entrar, inclusive os do Gerente do Ambiente, e os arquivos das contas SFTP do ambiente não são processados.
+
+Essas duas mensagens só aparecem depois que a senha é validada — com e-mail ou senha incorretos, o login falha antes dessa verificação.
+
+**Como confirmar:**
+
+- Confira a mensagem exibida na tela de login.
+- Para "Empresa inativa.", peça para o Gerente do Ambiente conferir o status da empresa na tela **Empresas**.
+
+**Como resolver:**
+
+- Empresa inativa: o Gerente do Ambiente reativa a empresa na edição dela.
+- Empresa excluída: o Gerente do Ambiente cadastra a empresa de novo em **Empresas**, com o mesmo CNPJ.
+- Ambiente inativo: fale com a Robbu.
 
 ## Usuário não vê uma área que deveria
 
