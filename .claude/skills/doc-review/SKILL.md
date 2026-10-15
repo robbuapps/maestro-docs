@@ -69,6 +69,10 @@ Cruzar caminho de arquivo com o mapa dá **candidatos**, não confirmação. Par
    Não deixe isso para a skill `doc-update`; ela vai reverificar, mas o relatório precisa ser
    útil por si só.
 
+Mudanças que a própria interface explica (uma janela de confirmação nova, um rótulo, uma validação
+exibida na tela) não são impacto na doc por si só. Só registre o candidato se houver um efeito que a tela
+não mostra (ex.: o que acontece depois da confirmação) — e, nesse caso, descreva o efeito, não a tela.
+
 Classifique cada candidato como o `STYLE-GUIDE.md` pede: **confirmado no código**, **inferido
 com evidência**, ou **hipótese** — e diga qual das três é, explicitamente, no relatório.
 

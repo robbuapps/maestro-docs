@@ -58,7 +58,7 @@ Veja o detalhamento e exemplos de corpo de resposta em [Direct Message API](/int
 | `200 - OK` | Mensagem validada, mas não enviada — canal sem provedor configurado. |
 | `202 - Accepted` | Mensagem validada e enfileirada para envio. |
 | `400 - Bad Request` | Nome de provedor inválido no campo `broker` (opcional, apenas SMS/RCS). |
-| `401 - Unauthorized` | Falha de autenticação (token ausente, inválido ou expirado). |
+| `401 - Unauthorized` | Falha de autenticação (token ausente, inválido ou expirado, ou empresa inativa ou excluída do ambiente). |
 | `422 - UnprocessableEntity` | Campo obrigatório ausente ou inválido no corpo da requisição. |
 | `409 - Conflict` | Envio bloqueado pelo Motor de Regras — corpo traz a lista de motivos em `conflicts`. |
 
