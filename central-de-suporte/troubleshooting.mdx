@@ -168,6 +168,26 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 - Para falhas do provedor, confirme o dado de contato (número/e-mail) e a disponibilidade do canal para aquele destinatário.
 - Para RCS sem suporte no dispositivo/operadora, confirme que o template tem uma mensagem SMS de contingência configurada.
 
+## Usuário não consegue entrar no Maestro
+
+**Causas prováveis:**
+
+1. A mensagem "Empresa inativa." aparece: a empresa do usuário foi inativada ou excluída do ambiente. Vale para todos os usuários dela.
+2. A mensagem "Ambiente inativo." aparece: o ambiente foi inativado. Nenhum usuário do ambiente consegue entrar, inclusive os do Gerente do Ambiente, e os arquivos das contas SFTP do ambiente não são processados.
+
+Essas duas mensagens só aparecem depois que a senha é validada — com e-mail ou senha incorretos, o login falha antes dessa verificação.
+
+**Como confirmar:**
+
+- Confira a mensagem exibida na tela de login.
+- Para "Empresa inativa.", peça para o Gerente do Ambiente conferir o status da empresa na tela **Empresas**.
+
+**Como resolver:**
+
+- Empresa inativa: o Gerente do Ambiente reativa a empresa na edição dela.
+- Empresa excluída: o Gerente do Ambiente cadastra a empresa de novo em **Empresas**, com o mesmo CNPJ.
+- Ambiente inativo: fale com a Robbu.
+
 ## Usuário não vê uma área que deveria
 
 **Causas prováveis:**

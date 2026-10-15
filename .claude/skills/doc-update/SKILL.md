@@ -41,6 +41,7 @@ aproveitar para reescrever o resto da página, a menos que o usuário peça. Sig
 
 - Terminologia canônica do `STYLE-GUIDE.md` (não introduza um termo novo sem sinalizar).
 - Nunca traduza/renomeie identificadores literais do sistema.
+- Não descreva o que a interface já explica sozinha (confirmações, rótulos, validações na tela) — veja `STYLE-GUIDE.md`, seção Prosa.
 - Reaproveite os componentes já usados na página (`<Note>`, `<Warning>`, `<AccordionGroup>`,
   tabelas) em vez de inventar um formato novo.
 - Se a mudança tocar um conceito documentado em mais de uma página (veja `CONTENT-MAP.md` e as
