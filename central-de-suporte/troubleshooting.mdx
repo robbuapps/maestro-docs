@@ -173,7 +173,7 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 **Causas prováveis:**
 
 1. A mensagem "Empresa inativa." aparece: a empresa do usuário foi inativada ou excluída do ambiente. Vale para todos os usuários dela.
-2. A mensagem "Ambiente inativo." aparece: o ambiente foi inativado. Só usuários da empresa Administradora do sistema continuam entrando.
+2. A mensagem "Ambiente inativo." aparece: o ambiente foi inativado. Nenhum usuário do ambiente consegue entrar, inclusive os do Gerente do Ambiente, e os arquivos das contas SFTP do ambiente não são processados.
 
 Essas duas mensagens só aparecem depois que a senha é validada — com e-mail ou senha incorretos, o login falha antes dessa verificação.
 
@@ -185,6 +185,7 @@ Essas duas mensagens só aparecem depois que a senha é validada — com e-mail 
 **Como resolver:**
 
 - Empresa inativa: o Gerente do Ambiente reativa a empresa na edição dela.
+- Empresa excluída: o Gerente do Ambiente cadastra a empresa de novo em **Empresas**, com o mesmo CNPJ.
 - Ambiente inativo: fale com a Robbu.
 
 ## Usuário não vê uma área que deveria

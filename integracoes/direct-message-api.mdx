@@ -155,7 +155,7 @@ Para WhatsApp, a estrutura é um pouco diferente — o objeto `variables` (com `
 | `200 - OK` | Mensagem validada, mas não enviada — não há serviço/provedor configurado para o canal. |
 | `202 - Accepted` | Mensagem em processamento — passou pelas validações e foi enfileirada para envio. |
 | `400 - Bad Request` | Nome de provedor inválido — não corresponde a um provedor cadastrado. |
-| `401 - Unauthorized` | Falha na autenticação — token inválido, ou empresa inativa ou excluída do ambiente. |
+| `401 - Unauthorized` | Falha de autenticação (token ausente, inválido ou expirado, ou empresa inativa ou excluída do ambiente). |
 | `422 - UnprocessableEntity` | Erros de validação — campos obrigatórios não preenchidos ou dados inválidos. |
 | `409 - Conflict` | Erros de validação do Motor de Regras — lista os motivos de bloqueio. |
 
