@@ -58,7 +58,7 @@ Veja o detalhamento e exemplos de corpo de resposta em [Direct Message API](/int
 | `200 - OK` | Mensagem validada, mas não enviada — canal sem provedor configurado. |
 | `202 - Accepted` | Mensagem validada e enfileirada para envio. |
 | `400 - Bad Request` | Nome de provedor inválido no campo `broker` (opcional, apenas SMS/RCS). |
-| `401 - Unauthorized` | Falha de autenticação (token ausente, inválido ou expirado, ou empresa inativa ou excluída do ambiente). |
+| `401 - Unauthorized` | Falha de autenticação (token ausente ou inválido, ou empresa inativa ou excluída do ambiente). |
 | `422 - UnprocessableEntity` | Campo obrigatório ausente ou inválido no corpo da requisição. |
 | `409 - Conflict` | Envio bloqueado pelo Motor de Regras — corpo traz a lista de motivos em `conflicts`. |
 
@@ -79,15 +79,15 @@ Tanto a Direct Message API quanto o processamento de campanhas usam a mesma estr
 }
 ```
 
-Para campanhas via SFTP, o mesmo tipo de motivo aparece por linha, na coluna `Motivo Falha` do arquivo `{nome original}_EXCEPTIONS.csv` — veja [Uso de SFTP](/integracoes/uso-de-sftp).
+Para campanhas via SFTP, o mesmo tipo de motivo aparece por linha, na coluna `Motivo falha` do arquivo `{nome original}_errors.csv` — veja [Uso de SFTP](/integracoes/uso-de-sftp).
 
 ## Arquivos de retorno do SFTP
 
 | Arquivo | Onde aparece | Significado |
 |---|---|---|
-| `{nome}_EXCEPTIONS.csv` | `processed`, na pasta de Campanhas | Linhas do arquivo de campanha que quebraram alguma regra — coluna `Motivo Falha` explica o motivo por linha. |
-| `{nome}_created.csv` | `processed`, na pasta de Campanhas | Contatos processados, mas sem provedor configurado para o canal (não houve envio). |
-| `{nome}_VALIDATED.csv` | `processed`, na pasta de Campanhas | Contatos processados e efetivamente enviados (havia provedor configurado). |
+| `{nome}_validated.csv` | `processed`, na pasta de Campanhas | Contatos válidos da campanha importada. |
+| `{nome}_errors.csv` | `processed`, na pasta de Campanhas | Linhas que não serão enviadas, inclusive contatos de um canal sem provedor configurado — coluna `Motivo falha` explica o motivo por linha. |
+| `{nome}_exceptions.csv` | `error`, na pasta de Campanhas | Linhas do arquivo de campanha que falhou por inteiro, com a coluna `Motivo falha`. |
 | `{nome}_errorDetail.txt` | `error`, na pasta de Campanhas ou de Templates | Falha no arquivo inteiro (nome fora do padrão, erro de linha em importação de template, etc.). |
 
 Veja o fluxo completo em [Uso de SFTP](/integracoes/uso-de-sftp).

@@ -12,7 +12,7 @@ Cada tópico segue o formato sintoma → causas prováveis → como confirmar �
 **Causas prováveis:**
 
 1. O **Limite de erros por arquivo de Público** invalidou a base inteira — percentual de contatos inválidos acima do limite configurado. É a única regra do [Motor de Regras](/motor-de-regras/visao-geral) avaliada sobre o público como um todo, e só depois de checar todos os contatos.
-2. O template usado não está com status **Publicado** (quando há provedor configurado) ou está expirado.
+2. O template usado não está com status **Publicado** (no WhatsApp sem provedor configurado, também é aceito **Aprovado**) ou está expirado.
 3. O segmento informado não existe, ou a empresa não tem acesso a ele.
 4. Não há provedor configurado para o canal do envio.
 
@@ -43,7 +43,7 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 
 **Como confirmar:**
 
-- Se o envio veio de um arquivo (Público ou SFTP), procure o arquivo `{nome original}_EXCEPTIONS.csv` gerado na subpasta `processed` da pasta de Campanhas — ele traz a coluna `Motivo Falha` com o motivo exato por linha.
+- Se o envio veio de uma campanha importada via SFTP, procure o arquivo `{nome original}_errors.csv` gerado na subpasta `processed` da pasta de Campanhas — ele traz a coluna `Motivo falha` com o motivo exato por linha.
 - Se o envio veio da Direct Message API, o motivo aparece no corpo da resposta `409 - Conflict`, no campo `conflicts`.
 
 **Como resolver:**
@@ -127,7 +127,7 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 
 - Verifique se o arquivo apareceu na subpasta `processed` (sucesso) ou `error` (falha) da pasta do serviço após ~10 minutos.
 - Em caso de erro no arquivo inteiro, abra `{nome do arquivo original}_errorDetail.txt` na subpasta `error`.
-- Em caso de erro em linhas específicas (campanhas), abra `{nome original}_EXCEPTIONS.csv` na subpasta `processed`.
+- Em caso de erro em linhas específicas (campanhas), abra `{nome original}_errors.csv` na subpasta `processed`.
 
 **Como resolver:**
 
@@ -217,7 +217,7 @@ Essas duas mensagens só aparecem depois que a senha é validada — com e-mail 
 
 **Causas prováveis:**
 
-- Comportamento esperado: empresa nova nasce sem nenhuma permissão concedida. O primeiro usuário dela recebe o Perfil de Acesso "Administrador", mas esse perfil só abre o que a empresa tiver concedido. Os demais usuários novos nascem sem nenhum perfil atribuído.
+- Comportamento esperado: empresa nova nasce só com a permissão de gerenciar os próprios Perfis de Acesso; as permissões das áreas do Maestro começam vazias. O primeiro usuário dela recebe o Perfil de Acesso "Administrador", mas esse perfil só abre o que a empresa tiver concedido. Os demais usuários novos nascem sem nenhum perfil atribuído.
 
 **Como confirmar:**
 
