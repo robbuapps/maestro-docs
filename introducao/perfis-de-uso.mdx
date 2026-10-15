@@ -1,48 +1,30 @@
 ---
-title: "Perfis de Uso"
-description: "Diferenças entre os perfis Gerente do Ambiente, Assessoria e Revisora."
+title: "Tipos de Empresa"
+description: "Os tipos de empresa do Maestro: Parceira, Gerente do Ambiente e Administradora do sistema."
 ---
 
-O Maestro conta com interfaces específicas para diferentes perfis de **empresa**. O que cada usuário pode fazer dentro da empresa é definido à parte, pelos Perfis de Acesso dele — veja [Como Funcionam as Permissões](/permissoes/visao-geral).
+Toda empresa do Maestro tem um tipo. O tipo define as funções de administração do ambiente que a empresa exerce. O acesso às demais áreas (campanhas, templates, relatórios, segmentos, usuários etc.) vem das permissões concedidas à empresa e dos Perfis de Acesso de cada usuário — veja [Como Funcionam as Permissões](/permissoes/visao-geral).
+
+## Parceira
+
+Tipo padrão de empresa. Usa as áreas do Maestro que tiver concedidas e gerencia os próprios Perfis de Acesso.
 
 ## Gerente do Ambiente
 
-Empresa administradora e supervisora do ambiente. Possui acesso completo às funcionalidades, permitindo a supervisão de todas as atividades dentro do ambiente — inclusive das demais assessorias.
+Empresa que administra o ambiente. Além das áreas que tiver concedidas, ela:
 
-## Assessoria
+- Concede permissões às demais empresas do ambiente (veja [Permissões por Empresa](/permissoes/permissoes-por-empresa))
+- Ativa ou inativa empresas
+- Acessa as configurações do ambiente, como o [Mapeamento de colunas](/integracoes/mapeamento-de-layouts)
 
-Empresa com permissões restritas às campanhas, públicos, segmentos, relatórios e templates da própria empresa.
+Cada ambiente tem um único Gerente do Ambiente.
 
-## Revisora
+## Administradora do sistema
 
-Empresa responsável pela revisão e aprovação de templates de outras empresas.
+Papel exercido pela Robbu (Suporte e Engenharia). Tem acesso a todas as funcionalidades, sem depender de permissões concedidas, e é a única que define o tipo das demais empresas.
 
-## Menu por perfil
+Cada ambiente tem no máximo uma Administradora do sistema ativa. Ela só aparece na lista de **Empresas** para os próprios usuários.
 
-O menu lateral e superior está disponível em todas as telas do Maestro, oferecendo acesso rápido às principais funcionalidades. As opções exibidas variam de acordo com o perfil da empresa do usuário.
+## Dados de outras empresas
 
-### Perfil: Gerente do Ambiente
-
-Acesso completo a todas as funcionalidades do ambiente.
-
-### Perfil: Assessoria
-
-Conjunto de opções reduzido, com permissões limitadas e dados referentes ao próprio escopo:
-
-- Dashboard
-- Relatórios
-- Público
-- Segmentos
-- Campanhas
-- Templates
-- Usuários
-- Configurações
-- Ajuda
-
-### Perfil: Revisora
-
-Visualiza apenas o que é referente à revisão e aprovação de templates:
-
-- Empresas
-- Revisão de templates
-- Usuários
+Ver e gerenciar segmentos, usuários, provedores e campanhas de outras empresas exige a variante "todas as empresas" da permissão correspondente (veja [Glossário](/introducao/glossario)), inclusive para o Gerente do Ambiente. Sem ela, a empresa vê só os próprios dados nessas áreas. A Administradora do sistema vê os dados de todas as empresas.

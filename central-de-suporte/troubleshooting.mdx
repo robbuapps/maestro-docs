@@ -13,7 +13,7 @@ Cada tópico segue o formato sintoma → causas prováveis → como confirmar �
 
 1. O **Limite de erros por arquivo de Público** invalidou a base inteira — percentual de contatos inválidos acima do limite configurado. É a única regra do [Motor de Regras](/motor-de-regras/visao-geral) avaliada sobre o público como um todo, e só depois de checar todos os contatos.
 2. O template usado não está com status **Publicado** (quando há provedor configurado) ou está expirado.
-3. O segmento informado não existe, ou a assessoria não tem acesso a ele.
+3. O segmento informado não existe, ou a empresa não tem acesso a ele.
 4. Não há provedor configurado para o canal do envio.
 
 **Como confirmar:**
@@ -26,7 +26,7 @@ Cada tópico segue o formato sintoma → causas prováveis → como confirmar �
 
 - Corrija o público (ou ajuste o limite da regra em Configurações > Regras > Limites), se a base foi invalidada por excesso de erros.
 - Publique/aprove o template antes de enviar.
-- Corrija o segmento ou solicite acesso a ele para a assessoria.
+- Corrija o segmento ou solicite acesso a ele para a empresa.
 - Configure um provedor para o canal — sem provedor, a mensagem é apenas validada, mas não enviada.
 
 ## Envio individual bloqueado dentro de uma campanha válida
@@ -62,7 +62,7 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 
 **Como confirmar:**
 
-- Consulte o motivo de rejeição na tela de Templates ou na seção de Revisão de Templates em [Templates](/guia-do-usuario/templates) (visível para Gerente do Ambiente e empresas Revisoras).
+- Consulte o motivo de rejeição na tela de Templates ou na seção de Revisão de Templates em [Templates](/guia-do-usuario/templates) (visível para quem tem a permissão de Revisão de templates).
 - Confirme o status exato do template — "Rejeitado" (revisor interno) é diferente de "Rejeitado por Meta".
 
 **Como resolver:**
@@ -94,7 +94,7 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 - Nome ou ordem incorreta das colunas obrigatórias (os **nomes** das colunas devem ser exatamente como documentado; a ordem não importa).
 - `template_code` e `template_external_code` ambos vazios na mesma linha.
 - `template_external_code` informado, mas não encontrado, e `template_code` também não encontrado.
-- Segmento informado não existe ou a assessoria não tem acesso a ele.
+- Segmento informado não existe ou a empresa não tem acesso a ele.
 - Percentual de erros no arquivo acima do limite configurado na regra de Limite de erros por arquivo de Público — nesse caso, a base inteira é invalidada.
 - Nome de provedor inválido na coluna `broker` (SMS/RCS) — rejeita o arquivo inteiro.
 
@@ -237,7 +237,7 @@ Essas duas mensagens só aparecem depois que a senha é validada — com e-mail 
 
 **Como confirmar:**
 
-- Confirme o tipo da empresa em [Perfis de Uso](/introducao/perfis-de-uso).
+- Confirme o tipo da empresa em [Tipos de Empresa](/introducao/perfis-de-uso).
 - Confirme se a tentativa foi em Empresas > menu de opções > Configurar permissões (correto para conceder permissões) e não em Configurações > Perfis de Acesso (que só existe para a própria empresa).
 
 **Como resolver:**

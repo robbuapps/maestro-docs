@@ -5,7 +5,14 @@ description: "Gestão de empresas, usuários e perfis de acesso no Maestro."
 
 ## Empresas
 
-Na tela **Empresas**, o usuário pode visualizar a lista de empresas cadastradas. A Gerente do Ambiente pode criar novas empresas. Essa funcionalidade centraliza a gestão das empresas que farão parte das estratégias de comunicação dentro do Maestro.
+Na tela **Empresas**, o usuário pode visualizar a lista de empresas cadastradas e, conforme as permissões de Empresas, criar e editar empresas. Essa funcionalidade centraliza a gestão das empresas que farão parte das estratégias de comunicação dentro do Maestro.
+
+- O campo **Tipo de empresa** só aparece para usuários da Administradora do sistema. Para os demais, a empresa criada é sempre do tipo Parceira. Veja [Tipos de Empresa](/introducao/perfis-de-uso).
+- Cada ambiente tem um único Gerente do Ambiente e no máximo uma Administradora do sistema ativa.
+- Nome e CNPJ não podem ser alterados depois da criação.
+- Só Gerente do Ambiente e Administradora do sistema ativam ou inativam empresas e marcam **Ocultar dos dashboards**. A opção **Ocultar dos dashboards** não está disponível para empresas desses dois tipos.
+- Uma Parceira com permissão de editar empresas edita só a própria empresa e, nela, só os segmentos.
+- Sem a variante "todas as empresas" da permissão de Segmentos (veja [Glossário](/introducao/glossario)), a empresa editada só mantém ou remove os segmentos que já tem.
 
 <Warning>
 Uma empresa inativa ou excluída deixa de operar no ambiente: os usuários dela não conseguem entrar no Maestro, o Token de Integração dela é recusado pela API e os arquivos das contas SFTP dela não são processados. Para reverter, veja [Troubleshooting](/central-de-suporte/troubleshooting).
@@ -13,7 +20,9 @@ Uma empresa inativa ou excluída deixa de operar no ambiente: os usuários dela 
 
 ## Usuários
 
-Na seção **Usuários** é possível listar e gerenciar todos os usuários cadastrados na plataforma. Cada usuário pode ter nenhum, um ou vários Perfis de Acesso.
+Na seção **Usuários** é possível listar e gerenciar os usuários cadastrados na plataforma. Cada usuário pode ter nenhum, um ou vários Perfis de Acesso.
+
+A lista mostra os usuários da própria empresa. Ver e gerenciar usuários de outras empresas, incluindo o filtro por empresa, exige a variante "todas as empresas" da permissão de Usuários (veja [Glossário](/introducao/glossario)).
 
 ### Perfis de Acesso
 
