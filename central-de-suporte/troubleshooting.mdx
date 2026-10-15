@@ -43,7 +43,7 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 
 **Como confirmar:**
 
-- Se o envio veio de um arquivo (Público ou SFTP), procure o arquivo `{nome original}_EXCEPTIONS.csv` gerado na pasta `/processed` — ele traz a coluna `Motivo Falha` com o motivo exato por linha.
+- Se o envio veio de um arquivo (Público ou SFTP), procure o arquivo `{nome original}_EXCEPTIONS.csv` gerado na subpasta `processed` da pasta de Campanhas — ele traz a coluna `Motivo Falha` com o motivo exato por linha.
 - Se o envio veio da Direct Message API, o motivo aparece no corpo da resposta `409 - Conflict`, no campo `conflicts`.
 
 **Como resolver:**
@@ -120,14 +120,14 @@ Diferente da base inteira ser invalidada, o motor de regras avalia cada linha do
 - O arquivo foi colocado numa pasta diferente do **Caminho da pasta** configurado para o serviço.
 - As pastas `processed` e `error` ainda não apareceram (podem levar até 10 minutos depois que a conta é salva).
 - Nome do arquivo de template fora do padrão esperado (`{segmento}_{canal}_[{waba}]_{data}.csv`) — não se aplica a campanhas, cujo nome de arquivo não é validado.
-- O arquivo já foi processado antes — arquivos em `/processed` não são reprocessados.
+- O arquivo já foi processado antes — arquivos na subpasta `processed` não são reprocessados.
 - O serviço de importação roda a cada 10 minutos — arquivos recém-enviados podem levar até esse tempo para aparecer processados.
 
 **Como confirmar:**
 
-- Verifique se o arquivo apareceu em `/processed` (sucesso) ou `/error` (falha) após ~10 minutos.
-- Em caso de erro no arquivo inteiro, abra `{nome do arquivo original}_errorDetail.txt` na pasta `/error`.
-- Em caso de erro em linhas específicas (campanhas), abra `{nome original}_EXCEPTIONS.csv` em `/processed`.
+- Verifique se o arquivo apareceu na subpasta `processed` (sucesso) ou `error` (falha) da pasta do serviço após ~10 minutos.
+- Em caso de erro no arquivo inteiro, abra `{nome do arquivo original}_errorDetail.txt` na subpasta `error`.
+- Em caso de erro em linhas específicas (campanhas), abra `{nome original}_EXCEPTIONS.csv` na subpasta `processed`.
 
 **Como resolver:**
 
