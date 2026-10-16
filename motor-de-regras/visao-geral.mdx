@@ -24,12 +24,11 @@ Algumas regras não são exibidas no motor de regras, mas rodam como validadores
 
 A empresa só consegue criar templates, criar campanhas e enviar mensagens em segmentos aos quais tem acesso.
 
-### Template aprovado
+### Template publicado
 
-Apenas templates aprovados são válidos para criar campanhas e enviar mensagens.
+Para criar campanhas e enviar mensagens, o template deve estar **Publicado**.
 
-- Se houver provedor configurado para o canal utilizado, o template deve estar **Publicado**.
-- Se não houver provedor configurado, a mensagem não será enviada, mas o template é considerado válido e pode ser usado para integrações externas.
+A exceção é o WhatsApp sem provedor configurado: nesse caso, templates **Aprovados** também são aceitos, mas a mensagem não é enviada.
 - Templates expirados não ficam disponíveis para uso após a rotina de expiração — vencidos há mais de 5 dias causam o bloqueio do envio.
 
 ### DDD e Telefone
@@ -187,10 +186,10 @@ Veja mais em [Direct Message API](/integracoes/direct-message-api).
 
 ### SFTP
 
-Valida o arquivo linha a linha. Linhas invalidadas geram, na subpasta `processed` da pasta de Campanhas, um arquivo `{nome original}_EXCEPTIONS.csv` com a cópia da linha original e uma coluna adicional `Motivo Falha`:
+Valida o arquivo linha a linha. Linhas invalidadas geram, na subpasta `processed` da pasta de Campanhas, um arquivo `{nome original}_errors.csv` com a cópia da linha original e uma coluna adicional `Motivo falha`:
 
 ```
-(Outras colunas...), MotivoFalha
+(Outras colunas...), Motivo falha
 ..., Excedido o limite de envios diários para esse contato
 ..., Número bloqueado na lista de restrição
 ..., Envio bloqueado fora do horário permitido para este código de área

@@ -26,7 +26,7 @@ Isso abre o cadastro da empresa na aba **Permissões**, com as permissões dispo
 Para remover, desmarque a permissão (ou use **Remover todas**) e clique em **Salvar**.
 
 <Warning>
-Uma permissão removida da empresa também sai de todos os Perfis de Acesso dela, exceto do perfil "Administrador". Se a permissão for concedida de novo, ela volta a valer para o perfil "Administrador", mas precisa ser incluída de novo nos demais perfis.
+Uma permissão removida da empresa sai de todos os Perfis de Acesso dela. Se a permissão for concedida novamente, ela volta automaticamente apenas para o perfil Administrador, sendo necessário adicioná-la aos demais perfis em que ela for necessária.
 </Warning>
 
 ## Exemplo
@@ -41,7 +41,7 @@ Só a Aurora recebe essa permissão; as demais empresas continuam como estavam.
 
 ## Empresa nova
 
-Uma empresa nova entra no sistema sem nenhuma permissão concedida. O primeiro usuário ativo cadastrado nela (em **Usuários**) recebe o Perfil de Acesso "Administrador", mas esse perfil, como qualquer outro, só abre o que a empresa tiver concedido. Por isso, é preciso conceder aqui o básico do que ela vai usar.
+Uma empresa nova entra no sistema só com a permissão de gerenciar os próprios Perfis de Acesso; as permissões das áreas do Maestro começam vazias. O primeiro usuário ativo cadastrado nela (em **Usuários**) recebe o Perfil de Acesso "Administrador", mas esse perfil, como qualquer outro, só abre o que a empresa tiver concedido. Por isso, é preciso conceder aqui o básico do que ela vai usar.
 
 <Note>
 Perfis de Acesso são sempre criados e atribuídos dentro da própria empresa — mesmo uma empresa Gerente do Ambiente não consegue criar ou editar Perfis de Acesso de outra empresa. Veja [Perfis de Acesso](/permissoes/perfis-de-acesso).
