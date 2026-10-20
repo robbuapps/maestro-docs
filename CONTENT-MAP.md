@@ -20,7 +20,7 @@ Este mapa **não** é checado durante a revisão de código (decisão deliberada
 | Companies | `82-companies-behavior.md` | `guia-do-usuario/empresas-e-usuarios.mdx`, `introducao/perfis-de-uso.mdx` |
 | Dashboards | `83-dashboards-behavior.md` | `guia-do-usuario/relatorios.mdx` (quando houver conteúdo) |
 | MessageTemplates | `84-message-templates-behavior.md` | `guia-do-usuario/templates.mdx`, `central-de-suporte/codigos-de-erro-e-status.mdx` (status de template) |
-| Messages | `85-messages-behavior.md` | `integracoes/webhook-de-eventos.mdx`, `central-de-suporte/codigos-de-erro-e-status.mdx` (status de mensagem), `integracoes/direct-message-api.mdx` |
+| Messages | `85-messages-behavior.md` | `integracoes/webhook-de-eventos.mdx`, `central-de-suporte/codigos-de-erro-e-status.mdx` (status de mensagem), `integracoes/direct-message-api.mdx`, `guia-do-usuario/mensagens.mdx` (consulta de mensagens individuais) |
 | Reports | `86-reports-behavior.md` | `guia-do-usuario/relatorios.mdx` |
 | Rules | `87-rules-behavior.md` | `motor-de-regras/visao-geral.mdx`, `central-de-suporte/troubleshooting.mdx` |
 | Segments | `88-segments-behavior.md` | `guia-do-usuario/segmentos.mdx`, `integracoes/integracao-com-provedores.mdx` (direcionamento por segmento) |
@@ -41,6 +41,7 @@ Este mapa **não** é checado durante a revisão de código (decisão deliberada
 | `help` | `/ajuda` | `central-de-suporte/faq.mdx`, `central-de-suporte/troubleshooting.mdx` |
 | `import-layout-mappings` | `/configuracoes/mapeamento-colunas`, `/criar`, `/:id/editar` | `integracoes/mapeamento-de-layouts.mdx` |
 | `mailing` | `/publico` | `guia-do-usuario/publico.mdx` |
+| `messages` | `/mensagens` | `guia-do-usuario/mensagens.mdx` |
 | `permissions` | `/configuracoes/ambiente/features`, `/configuracoes/empresa/perfis-de-acesso` | `permissoes/visao-geral.mdx`, `permissoes/permissoes-por-empresa.mdx`, `permissoes/perfis-de-acesso.mdx` |
 | `reports` | `/relatorios` | `guia-do-usuario/relatorios.mdx` |
 | `segments` | `/segmentos` | `guia-do-usuario/segmentos.mdx` |

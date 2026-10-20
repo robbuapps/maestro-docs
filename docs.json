@@ -23,6 +23,7 @@
         "pages": [
           "guia-do-usuario/publico",
           "guia-do-usuario/campanhas",
+          "guia-do-usuario/mensagens",
           "guia-do-usuario/templates",
           "guia-do-usuario/segmentos",
           "guia-do-usuario/relatorios",
