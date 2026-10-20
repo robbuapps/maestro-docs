@@ -1,0 +1,54 @@
+---
+title: "Mensagens"
+description: "Consulta de mensagens enviadas por Direct Message e por campanhas, buscadas pelo contato."
+---
+
+O menu Mensagens reúne em uma única lista as mensagens enviadas pela [Direct Message API](/integracoes/direct-message-api) e pelas [campanhas](/guia-do-usuario/campanhas). Serve para rastrear o que foi enviado para um contato específico, qualquer que seja a origem do envio.
+
+## Listagem
+
+Cada linha mostra:
+
+| Coluna | Conteúdo |
+|---|---|
+| **Canal** | WhatsApp, E-mail, SMS ou RCS |
+| **Destinatário** | Telefone ou e-mail para onde a mensagem foi enviada |
+| **Data** | Data e hora de criação da mensagem |
+| **Status** | Enviado, Entregue, Lido, Falha ou Inválido |
+| **Origem** | **Campanha**, seguida do nome da campanha (com link para ela), ou **Direct Message** |
+
+As mensagens aparecem da mais recente para a mais antiga, 15 por página.
+
+## Filtros
+
+Clique em **Filtros** para abrir o painel. Os filtros podem ser combinados.
+
+| Filtro | Como funciona |
+|---|---|
+| **Destinatário** | Telefone ou e-mail completo — não há busca por parte do valor. Um telefone é encontrado com ou sem o código do país (ex.: `5511999999999` e `11999999999` trazem as mesmas mensagens). |
+| **Canal** | Um ou mais canais. |
+| **Origem** | Campanha ou Direct Message. Sem seleção, mostra as duas. |
+| **Período** | Até 31 dias. Sem alteração, mostra os últimos 7 dias. |
+| **Empresa** | Só aparece para quem pode consultar mensagens de outras empresas do ambiente (veja Permissões, abaixo). Começa na própria empresa do usuário e permite escolher outra ou **Todas as empresas**. |
+
+Os filtros aplicados ficam no endereço da página, então um link copiado abre a mesma busca.
+
+## Detalhes da mensagem
+
+Clique em uma linha para abrir o painel lateral **Detalhes da mensagem**, o mesmo usado no detalhe da campanha. Ele mostra:
+
+- Status, Canal, Destinatário e Provedor
+- Campanha, com link para ela (só para mensagens de campanha)
+- Histórico, com o horário em que a mensagem foi enviada, entregue e lida
+- Conteúdo da mensagem, com as variáveis preenchidas pelos valores usados no envio
+
+<Note>
+Mensagens de RCS não exibem o conteúdo no painel.
+</Note>
+
+## Permissões
+
+O acesso a esta tela segue o modelo de [Permissões](/permissoes/visao-geral), com duas permissões:
+
+- **Consulta mensagens individuais** (`Messages.List`) — abre o menu Mensagens, com as mensagens da própria empresa.
+- **Consulta mensagens de outras empresas do ambiente** (`Messages.Manage.AllCompanies`) — libera o filtro **Empresa**, para consultar qualquer empresa do ambiente, inclusive empresas que já foram desligadas dele.
